@@ -13,7 +13,7 @@ namespace Testbed.Tests
     {
         public ChainProblem()
         {
-            Vector2 g = new Vector2(0.0f, -10.0f);
+            V2 g = new V2(0.0f, -10.0f);
             World.Gravity = g;
             var bodies = new Body[2];
             {
@@ -24,9 +24,9 @@ namespace Testbed.Tests
                 {
                     FixtureDef fd;
 
-                    var v1 = new Vector2(0.0f, 1.0f);
-                    var v2 = new Vector2(0.0f, 0.0f);
-                    var v3 = new Vector2(4.0f, 0.0f);
+                    var v1 = new V2(0.0f, 1.0f);
+                    var v2 = new V2(0.0f, 0.0f);
+                    var v3 = new V2(4.0f, 0.0f);
 
                     EdgeShape shape = new EdgeShape();
                     shape.SetTwoSided(v1, v2);
@@ -49,7 +49,7 @@ namespace Testbed.Tests
                     fd.Friction = 0.2f;
                     fd.Density = 10.0f;
                     PolygonShape shape = new PolygonShape();
-                    var vs = new Vector2[8];
+                    var vs = new V2[8];
                     vs[0].Set(0.5f, -3.0f);
                     vs[1].Set(0.5f, 3.0f);
                     vs[2].Set(-0.5f, 3.0f);

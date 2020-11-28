@@ -5,7 +5,7 @@ namespace Testbed.Basics
 {
     public class Camera
     {
-        public Vector2 Center;
+        public V2 Center;
 
         public int Height;
 
@@ -21,7 +21,7 @@ namespace Testbed.Basics
             Height = 800;
         }
 
-        public Vector2 ConvertScreenToWorld(Vector2 screenPoint)
+        public V2 ConvertScreenToWorld(V2 screenPoint)
         {
             float w = Width;
             float h = Height;
@@ -29,24 +29,24 @@ namespace Testbed.Basics
             var v = (h - screenPoint.Y) / h;
 
             var ratio = w / h;
-            var extents = new Vector2(ratio * 25.0f, 25.0f);
+            var extents = new V2(ratio * 25.0f, 25.0f);
             extents *= Zoom;
 
             var lower = Center - extents;
             var upper = Center + extents;
 
-            Vector2 pw;
+            V2 pw;
             pw.X = (1.0f - u) * lower.X + u * upper.X;
             pw.Y = (1.0f - v) * lower.Y + v * upper.Y;
             return pw;
         }
 
-        public Vector2 ConvertWorldToScreen(Vector2 worldPoint)
+        public V2 ConvertWorldToScreen(V2 worldPoint)
         {
             float w = Width;
             float h = Height;
             var ratio = w / h;
-            var extents = new Vector2(ratio * 25.0f, 25.0f);
+            var extents = new V2(ratio * 25.0f, 25.0f);
             extents *= Zoom;
 
             var lower = Center - extents;
@@ -55,7 +55,7 @@ namespace Testbed.Basics
             var u = (worldPoint.X - lower.X) / (upper.X - lower.X);
             var v = (worldPoint.Y - lower.Y) / (upper.Y - lower.Y);
 
-            var ps = new Vector2(u * w, (1.0f - v) * h);
+            var ps = new V2(u * w, (1.0f - v) * h);
             return ps;
         }
 
@@ -64,7 +64,7 @@ namespace Testbed.Basics
             float w = Width;
             float h = Height;
             var ratio = w / h;
-            var extents = new Vector2(ratio * 25.0f, 25.0f);
+            var extents = new V2(ratio * 25.0f, 25.0f);
             extents *= Zoom;
 
             var lower = Center - extents;

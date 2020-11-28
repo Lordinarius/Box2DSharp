@@ -15,9 +15,9 @@ namespace Testbed.Tests
     {
         public bool Hit;
 
-        public Vector2 Normal;
+        public V2 Normal;
 
-        public Vector2 Point;
+        public V2 Point;
 
         public RayCastClosestCallback()
         {
@@ -54,9 +54,9 @@ namespace Testbed.Tests
     {
         public bool Hit;
 
-        public Vector2 Normal;
+        public V2 Normal;
 
-        public Vector2 Point;
+        public V2 Point;
 
         public RayCastAnyCallback()
         {
@@ -95,9 +95,9 @@ namespace Testbed.Tests
     {
         public const int MaxCount = 3;
 
-        public readonly Vector2[] Normals = new Vector2[MaxCount];
+        public readonly V2[] Normals = new V2[MaxCount];
 
-        public readonly Vector2[] Points = new Vector2[MaxCount];
+        public readonly V2[] Points = new V2[MaxCount];
 
         public int Count;
 

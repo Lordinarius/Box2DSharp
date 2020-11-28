@@ -17,7 +17,7 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -26,10 +26,10 @@ namespace Testbed.Tests
                 var shape = new PolygonShape();
                 shape.SetAsBox(a, a);
 
-                var x = new Vector2(-7.0f, 0.75f);
-                Vector2 y;
-                var deltaX = new Vector2(0.5625f, 1.25f);
-                var deltaY = new Vector2(1.125f, 0.0f);
+                var x = new V2(-7.0f, 0.75f);
+                V2 y;
+                var deltaX = new V2(0.5625f, 1.25f);
+                var deltaY = new V2(1.125f, 0.0f);
 
                 for (var i = 0; i < Count; ++i)
                 {

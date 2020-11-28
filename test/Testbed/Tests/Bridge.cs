@@ -22,7 +22,7 @@ namespace Testbed.Tests
                 ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -46,7 +46,7 @@ namespace Testbed.Tests
                     var body = World.CreateBody(bd);
                     body.CreateFixture(fd);
 
-                    var anchor = new Vector2(-15.0f + 1.0f * i, 5.0f);
+                    var anchor = new V2(-15.0f + 1.0f * i, 5.0f);
                     jd.Initialize(prevBody, body, anchor);
                     World.CreateJoint(jd);
 
@@ -59,7 +59,7 @@ namespace Testbed.Tests
                 }
 
                 {
-                    var anchor = new Vector2(-15.0f + 1.0f * Count, 5.0f);
+                    var anchor = new V2(-15.0f + 1.0f * Count, 5.0f);
                     jd.Initialize(prevBody, ground, anchor);
                     World.CreateJoint(jd);
                 }
@@ -67,7 +67,7 @@ namespace Testbed.Tests
 
             for (var i = 0; i < 2; ++i)
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.5f, 0.0f);
                 vertices[1].Set(0.5f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);

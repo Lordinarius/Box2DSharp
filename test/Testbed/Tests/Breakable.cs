@@ -27,7 +27,7 @@ namespace Testbed.Tests
 
         private PolygonShape _shape2 = new PolygonShape();
 
-        private Vector2 _velocity;
+        private V2 _velocity;
 
         public Breakable()
         {
@@ -37,7 +37,7 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -49,10 +49,10 @@ namespace Testbed.Tests
                 bd.Angle = 0.25f * Settings.Pi;
                 _body1 = World.CreateBody(bd);
 
-                _shape1.SetAsBox(0.5f, 0.5f, new Vector2(-0.5f, 0.0f), 0.0f);
+                _shape1.SetAsBox(0.5f, 0.5f, new V2(-0.5f, 0.0f), 0.0f);
                 _piece1 = _body1.CreateFixture(_shape1, 1.0f);
 
-                _shape2.SetAsBox(0.5f, 0.5f, new Vector2(0.5f, 0.0f), 0.0f);
+                _shape2.SetAsBox(0.5f, 0.5f, new V2(0.5f, 0.0f), 0.0f);
                 _piece2 = _body1.CreateFixture(_shape2, 1.0f);
             }
 

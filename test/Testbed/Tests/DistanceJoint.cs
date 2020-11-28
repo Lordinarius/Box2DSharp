@@ -24,7 +24,7 @@ namespace Testbed.Tests
                 ground = World.CreateBody(bd);
 
                 EdgeShape shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -52,7 +52,7 @@ namespace Testbed.Tests
                 m_bodies[3].CreateFixture(shape, 5.0f);
 
                 DistanceJointDef jd = new DistanceJointDef();
-                Vector2 p1, p2, d;
+                V2 p1, p2, d;
 
                 jd.FrequencyHz = 2.0f;
                 jd.DampingRatio = 0.0f;

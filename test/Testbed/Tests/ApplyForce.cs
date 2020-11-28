@@ -22,7 +22,7 @@ namespace Testbed.Tests
 
         public ApplyForce()
         {
-            World.Gravity = new Vector2(0.0f, 0.0f);
+            World.Gravity = new V2(0.0f, 0.0f);
 
             const float restitution = 0.4f;
 
@@ -40,19 +40,19 @@ namespace Testbed.Tests
                 sd.Restitution = restitution;
 
                 // Left vertical
-                shape.SetTwoSided(new Vector2(-20.0f, -20.0f), new Vector2(-20.0f, 20.0f));
+                shape.SetTwoSided(new V2(-20.0f, -20.0f), new V2(-20.0f, 20.0f));
                 ground.CreateFixture(sd);
 
                 // Right vertical
-                shape.SetTwoSided(new Vector2(20.0f, -20.0f), new Vector2(20.0f, 20.0f));
+                shape.SetTwoSided(new V2(20.0f, -20.0f), new V2(20.0f, 20.0f));
                 ground.CreateFixture(sd);
 
                 // Top horizontal
-                shape.SetTwoSided(new Vector2(-20.0f, 20.0f), new Vector2(20.0f, 20.0f));
+                shape.SetTwoSided(new V2(-20.0f, 20.0f), new V2(20.0f, 20.0f));
                 ground.CreateFixture(sd);
 
                 // Bottom horizontal
-                shape.SetTwoSided(new Vector2(-20.0f, -20.0f), new Vector2(20.0f, -20.0f));
+                shape.SetTwoSided(new V2(-20.0f, -20.0f), new V2(20.0f, -20.0f));
                 ground.CreateFixture(sd);
             }
 
@@ -61,10 +61,10 @@ namespace Testbed.Tests
                 xf1.Rotation.Set(0.3524f * Settings.Pi);
                 xf1.Position = xf1.Rotation.GetXAxis();
 
-                var vertices = new Vector2[3];
-                vertices[0] = MathUtils.Mul(xf1, new Vector2(-1.0f, 0.0f));
-                vertices[1] = MathUtils.Mul(xf1, new Vector2(1.0f, 0.0f));
-                vertices[2] = MathUtils.Mul(xf1, new Vector2(0.0f, 0.5f));
+                var vertices = new V2[3];
+                vertices[0] = MathUtils.Mul(xf1, new V2(-1.0f, 0.0f));
+                vertices[1] = MathUtils.Mul(xf1, new V2(1.0f, 0.0f));
+                vertices[2] = MathUtils.Mul(xf1, new V2(0.0f, 0.5f));
 
                 var poly1 = new PolygonShape();
                 poly1.Set(vertices);
@@ -77,9 +77,9 @@ namespace Testbed.Tests
                 xf2.Rotation.Set(-0.3524f * Settings.Pi);
                 xf2.Position = -xf2.Rotation.GetXAxis();
 
-                vertices[0] = MathUtils.Mul(xf2, new Vector2(-1.0f, 0.0f));
-                vertices[1] = MathUtils.Mul(xf2, new Vector2(1.0f, 0.0f));
-                vertices[2] = MathUtils.Mul(xf2, new Vector2(0.0f, 0.5f));
+                vertices[0] = MathUtils.Mul(xf2, new V2(-1.0f, 0.0f));
+                vertices[1] = MathUtils.Mul(xf2, new V2(1.0f, 0.0f));
+                vertices[2] = MathUtils.Mul(xf2, new V2(0.0f, 0.5f));
 
                 var poly2 = new PolygonShape();
                 poly2.Set(vertices);
@@ -90,7 +90,7 @@ namespace Testbed.Tests
 
                 var bd = new BodyDef();
                 bd.BodyType = BodyType.DynamicBody;
-                bd.Position = new Vector2(0.0f, 3.0f);
+                bd.Position = new V2(0.0f, 3.0f);
                 bd.Angle = Settings.Pi;
                 bd.AllowSleep = false;
                 _body = World.CreateBody(bd);
@@ -163,8 +163,8 @@ namespace Testbed.Tests
         {
             if (Game.IsKeyDown(Key.W))
             {
-                var f = _body.GetWorldVector(new Vector2(0.0f, -50.0f));
-                var p = _body.GetWorldPoint(new Vector2(0.0f, 3.0f));
+                var f = _body.GetWorldVector(new V2(0.0f, -50.0f));
+                var p = _body.GetWorldPoint(new V2(0.0f, 3.0f));
                 _body.ApplyForce(f, p, true);
             }
 

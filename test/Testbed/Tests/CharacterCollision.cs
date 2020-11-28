@@ -20,7 +20,7 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-20.0f, 0.0f), new Vector2(20.0f, 0.0f));
+                shape.SetTwoSided(new V2(-20.0f, 0.0f), new V2(20.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -32,11 +32,11 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-8.0f, 1.0f), new Vector2(-6.0f, 1.0f));
+                shape.SetTwoSided(new V2(-8.0f, 1.0f), new V2(-6.0f, 1.0f));
                 ground.CreateFixture(shape, 0.0f);
-                shape.SetTwoSided(new Vector2(-6.0f, 1.0f), new Vector2(-4.0f, 1.0f));
+                shape.SetTwoSided(new V2(-6.0f, 1.0f), new V2(-4.0f, 1.0f));
                 ground.CreateFixture(shape, 0.0f);
-                shape.SetTwoSided(new Vector2(-4.0f, 1.0f), new Vector2(-2.0f, 1.0f));
+                shape.SetTwoSided(new V2(-4.0f, 1.0f), new V2(-2.0f, 1.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -45,12 +45,12 @@ namespace Testbed.Tests
                 var bd = new BodyDef {Angle = 0.25f * Settings.Pi};
                 var ground = World.CreateBody(bd);
 
-                var vs = new Vector2[4]
+                var vs = new V2[4]
                 {
-                    new Vector2(5.0f, 7.0f),
-                    new Vector2(6.0f, 8.0f),
-                    new Vector2(7.0f, 8.0f),
-                    new Vector2(8.0f, 7.0f)
+                    new V2(5.0f, 7.0f),
+                    new V2(6.0f, 8.0f),
+                    new V2(7.0f, 8.0f),
+                    new V2(8.0f, 7.0f)
                 };
                 var shape = new ChainShape();
                 shape.CreateLoop(vs);
@@ -65,11 +65,11 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new PolygonShape();
-                shape.SetAsBox(1.0f, 1.0f, new Vector2(4.0f, 3.0f), 0.0f);
+                shape.SetAsBox(1.0f, 1.0f, new V2(4.0f, 3.0f), 0.0f);
                 ground.CreateFixture(shape, 0.0f);
-                shape.SetAsBox(1.0f, 1.0f, new Vector2(6.0f, 3.0f), 0.0f);
+                shape.SetAsBox(1.0f, 1.0f, new V2(6.0f, 3.0f), 0.0f);
                 ground.CreateFixture(shape, 0.0f);
-                shape.SetAsBox(1.0f, 1.0f, new Vector2(8.0f, 3.0f), 0.0f);
+                shape.SetAsBox(1.0f, 1.0f, new V2(8.0f, 3.0f), 0.0f);
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -78,12 +78,12 @@ namespace Testbed.Tests
                 var bd = new BodyDef();
                 var ground = World.CreateBody(bd);
 
-                var vs = new Vector2[4]
+                var vs = new V2[4]
                 {
-                    new Vector2(-1.0f, 3.0f),
-                    new Vector2(1.0f, 3.0f),
-                    new Vector2(1.0f, 5.0f),
-                    new Vector2(-1.0f, 5.0f)
+                    new V2(-1.0f, 3.0f),
+                    new V2(1.0f, 3.0f),
+                    new V2(1.0f, 5.0f),
+                    new V2(-1.0f, 5.0f)
                 };
 
                 var shape = new ChainShape();
@@ -93,21 +93,21 @@ namespace Testbed.Tests
 
             // Edge loop. Collision should be smooth.
             {
-                var bd = new BodyDef {Position = new Vector2(-10.0f, 4.0f)};
+                var bd = new BodyDef {Position = new V2(-10.0f, 4.0f)};
                 var ground = World.CreateBody(bd);
 
-                var vs = new Vector2[10]
+                var vs = new V2[10]
                 {
-                    new Vector2(0.0f, 0.0f),
-                    new Vector2(6.0f, 0.0f),
-                    new Vector2(6.0f, 2.0f),
-                    new Vector2(4.0f, 1.0f),
-                    new Vector2(2.0f, 2.0f),
-                    new Vector2(0.0f, 2.0f),
-                    new Vector2(-2.0f, 2.0f),
-                    new Vector2(-4.0f, 3.0f),
-                    new Vector2(-6.0f, 2.0f),
-                    new Vector2(-6.0f, 0.0f)
+                    new V2(0.0f, 0.0f),
+                    new V2(6.0f, 0.0f),
+                    new V2(6.0f, 2.0f),
+                    new V2(4.0f, 1.0f),
+                    new V2(2.0f, 2.0f),
+                    new V2(0.0f, 2.0f),
+                    new V2(-2.0f, 2.0f),
+                    new V2(-4.0f, 3.0f),
+                    new V2(-6.0f, 2.0f),
+                    new V2(-6.0f, 0.0f)
                 };
                 var shape = new ChainShape();
                 shape.CreateLoop(vs);
@@ -118,7 +118,7 @@ namespace Testbed.Tests
             {
                 var bd = new BodyDef
                 {
-                    Position = new Vector2(-3.0f, 8.0f),
+                    Position = new V2(-3.0f, 8.0f),
                     BodyType = BodyType.DynamicBody,
                     FixedRotation = true,
                     AllowSleep = false
@@ -137,7 +137,7 @@ namespace Testbed.Tests
             {
                 var bd = new BodyDef
                 {
-                    Position = new Vector2(-5.0f, 5.0f),
+                    Position = new V2(-5.0f, 5.0f),
                     BodyType = BodyType.DynamicBody,
                     FixedRotation = true,
                     AllowSleep = false
@@ -156,7 +156,7 @@ namespace Testbed.Tests
             {
                 var bd = new BodyDef
                 {
-                    Position = new Vector2(-5.0f, 8.0f),
+                    Position = new V2(-5.0f, 8.0f),
                     BodyType = BodyType.DynamicBody,
                     FixedRotation = true,
                     AllowSleep = false
@@ -165,8 +165,8 @@ namespace Testbed.Tests
                 var body = World.CreateBody(bd);
 
                 var angle = 0.0f;
-                const float delta = Settings.Pi / 3.0f;
-                var vertices = new Vector2[6];
+                float delta = Settings.Pi / 3.0f;
+                var vertices = new V2[6];
                 for (var i = 0; i < 6; ++i)
                 {
                     vertices[i].Set(0.5f * (float)Math.Cos(angle), 0.5f * (float)Math.Sin(angle));
@@ -184,7 +184,7 @@ namespace Testbed.Tests
             {
                 var bd = new BodyDef
                 {
-                    Position = new Vector2(3.0f, 5.0f),
+                    Position = new V2(3.0f, 5.0f),
                     BodyType = BodyType.DynamicBody,
                     FixedRotation = true,
                     AllowSleep = false
@@ -202,7 +202,7 @@ namespace Testbed.Tests
             {
                 var bd = new BodyDef
                 {
-                    Position = new Vector2(-7.0f, 6.0f),
+                    Position = new V2(-7.0f, 6.0f),
                     BodyType = BodyType.DynamicBody,
                     AllowSleep = false
                 };

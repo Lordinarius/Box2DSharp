@@ -24,7 +24,7 @@ namespace Testbed.Tests
                 ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
 
                 var fd = new FixtureDef();
                 fd.Shape = shape;
@@ -49,9 +49,9 @@ namespace Testbed.Tests
 
                 var w = 100.0f;
                 body.SetAngularVelocity(w);
-                body.SetLinearVelocity(new Vector2(-8.0f * w, 0.0f));
+                body.SetLinearVelocity(new V2(-8.0f * w, 0.0f));
 
-                rjd.Initialize(ground, body, new Vector2(-10.0f, 12.0f));
+                rjd.Initialize(ground, body, new V2(-10.0f, 12.0f));
                 rjd.MotorSpeed = 1.0f * Settings.Pi;
                 rjd.MaxMotorTorque = 10000.0f;
                 rjd.EnableMotor = false;
@@ -82,7 +82,7 @@ namespace Testbed.Tests
                 m_ball.CreateFixture(fd);
 
                 var polygon_shape = new PolygonShape();
-                polygon_shape.SetAsBox(10.0f, 0.2f, new Vector2(-10.0f, 0.0f), 0.0f);
+                polygon_shape.SetAsBox(10.0f, 0.2f, new V2(-10.0f, 0.0f), 0.0f);
 
                 var polygon_bd = new BodyDef();
                 polygon_bd.Position.Set(20.0f, 10.0f);
@@ -92,7 +92,7 @@ namespace Testbed.Tests
                 polygon_body.CreateFixture(polygon_shape, 2.0f);
 
                 var rjd = new RevoluteJointDef();
-                rjd.Initialize(ground, polygon_body, new Vector2(20.0f, 10.0f));
+                rjd.Initialize(ground, polygon_body, new V2(20.0f, 10.0f));
                 rjd.LowerAngle = -0.25f * Settings.Pi;
                 rjd.UpperAngle = 0.0f * Settings.Pi;
                 rjd.EnableLimit = true;
@@ -106,7 +106,7 @@ namespace Testbed.Tests
                 var body = World.CreateBody(bodyDef);
 
                 var polyShape = new PolygonShape();
-                var verts = new Vector2[3];
+                var verts = new V2[3];
                 verts[0].Set(17.63f, 36.31f);
                 verts[1].Set(17.52f, 36.69f);
                 verts[2].Set(17.19f, 36.36f);

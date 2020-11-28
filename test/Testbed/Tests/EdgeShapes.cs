@@ -14,9 +14,9 @@ namespace Testbed.Tests
     {
         public Fixture Fixture;
 
-        public Vector2 Normal;
+        public V2 Normal;
 
-        public Vector2 Point;
+        public V2 Point;
 
         /// <inheritdoc />
         public F RayCastCallback(Fixture fixture, in V2 point, in V2 normal, F fraction)

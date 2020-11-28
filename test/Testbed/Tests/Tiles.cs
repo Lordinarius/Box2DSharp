@@ -40,7 +40,7 @@ namespace Testbed.Tests
 
                 var N = 200;
                 var M = 10;
-                var position = new Vector2();
+                var position = new V2();
                 position.Y = 0.0f;
                 for (var j = 0; j < M; ++j)
                 {
@@ -63,10 +63,10 @@ namespace Testbed.Tests
                 var shape = new PolygonShape();
                 shape.SetAsBox(a, a);
 
-                var x = new Vector2(-7.0f, 0.75f);
-                var y = new Vector2();
-                var deltaX = new Vector2(0.5625f, 1.25f);
-                var deltaY = new Vector2(1.125f, 0.0f);
+                var x = new V2(-7.0f, 0.75f);
+                var y = new V2();
+                var deltaX = new V2(0.5625f, 1.25f);
+                var deltaY = new V2(1.125f, 0.0f);
 
                 for (int i = 0; i < Count; ++i)
                 {

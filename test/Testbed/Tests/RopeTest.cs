@@ -22,9 +22,9 @@ namespace Testbed.Tests
 
         private int _iterations2;
 
-        private Vector2 _position1;
+        private V2 _position1;
 
-        private Vector2 _position2;
+        private V2 _position2;
 
         private float _speed;
 
@@ -32,8 +32,8 @@ namespace Testbed.Tests
         {
             const int N = 20;
             const float L = 0.5f;
-            var vertices = new Vector2[N];
-            var masses = new float[N];
+            var vertices = new V2[N];
+            var masses = new F[N];
 
             for (var i = 0; i < N; ++i)
             {
@@ -76,7 +76,7 @@ namespace Testbed.Tests
             {
                 Vertices = vertices,
                 Count = N,
-                Gravity = new Vector2(0.0f, -10.0f),
+                Gravity = new V2(0.0f, -10.0f),
                 Masses = masses,
                 Position = _position1,
                 Tuning = _tuning1
@@ -98,8 +98,8 @@ namespace Testbed.Tests
         /// <inheritdoc />
         protected override void OnRender()
         {
-            ImGui.SetNextWindowPos(new Vector2(10.0f, 100.0f));
-            ImGui.SetNextWindowSize(new Vector2(200.0f, 700.0f));
+            ImGui.SetNextWindowPos(new V2(10.0f, 100.0f));
+            ImGui.SetNextWindowSize(new V2(200.0f, 700.0f));
             ImGui.Begin("Tuning", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
             ImGui.Separator();

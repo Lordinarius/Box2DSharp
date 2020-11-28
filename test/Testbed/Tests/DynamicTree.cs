@@ -166,7 +166,7 @@ namespace Testbed.Tests
 
         // public void DrawAABB(AABB aabb, Color color)
         // {
-        //     var vs = new Vector2 [4];
+        //     var vs = new V2 [4];
         //     vs[0].Set(aabb.LowerBound.X, aabb.LowerBound.Y);
         //     vs[1].Set(aabb.UpperBound.X, aabb.LowerBound.Y);
         //     vs[2].Set(aabb.UpperBound.X, aabb.UpperBound.Y);

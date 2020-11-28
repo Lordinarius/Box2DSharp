@@ -29,11 +29,11 @@ namespace Testbed.Tests
 
                 var edge = new EdgeShape();
 
-                edge.SetTwoSided(new Vector2(-10.0f, 0.0f), new Vector2(10.0f, 0.0f));
+                edge.SetTwoSided(new V2(-10.0f, 0.0f), new V2(10.0f, 0.0f));
                 body.CreateFixture(edge, 0.0f);
 
                 var shape = new PolygonShape();
-                shape.SetAsBox(0.2f, 1.0f, new Vector2(0.5f, 1.0f), 0.0f);
+                shape.SetAsBox(0.2f, 1.0f, new V2(0.5f, 1.0f), 0.0f);
                 body.CreateFixture(shape, 0.0f);
             }
 
@@ -52,25 +52,25 @@ namespace Testbed.Tests
 
                 //m_x = RandomFloat(-1.0f, 1.0f);
                 _x = 0.20352793f;
-                bd.Position = new Vector2(_x, 10.0f);
+                bd.Position = new V2(_x, 10.0f);
                 bd.Bullet = true;
 
                 _bullet = World.CreateBody(bd);
                 _bullet.CreateFixture(box, 100.0f);
 
-                _bullet.SetLinearVelocity(new Vector2(0.0f, -50.0f));
+                _bullet.SetLinearVelocity(new V2(0.0f, -50.0f));
             }
         }
 
         private void Launch()
         {
-            _body.SetTransform(new Vector2(0.0f, 4.0f), 0.0f);
-            _body.SetLinearVelocity(Vector2.Zero);
+            _body.SetTransform(new V2(0.0f, 4.0f), 0.0f);
+            _body.SetLinearVelocity(V2.Zero);
             _body.SetAngularVelocity(0.0f);
 
             _x = RandomFloat(-1.0f, 1.0f);
-            _bullet.SetTransform(new Vector2(_x, 10.0f), 0.0f);
-            _bullet.SetLinearVelocity(new Vector2(0.0f, -50.0f));
+            _bullet.SetTransform(new V2(_x, 10.0f), 0.0f);
+            _bullet.SetLinearVelocity(new V2(0.0f, -50.0f));
             _bullet.SetAngularVelocity(0.0f);
         }
 

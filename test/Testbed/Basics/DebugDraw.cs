@@ -58,7 +58,7 @@ namespace Testbed.Basics
             }
 
             ImGuiNET.ImGui.Begin("Overlay", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar);
-            ImGuiNET.ImGui.SetCursorPos(new Vector2(x, y));
+            ImGuiNET.ImGui.SetCursorPos(new V2(x, y));
             foreach (var s in strings)
             {
                 ImGuiNET.ImGui.TextColored(_textColor, s);
@@ -75,7 +75,7 @@ namespace Testbed.Basics
             }
 
             ImGuiNET.ImGui.Begin("Overlay", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar);
-            ImGuiNET.ImGui.SetCursorPos(new Vector2(x, y));
+            ImGuiNET.ImGui.SetCursorPos(new V2(x, y));
             foreach (var s in strings)
             {
                 ImGuiNET.ImGui.TextColored(_textColor, s);
@@ -141,12 +141,12 @@ namespace Testbed.Basics
             float Increment = 2.0f * Settings.Pi / Segments;
             var sinInc = (float)Math.Sin(Increment);
             var cosInc = (float)Math.Cos(Increment);
-            var r1 = new Vector2(1.0f, 0.0f);
+            var r1 = new V2(1.0f, 0.0f);
             var v1 = center + radius * r1;
             for (var i = 0; i < Segments; ++i)
             {
                 // Perform rotation to avoid additional trigonometry.
-                var r2 = new Vector2
+                var r2 = new V2
                 {
                     X = cosInc * r1.X - sinInc * r1.Y,
                     Y = sinInc * r1.X + cosInc * r1.Y
@@ -168,13 +168,13 @@ namespace Testbed.Basics
             var sinInc = (float)Math.Sin(Increment);
             var cosInc = (float)Math.Cos(Increment);
             var v0 = center;
-            var r1 = new Vector2(cosInc, sinInc);
+            var r1 = new V2(cosInc, sinInc);
             var v1 = center + radius * r1;
             var fillColor = new Color4(color4.R * 0.5f, color4.G * 0.5f, color4.B * 0.5f, color4.A * 0.5f);
             for (var i = 0; i < Segments; ++i)
             {
                 // Perform rotation to avoid additional trigonometry.
-                var r2 = new Vector2
+                var r2 = new V2
                 {
                     X = cosInc * r1.X - sinInc * r1.Y,
                     Y = sinInc * r1.X + cosInc * r1.Y
@@ -191,7 +191,7 @@ namespace Testbed.Basics
             v1 = center + radius * r1;
             for (var i = 0; i < Segments; ++i)
             {
-                var r2 = new Vector2
+                var r2 = new V2
                 {
                     X = cosInc * r1.X - sinInc * r1.Y,
                     Y = sinInc * r1.X + cosInc * r1.Y
@@ -242,9 +242,9 @@ namespace Testbed.Basics
         {
             var color4 = c.ToColor4();
             var p1 = aabb.LowerBound;
-            var p2 = new Vector2(aabb.UpperBound.X, aabb.LowerBound.Y);
+            var p2 = new V2(aabb.UpperBound.X, aabb.LowerBound.Y);
             var p3 = aabb.UpperBound;
-            var p4 = new Vector2(aabb.LowerBound.X, aabb.UpperBound.Y);
+            var p4 = new V2(aabb.LowerBound.X, aabb.UpperBound.Y);
 
             _lines.Vertex(p1, color4);
             _lines.Vertex(p2, color4);

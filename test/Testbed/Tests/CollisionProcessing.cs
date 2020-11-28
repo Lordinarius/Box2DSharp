@@ -16,7 +16,7 @@ namespace Testbed.Tests
             // Ground body
             {
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-50.0f, 0.0f), new Vector2(50.0f, 0.0f));
+                shape.SetTwoSided(new V2(-50.0f, 0.0f), new V2(50.0f, 0.0f));
 
                 var sd = new FixtureDef();
                 sd.Shape = shape;
@@ -31,7 +31,7 @@ namespace Testbed.Tests
             float yLo = 2.0f, yHi = 35.0f;
 
             // Small triangle
-            var vertices = new Vector2[3];
+            var vertices = new V2[3];
             vertices[0].Set(-1.0f, 0.0f);
             vertices[1].Set(1.0f, 0.0f);
             vertices[2].Set(0.0f, 2.0f);

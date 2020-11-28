@@ -11,7 +11,7 @@ namespace Testbed.Tests
     {
         public AddPair()
         {
-            World.Gravity = new Vector2(0.0f, 0.0f);
+            World.Gravity = new V2(0.0f, 0.0f);
             {
                 var shape = new CircleShape();
                 shape.Position.SetZero();
@@ -26,7 +26,7 @@ namespace Testbed.Tests
                 {
                     var bd = new BodyDef();
                     bd.BodyType = BodyType.DynamicBody;
-                    bd.Position = new Vector2(RandomFloat(minX, maxX), RandomFloat(minY, maxY));
+                    bd.Position = new V2(RandomFloat(minX, maxX), RandomFloat(minY, maxY));
                     var body = World.CreateBody(bd);
                     body.CreateFixture(shape, 0.01f);
                 }
@@ -41,7 +41,7 @@ namespace Testbed.Tests
                 bd.Bullet = true;
                 var body = World.CreateBody(bd);
                 body.CreateFixture(shape, 1.0f);
-                body.SetLinearVelocity(new Vector2(10.0f, 0.0f));
+                body.SetLinearVelocity(new V2(10.0f, 0.0f));
             }
         }
     }

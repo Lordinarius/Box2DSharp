@@ -27,19 +27,19 @@ namespace Testbed.Tests
                 var shape = new EdgeShape();
 
                 // Floor
-                shape.SetTwoSided(new Vector2(-10.0f, 0.0f), new Vector2(10.0f, 0.0f));
+                shape.SetTwoSided(new V2(-10.0f, 0.0f), new V2(10.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
 
                 // Left wall
-                shape.SetTwoSided(new Vector2(-10.0f, 0.0f), new Vector2(-10.0f, 20.0f));
+                shape.SetTwoSided(new V2(-10.0f, 0.0f), new V2(-10.0f, 20.0f));
                 ground.CreateFixture(shape, 0.0f);
 
                 // Right wall
-                shape.SetTwoSided(new Vector2(10.0f, 0.0f), new Vector2(10.0f, 20.0f));
+                shape.SetTwoSided(new V2(10.0f, 0.0f), new V2(10.0f, 20.0f));
                 ground.CreateFixture(shape, 0.0f);
 
                 // Roof
-                shape.SetTwoSided(new Vector2(-10.0f, 20.0f), new Vector2(10.0f, 20.0f));
+                shape.SetTwoSided(new V2(-10.0f, 20.0f), new V2(10.0f, 20.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
             {
@@ -66,7 +66,7 @@ namespace Testbed.Tests
                     }
                 }
             }
-            World.Gravity = new Vector2(0.0f, 0.0f);
+            World.Gravity = new V2(0.0f, 0.0f);
         }
 
         private void CreateCircle()
@@ -81,7 +81,7 @@ namespace Testbed.Tests
             fd.Density = 1.0f;
             fd.Friction = 0.0f;
 
-            var p = new Vector2(RandomFloat(), 3.0f + RandomFloat());
+            var p = new V2(RandomFloat(), 3.0f + RandomFloat());
             var bd = new BodyDef();
             bd.BodyType = BodyType.DynamicBody;
             bd.Position = p;

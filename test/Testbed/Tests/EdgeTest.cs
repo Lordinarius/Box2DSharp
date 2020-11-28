@@ -12,9 +12,9 @@ namespace Testbed.Tests
     [TestCase("Geometry", "Edge Test")]
     public class EdgeTest : Test
     {
-        public readonly Vector2 Offset1;
+        public readonly V2 Offset1;
 
-        public readonly Vector2 Offset2;
+        public readonly V2 Offset2;
 
         public Body Body1;
 
@@ -24,18 +24,18 @@ namespace Testbed.Tests
 
         public EdgeTest()
         {
-            var vertices = new Vector2[]
+            var vertices = new V2[]
             {
-                new Vector2(10.0f, -4.0f),
-                new Vector2(10.0f, 0.0f),
-                new Vector2(6.0f, 0.0f),
-                new Vector2(4.0f, 2.0f),
-                new Vector2(2.0f, 0.0f),
-                new Vector2(-2.0f, 0.0f),
-                new Vector2(-6.0f, 0.0f),
-                new Vector2(-8.0f, -3.0f),
-                new Vector2(-10.0f, 0.0f),
-                new Vector2(-10.0f, -4.0f)
+                new V2(10.0f, -4.0f),
+                new V2(10.0f, 0.0f),
+                new V2(6.0f, 0.0f),
+                new V2(4.0f, 2.0f),
+                new V2(2.0f, 0.0f),
+                new V2(-2.0f, 0.0f),
+                new V2(-6.0f, 0.0f),
+                new V2(-8.0f, -3.0f),
+                new V2(-10.0f, 0.0f),
+                new V2(-10.0f, -4.0f)
             };
 
             Offset1.Set(0.0f, 8.0f);
@@ -160,7 +160,7 @@ namespace Testbed.Tests
             {
                 BodyDef bd = new BodyDef();
                 bd.BodyType = BodyType.DynamicBody;
-                bd.Position = new Vector2(8.0f, 2.6f) + Offset1;
+                bd.Position = new V2(8.0f, 2.6f) + Offset1;
                 bd.AllowSleep = false;
                 Body1 = World.CreateBody(bd);
 
@@ -173,7 +173,7 @@ namespace Testbed.Tests
             {
                 BodyDef bd = new BodyDef();
                 bd.BodyType = BodyType.DynamicBody;
-                bd.Position = new Vector2(8.0f, 2.6f) + Offset2;
+                bd.Position = new V2(8.0f, 2.6f) + Offset2;
                 bd.AllowSleep = false;
                 Body2 = World.CreateBody(bd);
 
@@ -201,7 +201,7 @@ namespace Testbed.Tests
             {
                 BodyDef bd = new BodyDef();
                 bd.BodyType = BodyType.DynamicBody;
-                bd.Position = new Vector2(-0.5f, 0.6f) + Offset1;
+                bd.Position = new V2(-0.5f, 0.6f) + Offset1;
                 bd.AllowSleep = false;
                 Body1 = World.CreateBody(bd);
 
@@ -214,7 +214,7 @@ namespace Testbed.Tests
             {
                 BodyDef bd = new BodyDef();
                 bd.BodyType = BodyType.DynamicBody;
-                bd.Position = new Vector2(-0.5f, 0.6f) + Offset2;
+                bd.Position = new V2(-0.5f, 0.6f) + Offset2;
                 bd.AllowSleep = false;
                 Body2 = World.CreateBody(bd);
 
@@ -228,8 +228,8 @@ namespace Testbed.Tests
         /// <inheritdoc />
         protected override void OnRender()
         {
-            ImGui.SetNextWindowPos(new Vector2(10.0f, 100.0f));
-            ImGui.SetNextWindowSize(new Vector2(200.0f, 100.0f));
+            ImGui.SetNextWindowPos(new V2(10.0f, 100.0f));
+            ImGui.SetNextWindowSize(new V2(200.0f, 100.0f));
             ImGui.Begin("Custom Controls", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
             if (ImGui.RadioButton("Boxes", Boxes == true))
@@ -252,14 +252,14 @@ namespace Testbed.Tests
         {
             if (key.Key == Key.A)
             {
-                Body1.ApplyForceToCenter(new Vector2(-10.0f, 0.0f), true);
-                Body2.ApplyForceToCenter(new Vector2(-10.0f, 0.0f), true);
+                Body1.ApplyForceToCenter(new V2(-10.0f, 0.0f), true);
+                Body2.ApplyForceToCenter(new V2(-10.0f, 0.0f), true);
             }
 
             if (key.Key == Key.D)
             {
-                Body1.ApplyForceToCenter(new Vector2(10.0f, 0.0f), true);
-                Body2.ApplyForceToCenter(new Vector2(10.0f, 0.0f), true);
+                Body1.ApplyForceToCenter(new V2(10.0f, 0.0f), true);
+                Body2.ApplyForceToCenter(new V2(10.0f, 0.0f), true);
             }
         }
     }

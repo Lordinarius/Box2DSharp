@@ -51,10 +51,10 @@ namespace Testbed.Tests
                 body2.CreateFixture(shape, 5.0f);
 
                 var pulleyDef = new PulleyJointDef();
-                var anchor1 = new Vector2(-10.0f, y + b);
-                var anchor2 = new Vector2(10.0f, y + b);
-                var groundAnchor1 = new Vector2(-10.0f, y + b + L);
-                var groundAnchor2 = new Vector2(10.0f, y + b + L);
+                var anchor1 = new V2(-10.0f, y + b);
+                var anchor2 = new V2(10.0f, y + b);
+                var groundAnchor1 = new V2(-10.0f, y + b + L);
+                var groundAnchor2 = new V2(10.0f, y + b + L);
                 pulleyDef.Initialize(
                     body1,
                     body2,

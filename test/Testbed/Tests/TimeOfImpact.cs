@@ -59,7 +59,7 @@ namespace Testbed.Tests
 
             DrawString($"max toi iters = {ToiMaxIters}, max root iters = {ToiMaxRootIters}");
 
-            var vertices = new Vector2[Settings.MaxPolygonVertices];
+            var vertices = new V2[Settings.MaxPolygonVertices];
 
             sweepA.GetTransform(out var transformA, 0.0f);
 

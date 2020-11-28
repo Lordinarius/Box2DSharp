@@ -21,7 +21,7 @@ namespace Testbed.Tests
 
         private float _motorSpeed;
 
-        private Vector2 _offset;
+        private V2 _offset;
 
         private Body _wheel;
 
@@ -30,7 +30,7 @@ namespace Testbed.Tests
             _offset.Set(0.0f, 8.0f);
             _motorSpeed = 2.0f;
             _motorOn = true;
-            var pivot = new Vector2(0.0f, 0.8f);
+            var pivot = new V2(0.0f, 0.8f);
 
             // Ground
             {
@@ -38,13 +38,13 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-50.0f, 0.0f), new Vector2(50.0f, 0.0f));
+                shape.SetTwoSided(new V2(-50.0f, 0.0f), new V2(50.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
 
-                shape.SetTwoSided(new Vector2(-50.0f, 0.0f), new Vector2(-50.0f, 10.0f));
+                shape.SetTwoSided(new V2(-50.0f, 0.0f), new V2(-50.0f, 10.0f));
                 ground.CreateFixture(shape, 0.0f);
 
-                shape.SetTwoSided(new Vector2(50.0f, 0.0f), new Vector2(50.0f, 10.0f));
+                shape.SetTwoSided(new V2(50.0f, 0.0f), new V2(50.0f, 10.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -102,9 +102,9 @@ namespace Testbed.Tests
                 _motorJoint = (RevoluteJoint)World.CreateJoint(jd);
             }
 
-            Vector2 wheelAnchor;
+            V2 wheelAnchor;
 
-            wheelAnchor = pivot + new Vector2(0.0f, -0.8f);
+            wheelAnchor = pivot + new V2(0.0f, -0.8f);
 
             CreateLeg(-1.0f, wheelAnchor);
             CreateLeg(1.0f, wheelAnchor);
@@ -118,14 +118,14 @@ namespace Testbed.Tests
             CreateLeg(1.0f, wheelAnchor);
         }
 
-        private void CreateLeg(float s, Vector2 wheelAnchor)
+        private void CreateLeg(float s, V2 wheelAnchor)
         {
-            var p1 = new Vector2(5.4f * s, -6.1f);
-            var p2 = new Vector2(7.2f * s, -1.2f);
-            var p3 = new Vector2(4.3f * s, -1.9f);
-            var p4 = new Vector2(3.1f * s, 0.8f);
-            var p5 = new Vector2(6.0f * s, 1.5f);
-            var p6 = new Vector2(2.5f * s, 3.7f);
+            var p1 = new V2(5.4f * s, -6.1f);
+            var p2 = new V2(7.2f * s, -1.2f);
+            var p3 = new V2(4.3f * s, -1.9f);
+            var p4 = new V2(3.1f * s, 0.8f);
+            var p5 = new V2(6.0f * s, 1.5f);
+            var p6 = new V2(2.5f * s, 3.7f);
 
             var fd1 = new FixtureDef {Filter = {GroupIndex = -1}, Density = 1.0f};
             var fd2 = new FixtureDef {Filter = {GroupIndex = -1}, Density = 1.0f};
@@ -135,28 +135,28 @@ namespace Testbed.Tests
 
             if (s > 0.0f)
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
 
                 vertices[0] = p1;
                 vertices[1] = p2;
                 vertices[2] = p3;
                 poly1.Set(vertices);
 
-                vertices[0] = Vector2.Zero;
+                vertices[0] = V2.Zero;
                 vertices[1] = p5 - p4;
                 vertices[2] = p6 - p4;
                 poly2.Set(vertices);
             }
             else
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
 
                 vertices[0] = p1;
                 vertices[1] = p3;
                 vertices[2] = p2;
                 poly1.Set(vertices);
 
-                vertices[0] = Vector2.Zero;
+                vertices[0] = V2.Zero;
                 vertices[1] = p6 - p4;
                 vertices[2] = p5 - p4;
                 poly2.Set(vertices);

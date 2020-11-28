@@ -35,7 +35,7 @@ namespace Testbed.Basics
 
         public MouseJoint MouseJoint;
 
-        public Vector2 MouseWorld;
+        public V2 MouseWorld;
 
         public Profile TotalProfile;
 
@@ -48,7 +48,7 @@ namespace Testbed.Basics
         protected Test()
         {
             Regex.Replace(GetType().Name, @"(\B[A-Z])", " $1");
-            World = new World(new Vector2(0, -10));
+            World = new World(new V2(0, -10));
             World.SetContactListener(this);
             World.DestructionListener = this;
             World.Drawer = Drawer;
@@ -324,9 +324,9 @@ namespace Testbed.Basics
         {
             public Fixture QueryFixture;
 
-            public Vector2 Point;
+            public V2 Point;
 
-            public void Reset(in Vector2 point)
+            public void Reset(in V2 point)
             {
                 QueryFixture = null;
                 Point = point;
@@ -355,7 +355,7 @@ namespace Testbed.Basics
 
         private readonly MouseQueryCallback _callback = new MouseQueryCallback();
 
-        public void MouseDown(Vector2 p)
+        public void MouseDown(V2 p)
         {
             if (MouseJoint != null)
             {
@@ -366,7 +366,7 @@ namespace Testbed.Basics
 
             // Make a small box.
             var aabb = new AABB();
-            var d = new Vector2(0.001f, 0.001f);
+            var d = new V2(0.001f, 0.001f);
             aabb.LowerBound = p - d;
             aabb.UpperBound = p + d;
 
@@ -386,7 +386,7 @@ namespace Testbed.Basics
             }
         }
 
-        public void MouseUp(Vector2 p)
+        public void MouseUp(V2 p)
         {
             MouseWorld = p;
             if (MouseJoint != null)
@@ -401,13 +401,13 @@ namespace Testbed.Basics
             }
         }
 
-        public void MouseMove(Vector2 p)
+        public void MouseMove(V2 p)
         {
             MouseWorld = p;
             MouseJoint?.SetTarget(p);
         }
 
-        public void ShiftMouseDown(Vector2 p)
+        public void ShiftMouseDown(V2 p)
         {
             MouseWorld = p;
             if (MouseJoint != null)
@@ -439,7 +439,7 @@ namespace Testbed.Basics
             /* Do nothing */
         }
 
-        public void ShiftOrigin(Vector2 origin)
+        public void ShiftOrigin(V2 origin)
         {
             World.ShiftOrigin(origin);
         }
@@ -471,9 +471,9 @@ namespace Testbed.Basics
 
             public Fixture FixtureB;
 
-            public Vector2 Normal;
+            public V2 Normal;
 
-            public Vector2 Position;
+            public V2 Position;
 
             public PointState State;
 
@@ -486,19 +486,19 @@ namespace Testbed.Basics
 
         #region Bomb
 
-        protected Vector2 BombSpawnPoint;
+        protected V2 BombSpawnPoint;
 
         protected bool BombSpawning;
 
         protected Body Bomb;
 
-        public void SpawnBomb(Vector2 worldPt)
+        public void SpawnBomb(V2 worldPt)
         {
             BombSpawnPoint = worldPt;
             BombSpawning = true;
         }
 
-        public void CompleteBombSpawn(Vector2 p)
+        public void CompleteBombSpawn(V2 p)
         {
             if (BombSpawning == false)
             {
@@ -514,12 +514,12 @@ namespace Testbed.Basics
 
         public void LaunchBomb()
         {
-            var p = new Vector2(Random.Next(-15, 15), 30.0f);
+            var p = new V2(Random.Next(-15, 15), 30.0f);
             var v = -5.0f * p;
             LaunchBomb(p, v);
         }
 
-        public void LaunchBomb(Vector2 position, Vector2 velocity)
+        public void LaunchBomb(V2 position, V2 velocity)
         {
             if (Bomb != default)
             {

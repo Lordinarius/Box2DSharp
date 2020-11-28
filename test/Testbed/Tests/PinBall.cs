@@ -28,7 +28,7 @@ namespace Testbed.Tests
                 var bd = new BodyDef();
                 ground = World.CreateBody(bd);
 
-                var vs = new Vector2[5];
+                var vs = new V2[5];
                 vs[0].Set(-8.0f, 6.0f);
                 vs[1].Set(-8.0f, 20.0f);
                 vs[2].Set(8.0f, 20.0f);
@@ -45,8 +45,8 @@ namespace Testbed.Tests
 
             // Flippers
             {
-                var p1 = new Vector2(-2.0f, 0.0f);
-                var p2 = new Vector2(2.0f, 0.0f);
+                var p1 = new V2(-2.0f, 0.0f);
+                var p2 = new V2(2.0f, 0.0f);
 
                 var bd = new BodyDef();
                 bd.BodyType = BodyType.DynamicBody;

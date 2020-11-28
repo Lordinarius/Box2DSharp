@@ -10,9 +10,9 @@ namespace Testbed.Tests
     {
         private const int VertexCount = 8;
 
-        private readonly Vector2[] _vAs = new Vector2[Settings.MaxPolygonVertices];
+        private readonly V2[] _vAs = new V2[Settings.MaxPolygonVertices];
 
-        private readonly Vector2[] _vBs = new Vector2[Settings.MaxPolygonVertices];
+        private readonly V2[] _vBs = new V2[Settings.MaxPolygonVertices];
 
         private int _countA;
 
@@ -40,7 +40,7 @@ namespace Testbed.Tests
 
         protected override void OnRender()
         {
-            var transformA = new Transform {Position = new Vector2(0.0f, 0.25f)};
+            var transformA = new Transform {Position = new V2(0.0f, 0.25f)};
             transformA.Rotation.SetIdentity();
 
             var transformB = new Transform();
@@ -73,7 +73,7 @@ namespace Testbed.Tests
             DrawString(
                 $"hit = {hit}, iters = {output.Iterations}, lambda = {output.Lambda}, distance = {distanceOutput.Distance}");
 
-            var vertices = new Vector2[Settings.MaxPolygonVertices];
+            var vertices = new V2[Settings.MaxPolygonVertices];
 
             for (var i = 0; i < _countA; ++i)
             {

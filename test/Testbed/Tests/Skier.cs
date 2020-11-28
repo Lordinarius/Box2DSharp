@@ -47,19 +47,19 @@ namespace Testbed.Tests
                 const float SurfaceFriction = 0.2f;
 
                 // Convert to radians
-                const float Slope1Incline = -Angle1Degrees * Settings.Pi / 180.0f;
-                const float Slope2Incline = Slope1Incline - Angle2Degrees * Settings.Pi / 180.0f;
+                float Slope1Incline = -Angle1Degrees * Settings.Pi / 180.0f;
+                float Slope2Incline = Slope1Incline - Angle2Degrees * Settings.Pi / 180.0f;
 
                 //
 
                 this.PlatformWidth = PlatformWidth;
 
                 // Horizontal platform
-                var v1 = new Vector2(-PlatformWidth, 0.0f);
-                var v2 = new Vector2(0.0f, 0.0f);
-                var v3 = new Vector2((float)(SlopeLength * Math.Cos(Slope1Incline)), (float)(-SlopeLength * Math.Sin(Slope1Incline)));
-                var v4 = new Vector2((float)(v3.X + SlopeLength * Math.Cos(Slope2Incline)), (float)(v3.Y - SlopeLength * Math.Sin(Slope2Incline)));
-                var v5 = new Vector2(v4.X, v4.Y - 1.0f);
+                var v1 = new V2(-PlatformWidth, 0.0f);
+                var v2 = new V2(0.0f, 0.0f);
+                var v3 = new V2((float)(SlopeLength * Math.Cos(Slope1Incline)), (float)(-SlopeLength * Math.Sin(Slope1Incline)));
+                var v4 = new V2((float)(v3.X + SlopeLength * Math.Cos(Slope2Incline)), (float)(v3.Y - SlopeLength * Math.Sin(Slope2Incline)));
+                var v5 = new V2(v4.X, v4.Y - 1.0f);
 
                 var vertices = new[] {v5, v4, v3, v2, v1};
 
@@ -95,7 +95,7 @@ namespace Testbed.Tests
                 var skier = World.CreateBody(bd);
 
                 PolygonShape ski = new PolygonShape();
-                var verts = new Vector2[4];
+                var verts = new V2[4];
                 verts[0].Set(-SkiLength / 2 - SkiThickness, -BodyHeight / 2);
                 verts[1].Set(-SkiLength / 2, -BodyHeight / 2 - SkiThickness);
                 verts[2].Set(SkiLength / 2, -BodyHeight / 2 - SkiThickness);
@@ -111,12 +111,12 @@ namespace Testbed.Tests
                 fd.Shape = ski;
                 skier.CreateFixture(fd);
 
-                skier.SetLinearVelocity(new Vector2(0.5f, 0.0f));
+                skier.SetLinearVelocity(new V2(0.5f, 0.0f));
 
                 SkierBody = skier;
             }
 
-            Global.Camera.Center = new Vector2(PlatformWidth / 2.0f, 0.0f);
+            Global.Camera.Center = new V2(PlatformWidth / 2.0f, 0.0f);
             Global.Camera.Zoom = 0.4f;
             FixedCamera = true;
         }
@@ -130,7 +130,7 @@ namespace Testbed.Tests
                 FixedCamera = !FixedCamera;
                 if (FixedCamera)
                 {
-                    Global.Camera.Center = new Vector2(PlatformWidth / 2.0f, 0.0f);
+                    Global.Camera.Center = new V2(PlatformWidth / 2.0f, 0.0f);
                 }
 
                 break;

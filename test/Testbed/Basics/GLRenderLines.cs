@@ -46,7 +46,7 @@ namespace Testbed.Basics
             // Vertex buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vboIds[0]);
             GL.VertexAttribPointer(_vertexAttribute, 2, VertexAttribPointerType.Float, false, 0, 0);
-            GL.BufferData(BufferTarget.ArrayBuffer, SizeCache<Vector2>.Size * MaxVertices, _vertices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, SizeCache<V2>.Size * MaxVertices, _vertices, BufferUsageHint.DynamicDraw);
             Render.CheckGLError();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vboIds[1]);
@@ -78,7 +78,7 @@ namespace Testbed.Basics
             }
         }
 
-        public void Vertex(Vector2 v, Color4 c)
+        public void Vertex(V2 v, Color4 c)
         {
             if (_count == MaxVertices)
             {
@@ -125,7 +125,7 @@ namespace Testbed.Basics
 
         private const int MaxVertices = 512;
 
-        private readonly Vector2[] _vertices = new Vector2[MaxVertices];
+        private readonly V2[] _vertices = new V2[MaxVertices];
 
         private readonly Color4[] _colors = new Color4[MaxVertices];
 

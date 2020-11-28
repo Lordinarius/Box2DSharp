@@ -29,11 +29,11 @@ namespace Testbed.Tests
 
                 var edge = new EdgeShape();
 
-                edge.SetTwoSided(new Vector2(-10.0f, 0.0f), new Vector2(10.0f, 0.0f));
+                edge.SetTwoSided(new V2(-10.0f, 0.0f), new V2(10.0f, 0.0f));
                 body.CreateFixture(edge, 0.0f);
 
                 var shape = new PolygonShape();
-                shape.SetAsBox(0.2f, 1.0f, new Vector2(0.5f, 1.0f), 0.0f);
+                shape.SetAsBox(0.2f, 1.0f, new V2(0.5f, 1.0f), 0.0f);
                 body.CreateFixture(shape, 0.0f);
             }
 
@@ -53,7 +53,7 @@ namespace Testbed.Tests
                 _angularVelocity = RandomFloat(-50.0f, 50.0f);
 
                 //m_angularVelocity = 46.661274f;
-                _body.SetLinearVelocity(new Vector2(0.0f, -100.0f));
+                _body.SetLinearVelocity(new V2(0.0f, -100.0f));
                 _body.SetAngularVelocity(_angularVelocity);
             }
         }
@@ -73,11 +73,11 @@ namespace Testbed.Tests
             _toiProfile.ToiTime = 0.0f;
             _toiProfile.ToiMaxTime = 0.0f;
 
-            _body.SetTransform(new Vector2(0.0f, 20.0f), 0.0f);
+            _body.SetTransform(new V2(0.0f, 20.0f), 0.0f);
 
             _angularVelocity = RandomFloat(-50.0f, 50.0f);
 
-            _body.SetLinearVelocity(new Vector2(0.0f, -100.0f));
+            _body.SetLinearVelocity(new V2(0.0f, -100.0f));
 
             _body.SetAngularVelocity(_angularVelocity);
         }

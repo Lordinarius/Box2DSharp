@@ -28,10 +28,10 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
 
-                shape.SetTwoSided(new Vector2(20.0f, 0.0f), new Vector2(20.0f, 20.0f));
+                shape.SetTwoSided(new V2(20.0f, 0.0f), new V2(20.0f, 20.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -63,7 +63,7 @@ namespace Testbed.Tests
 
                     //var x = RandomFloat(-0.02f, 0.02f);
                     //var x = i % 2 == 0 ? -0.01f : 0.01f;
-                    bd.Position = new Vector2(xs[j] + x, 0.55f + 1.1f * i);
+                    bd.Position = new V2(xs[j] + x, 0.55f + 1.1f * i);
                     var body = World.CreateBody(bd);
 
                     _bodies[n] = body;
@@ -99,13 +99,13 @@ namespace Testbed.Tests
                     var bd = new BodyDef
                     {
                         BodyType = BodyType.DynamicBody, Bullet = true,
-                        Position = new Vector2(-31.0f, 5.0f)
+                        Position = new V2(-31.0f, 5.0f)
                     };
 
                     _bullet = World.CreateBody(bd);
                     _bullet.CreateFixture(fd);
 
-                    _bullet.SetLinearVelocity(new Vector2(400.0f, 0.0f));
+                    _bullet.SetLinearVelocity(new V2(400.0f, 0.0f));
                 }
             }
         }

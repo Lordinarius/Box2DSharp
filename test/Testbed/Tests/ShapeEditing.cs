@@ -26,7 +26,7 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -37,7 +37,7 @@ namespace Testbed.Tests
                 _body = World.CreateBody(bd);
 
                 var shape = new PolygonShape();
-                shape.SetAsBox(4.0f, 4.0f, new Vector2(0.0f, 0.0f), 0.0f);
+                shape.SetAsBox(4.0f, 4.0f, new V2(0.0f, 0.0f), 0.0f);
                 _fixture1 = _body.CreateFixture(shape, 10.0f);
             }
             _fixture2 = null;

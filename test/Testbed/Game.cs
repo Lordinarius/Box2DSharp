@@ -262,7 +262,7 @@ namespace Testbed
             case Key.Left:
                 if (e.Control)
                 {
-                    Test.ShiftOrigin(new System.Numerics.Vector2(2.0f, 0.0f));
+                    Test.ShiftOrigin(new V2(2.0f, 0.0f));
                 }
                 else
                 {
@@ -273,7 +273,7 @@ namespace Testbed
             case Key.Right:
                 if (e.Control)
                 {
-                    var newOrigin = new System.Numerics.Vector2(-2.0f, 0.0f);
+                    var newOrigin = new V2(-2.0f, 0.0f);
                     Test.ShiftOrigin(newOrigin);
                 }
                 else
@@ -285,7 +285,7 @@ namespace Testbed
             case Key.Up:
                 if (e.Control)
                 {
-                    var newOrigin = new System.Numerics.Vector2(0.0f, -2.0f);
+                    var newOrigin = new V2(0.0f, -2.0f);
                     Test.ShiftOrigin(newOrigin);
                 }
                 else
@@ -297,7 +297,7 @@ namespace Testbed
             case Key.Down:
                 if (e.Control)
                 {
-                    var newOrigin = new System.Numerics.Vector2(0.0f, 2.0f);
+                    var newOrigin = new V2(0.0f, 2.0f);
                     Test.ShiftOrigin(newOrigin);
                 }
                 else
@@ -378,7 +378,7 @@ namespace Testbed
         {
             if (e.Button == MouseButton.Left)
             {
-                var pw = Global.Camera.ConvertScreenToWorld(new System.Numerics.Vector2(MousePosition.X, MousePosition.Y));
+                var pw = Global.Camera.ConvertScreenToWorld(new V2(MousePosition.X, MousePosition.Y));
 
                 if (e.Modifiers == KeyModifiers.Shift)
                 {
@@ -398,7 +398,7 @@ namespace Testbed
         {
             if (e.Button == MouseButton.Left)
             {
-                var pw = Global.Camera.ConvertScreenToWorld(new System.Numerics.Vector2(MousePosition.X, MousePosition.Y));
+                var pw = Global.Camera.ConvertScreenToWorld(new V2(MousePosition.X, MousePosition.Y));
                 Test.MouseUp(pw);
             }
 
@@ -410,7 +410,7 @@ namespace Testbed
         {
             if (IsMouseButtonDown(MouseButton.Left))
             {
-                var pw = Global.Camera.ConvertScreenToWorld(new System.Numerics.Vector2(MousePosition.X, MousePosition.Y));
+                var pw = Global.Camera.ConvertScreenToWorld(new V2(MousePosition.X, MousePosition.Y));
                 Test.MouseMove(pw);
             }
 
@@ -486,12 +486,12 @@ namespace Testbed
 
         #region View Control
 
-        public Vector2 Scroll;
+        public V2 Scroll;
 
         /// <inheritdoc />
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            Scroll = e.Offset;
+            Scroll = new V2(e.Offset.X, e.Offset.Y);
             ScrollCallback(e.OffsetX, e.OffsetY);
         }
 

@@ -27,7 +27,7 @@ namespace Testbed.Tests
                 ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -54,7 +54,7 @@ namespace Testbed.Tests
                 var jd = new WheelJointDef();
 
                 // Horizontal
-                jd.Initialize(ground, body, bd.Position, new Vector2(0.0f, 1.0f));
+                jd.Initialize(ground, body, bd.Position, new V2(0.0f, 1.0f));
 
                 jd.MotorSpeed = _motorSpeed;
                 jd.MaxMotorTorque = 10000.0f;
@@ -75,8 +75,8 @@ namespace Testbed.Tests
             var torque = _joint.GetMotorTorque(TestSettings.Hertz);
             DrawString($"Motor Torque = {torque}");
 
-            ImGui.SetNextWindowPos(new Vector2(10.0f, 100.0f));
-            ImGui.SetNextWindowSize(new Vector2(200.0f, 100.0f));
+            ImGui.SetNextWindowPos(new V2(10.0f, 100.0f));
+            ImGui.SetNextWindowSize(new V2(200.0f, 100.0f));
             ImGui.Begin("Joint Controls", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
             if (ImGui.Checkbox("Limit", ref _enableLimit))

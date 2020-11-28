@@ -24,7 +24,7 @@ namespace Testbed.Tests
 
                 {
                     var shape = new EdgeShape();
-                    shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                    shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                     ground.CreateFixture(shape, 0.0f);
                 }
 
@@ -83,7 +83,7 @@ namespace Testbed.Tests
                     continue;
                 }
 
-                d = Vector2.Normalize(d);
+                d = V2.Normalize(d);
                 var F = 100.0f * d;
                 body.ApplyForce(F, position, false);
             }

@@ -19,7 +19,7 @@ namespace Testbed.Tests
 
         private PolygonShape _polygonB = new PolygonShape();
 
-        private Vector2 _positionB;
+        private V2 _positionB;
 
         private Transform _transformA;
 
@@ -98,7 +98,7 @@ namespace Testbed.Tests
 
             {
                 var color = Color.FromArgb(230, 230, 230);
-                var v = new Vector2[Settings.MaxPolygonVertices];
+                var v = new V2[Settings.MaxPolygonVertices];
                 for (var i = 0; i < _polygonA.Count; ++i)
                 {
                     v[i] = MathUtils.Mul(_transformA, _polygonA.Vertices[i]);

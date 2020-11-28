@@ -91,12 +91,12 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.5f, 0.0f);
                 vertices[1].Set(0.5f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);
@@ -104,7 +104,7 @@ namespace Testbed.Tests
             }
 
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.1f, 0.0f);
                 vertices[1].Set(0.1f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);
@@ -116,7 +116,7 @@ namespace Testbed.Tests
                 var b = w / (2.0f + (float)Math.Sqrt(2.0f));
                 var s = (float)Math.Sqrt(2.0f) * b;
 
-                var vertices = new Vector2[8];
+                var vertices = new V2[8];
                 vertices[0].Set(0.5f * s, 0.0f);
                 vertices[1].Set(0.5f * w, b);
                 vertices[2].Set(0.5f * w, b + s);

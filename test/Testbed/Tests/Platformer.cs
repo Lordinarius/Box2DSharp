@@ -27,7 +27,7 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-20.0f, 0.0f), new Vector2(20.0f, 0.0f));
+                shape.SetTwoSided(new V2(-20.0f, 0.0f), new V2(20.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -56,7 +56,7 @@ namespace Testbed.Tests
                 shape.Radius = _radius;
                 _character = body.CreateFixture(shape, 20.0f);
 
-                body.SetLinearVelocity(new Vector2(0.0f, -50.0f));
+                body.SetLinearVelocity(new V2(0.0f, -50.0f));
             }
         }
 

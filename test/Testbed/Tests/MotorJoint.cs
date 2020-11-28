@@ -28,7 +28,7 @@ namespace Testbed.Tests
                 ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-20.0f, 0.0f), new Vector2(20.0f, 0.0f));
+                shape.SetTwoSided(new V2(-20.0f, 0.0f), new V2(20.0f, 0.0f));
 
                 var fd = new FixtureDef();
                 fd.Shape = shape;
@@ -79,7 +79,7 @@ namespace Testbed.Tests
                 _time += 1 / TestSettings.Hertz;
             }
 
-            _linearOffset = new Vector2
+            _linearOffset = new V2
             {
                 X = 6.0f * (float)Math.Sin(2.0f * _time), Y = 8.0f + 4.0f * (float)Math.Sin(1.0f * _time)
             };
@@ -90,7 +90,7 @@ namespace Testbed.Tests
             _joint.SetAngularOffset(angularOffset);
         }
 
-        private Vector2 _linearOffset;
+        private V2 _linearOffset;
 
         protected override void OnRender()
         {

@@ -32,7 +32,7 @@ namespace Testbed.Tests
                 ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
@@ -55,7 +55,7 @@ namespace Testbed.Tests
                 PrismaticJointDef pjd = new PrismaticJointDef();
 
                 // Horizontal
-                pjd.Initialize(ground, body, bd.Position, new Vector2(1.0f, 0.0f));
+                pjd.Initialize(ground, body, bd.Position, new V2(1.0f, 0.0f));
 
                 pjd.MotorSpeed = _motorSpeed;
                 pjd.MaxMotorForce = 10000.0f;
@@ -92,8 +92,8 @@ namespace Testbed.Tests
         {
             var force = _joint.GetMotorForce(TestSettings.Hertz);
             DrawString($"Motor Force = {force}");
-            ImGui.SetNextWindowPos(new Vector2(10.0f, 100.0f));
-            ImGui.SetNextWindowSize(new Vector2(200.0f, 100.0f));
+            ImGui.SetNextWindowPos(new V2(10.0f, 100.0f));
+            ImGui.SetNextWindowSize(new V2(200.0f, 100.0f));
             ImGui.Begin("Joint Controls", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
             if (ImGui.Checkbox("Limit", ref _enableLimit))

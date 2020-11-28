@@ -22,7 +22,7 @@ namespace Testbed.Tests
             //  but you can easily use it in other applications by providing
             //  a World for use as the 'World' variable in the code below.
 
-            Vector2 g = new Vector2(0.000000000000000e+00f, -1.000000000000000e+01f);
+            V2 g = new V2(0.000000000000000e+00f, -1.000000000000000e+01f);
             World.Gravity = g;
             Body[] bodies = new Body[3];
             Joint[] joints = new Joint[0];
@@ -53,7 +53,7 @@ namespace Testbed.Tests
                     fd.Filter.MaskBits = (65535);
                     fd.Filter.GroupIndex = (0);
                     PolygonShape shape = new PolygonShape();
-                    Vector2[] vs = new Vector2[8];
+                    V2[] vs = new V2[8];
                     vs[0].Set(7.733039855957031e-01f, -1.497260034084320e-01f);
                     vs[1].Set(-4.487270116806030e-01f, 1.138330027461052e-01f);
                     vs[2].Set(-1.880589962005615e+00f, -1.365900039672852e-01f);
@@ -92,7 +92,7 @@ namespace Testbed.Tests
                     fd.Filter.MaskBits = (65535);
                     fd.Filter.GroupIndex = (0);
                     PolygonShape shape = new PolygonShape();
-                    Vector2[] vs = new Vector2[8];
+                    V2[] vs = new V2[8];
                     vs[0].Set(3.473900079727173e+00f, -2.009889930486679e-01f);
                     vs[1].Set(3.457079887390137e+00f, 3.694039955735207e-02f);
                     vs[2].Set(-3.116359949111938e+00f, 2.348500071093440e-03f);
@@ -133,7 +133,7 @@ namespace Testbed.Tests
                     fd.Filter.MaskBits = (65535);
                     fd.Filter.GroupIndex = (-3);
                     PolygonShape shape = new PolygonShape();
-                    Vector2[] vs = new Vector2[8];
+                    V2[] vs = new V2[8];
                     vs[0].Set(1.639146506786346e-01f, 4.428443685173988e-02f);
                     vs[1].Set(-1.639146655797958e-01f, 4.428443685173988e-02f);
                     vs[2].Set(-1.639146655797958e-01f, -4.428443312644958e-02f);
