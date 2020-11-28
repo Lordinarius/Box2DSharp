@@ -419,7 +419,7 @@ namespace Box2DSharp.Collision
 
                 var child1 = node.Child1;
                 var child2 = node.Child2;
-                var balance = F.Abs(_treeNodes[child2].Height - _treeNodes[child1].Height);
+                var balance = Math.Abs(_treeNodes[child2].Height - _treeNodes[child1].Height);
                 maxBalance = F.Max(maxBalance, balance);
             }
 
@@ -757,11 +757,11 @@ namespace Box2DSharp.Collision
             // Rotate C up
             if (balance > 1)
             {
-                var iF = C.Child1;
+                var iE = C.Child1;
                 var iG = C.Child2;
-                ref var F = ref _treeNodes[iF];
+                ref var E = ref _treeNodes[iE];
                 ref var G = ref _treeNodes[iG];
-                Debug.Assert(0 <= iF && iF < _nodeCapacity);
+                Debug.Assert(0 <= iE && iE < _nodeCapacity);
                 Debug.Assert(0 <= iG && iG < _nodeCapacity);
 
                 // Swap A and C
@@ -789,26 +789,26 @@ namespace Box2DSharp.Collision
                 }
 
                 // Rotate
-                if (F.Height > G.Height)
+                if (E.Height > G.Height)
                 {
-                    C.Child2 = iF;
+                    C.Child2 = iE;
                     A.Child2 = iG;
                     G.Parent = iA;
                     A.AABB.Combine(B.AABB, G.AABB);
-                    C.AABB.Combine(A.AABB, F.AABB);
+                    C.AABB.Combine(A.AABB, E.AABB);
 
                     A.Height = 1 + F.Max(B.Height, G.Height);
-                    C.Height = 1 + F.Max(A.Height, F.Height);
+                    C.Height = 1 + F.Max(A.Height, E.Height);
                 }
                 else
                 {
                     C.Child2 = iG;
-                    A.Child2 = iF;
-                    F.Parent = iA;
-                    A.AABB.Combine(B.AABB, F.AABB);
+                    A.Child2 = iE;
+                    E.Parent = iA;
+                    A.AABB.Combine(B.AABB, E.AABB);
                     C.AABB.Combine(A.AABB, G.AABB);
 
-                    A.Height = 1 + F.Max(B.Height, F.Height);
+                    A.Height = 1 + F.Max(B.Height, E.Height);
                     C.Height = 1 + F.Max(A.Height, G.Height);
                 }
 

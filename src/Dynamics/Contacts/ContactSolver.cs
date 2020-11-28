@@ -138,6 +138,8 @@ namespace Box2DSharp.Dynamics.Contacts
             }
         }
 
+        // Ensure a reasonable condition number.
+        static readonly F maxConditionNumber = 1000.0f;
         public void InitializeVelocityConstraints()
         {
             Span<Position> ps = _positions;
@@ -243,8 +245,6 @@ namespace Box2DSharp.Dynamics.Contacts
                     var k22 = mA + mB + iA * rn2A * rn2A + iB * rn2B * rn2B;
                     var k12 = mA + mB + iA * rn1A * rn2A + iB * rn1B * rn2B;
 
-                    // Ensure a reasonable condition number.
-                    const F maxConditionNumber = 1000.0f;
                     if (k11 * k11 < maxConditionNumber * (k11 * k22 - k12 * k12))
                     {
                         // K is safe to invert.
@@ -304,6 +304,7 @@ namespace Box2DSharp.Dynamics.Contacts
             }
         }
 
+        static readonly F k_errorTol = 1e-3f;
         public void SolveVelocityConstraints()
         {
             Span<ContactVelocityConstraint> velocityConstraints = VelocityConstraints;
@@ -527,7 +528,6 @@ namespace Box2DSharp.Dynamics.Contacts
 
 #if B2_DEBUG_SOLVER
 // Postconditions
-                            const F k_errorTol = 1e-3f;
                             dv1 = vB + MathUtils.Cross(wB, cp1.rB) - vA - MathUtils.Cross(wA, cp1.rA);
                             dv2 = vB + MathUtils.Cross(wB, cp2.rB) - vA - MathUtils.Cross(wA, cp2.rA);
 

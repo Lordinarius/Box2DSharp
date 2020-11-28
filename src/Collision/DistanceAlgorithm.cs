@@ -178,6 +178,7 @@ namespace Box2DSharp.Collision
             }
         }
 
+        static readonly F tolerance = F.Half * Settings.LinearSlop;
         public static bool ShapeCast(out ShapeCastOutput output, in ShapeCastInput input)
         {
             output = new ShapeCastOutput
@@ -217,7 +218,6 @@ namespace Box2DSharp.Collision
 
             // Sigma is the target distance between polygons
             var sigma = F.Max(Settings.PolygonRadius, radius - Settings.PolygonRadius);
-            const F tolerance = F.Half * Settings.LinearSlop;
 
             // Main iteration loop.
             // 迭代次数上限

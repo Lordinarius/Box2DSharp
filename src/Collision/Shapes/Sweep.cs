@@ -39,10 +39,10 @@ namespace Box2DSharp.Collision.Shapes
             Alpha0 = alpha;
         }
 
+        static readonly F twoPi = F.Two * Settings.Pi;
         /// Normalize the angles.
         public void Normalize()
         {
-            const F twoPi = F.Two * Settings.Pi;
             var d = twoPi * F.Floor(A0 / twoPi);
             A0 -= d;
             A -= d;

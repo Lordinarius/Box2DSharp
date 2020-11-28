@@ -346,6 +346,7 @@ namespace Box2DSharp.Collision.Shapes
             aabb = new AABB {LowerBound = lower - r, UpperBound = upper + r};
         }
 
+        static readonly F k_inv3 = F.One / 3.0f;
         /// @see b2Shape::ComputeMass
         public override void ComputeMass(out MassData massData, F density)
         {
@@ -382,7 +383,6 @@ namespace Box2DSharp.Collision.Shapes
             // Get a reference point for forming triangles.
             // Use the first vertex to reduce round-off errors.
             ref readonly var s = ref Vertices[0];
-            const F k_inv3 = F.One / 3.0f;
 
             for (var i = 0; i < Count; ++i)
             {
@@ -454,6 +454,7 @@ namespace Box2DSharp.Collision.Shapes
             return true;
         }
 
+        static readonly F inv3 = F.One / 3.0f;
         private static V2 ComputeCentroid(in V2[] vs, int count)
         {
             Debug.Assert(count >= 3);
@@ -465,7 +466,6 @@ namespace Box2DSharp.Collision.Shapes
             // Use the first vertex to reduce round-off errors.
             var s = vs[0];
 
-            const F inv3 = F.One / 3.0f;
 
             for (var i = 0; i < count; ++i)
             {

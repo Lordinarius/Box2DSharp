@@ -109,6 +109,11 @@ namespace Box2DSharp.Dynamics
 
         private readonly Stopwatch _solveTimer = new Stopwatch();
 
+        // 线速度最小值平方
+        static readonly F linTolSqr = Settings.LinearSleepTolerance * Settings.LinearSleepTolerance;
+
+        // 角速度最小值平方
+        static readonly F angTolSqr = Settings.AngularSleepTolerance * Settings.AngularSleepTolerance;
         internal void Solve(out Profile profile, in TimeStep step, in V2 gravity, bool allowSleep)
         {
             profile = default;
@@ -268,11 +273,6 @@ namespace Box2DSharp.Dynamics
             {
                 var minSleepTime = Settings.MaxFloat;
 
-                // 线速度最小值平方
-                const F linTolSqr = Settings.LinearSleepTolerance * Settings.LinearSleepTolerance;
-
-                // 角速度最小值平方
-                const F angTolSqr = Settings.AngularSleepTolerance * Settings.AngularSleepTolerance;
 
                 for (var i = 0; i < BodyCount; ++i)
                 {

@@ -900,6 +900,17 @@ public partial struct F : IEquatable<F>, IComparable<F>
         m_rawValue = decimalPart * ONE + fraction;
     }
 
+    public static int Min(int f1, int f2)
+    {
+        if (f1 <= f2) return f1;
+        return f2;
+    }
+
+    public static int Max(int f1, int f2)
+    {
+        if (f1 >= f2) return f1;
+        return f2;
+    }
 
     public static F Min(F f1, F f2)
     {

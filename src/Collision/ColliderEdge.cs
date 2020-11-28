@@ -288,6 +288,11 @@ namespace Box2DSharp.Collision
             return axis;
         }
 
+        // Use hysteresis for jitter reduction.
+        static readonly F k_relativeTol = 0.98f;
+        static readonly F k_absoluteTol = 0.001f;
+        static readonly F sinTol = 0.1f;
+
         public static void CollideEdgeAndPolygon(
             ref Manifold manifold,
             EdgeShape edgeA,
@@ -340,9 +345,6 @@ namespace Box2DSharp.Collision
                 return;
             }
 
-            // Use hysteresis for jitter reduction.
-            const F k_relativeTol = 0.98f;
-            const F k_absoluteTol = 0.001f;
 
             var primaryAxis = new EPAxis();
             if (primaryAxis.Separation - radius > k_relativeTol * (edgeAxis.Separation - radius) + k_absoluteTol)
@@ -369,7 +371,6 @@ namespace Box2DSharp.Collision
                 V2 normal2 = new V2(edge2.Y, -edge2.X);
                 bool convex2 = MathUtils.Cross(edge1, edge2) >= F.Zero;
 
-                const F sinTol = 0.1f;
                 bool side1 = V2.Dot(primaryAxis.Normal, edge1) <= F.Zero;
 
                 // Check Gauss Map

@@ -8,13 +8,15 @@ namespace Box2DSharp.Common
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValid(in this V2 vector2)
         {
-            return !F.IsInfinity(vector2.X) && !F.IsInfinity(vector2.Y);
+            return true;
+            //return !F.IsInfinity(vector2.X) && !F.IsInfinity(vector2.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValid(this F x)
         {
-            return !F.IsInfinity(x);
+            return true;
+            //return !F.IsInfinity(x);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
