@@ -208,7 +208,7 @@ namespace Box2DSharp.Ropes
 
             var invDt = F.One / dt;
 
-            var d = (F)Math.Exp(-dt * _tuning.Damping);
+            var d = Math.Exp(-dt * _tuning.Damping);
 
             // Apply gravity and damping
             for (var i = 0; i < _count; ++i)
@@ -399,7 +399,7 @@ namespace Box2DSharp.Ropes
                 var a = MathUtils.Cross(d1, d2);
                 var b = V2.Dot(d1, d2);
 
-                var angle = (F)Math.Atan2(a, b);
+                var angle = F.Atan2(a, b);
 
                 F L1sqr, L2sqr;
 
@@ -492,7 +492,7 @@ namespace Box2DSharp.Ropes
                 var a = MathUtils.Cross(d1, d2);
                 var b = V2.Dot(d1, d2);
 
-                var angle = (F)Math.Atan2(a, b);
+                var angle = F.Atan2(a, b);
 
                 var Jd1 = -F.One / L1sqr * d1.Skew();
                 var Jd2 = F.One / L2sqr * d2.Skew();
@@ -580,7 +580,7 @@ namespace Box2DSharp.Ropes
                 var a = MathUtils.Cross(d1, d2);
                 var b = V2.Dot(d1, d2);
 
-                var angle = (F)Math.Atan2(a, b);
+                var angle = F.Atan2(a, b);
 
                 var Jd1 = -F.One / L1sqr * d1.Skew();
                 var Jd2 = F.One / L2sqr * d2.Skew();

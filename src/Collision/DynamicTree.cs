@@ -328,7 +328,7 @@ namespace Box2DSharp.Collision
                 // |dot(v, p1 - c)| > dot(|v|, h)
                 var c = node.AABB.GetCenter();
                 var h = node.AABB.GetExtents();
-                var separation = Math.Abs(V2.Dot(v, p1 - c)) - V2.Dot(abs_v, h);
+                var separation = F.Abs(V2.Dot(v, p1 - c)) - V2.Dot(abs_v, h);
                 if (separation > F.Zero)
                 {
                     continue;
@@ -419,7 +419,7 @@ namespace Box2DSharp.Collision
 
                 var child1 = node.Child1;
                 var child2 = node.Child2;
-                var balance = Math.Abs(_treeNodes[child2].Height - _treeNodes[child1].Height);
+                var balance = F.Abs(_treeNodes[child2].Height - _treeNodes[child1].Height);
                 maxBalance = F.Max(maxBalance, balance);
             }
 

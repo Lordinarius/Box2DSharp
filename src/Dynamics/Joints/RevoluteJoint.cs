@@ -330,7 +330,7 @@ namespace Box2DSharp.Dynamics.Joints
             if (_enableLimit && fixedRotation == false)
             {
                 var jointAngle = aB - aA - ReferenceAngle;
-                if (Math.Abs(_upperAngle - _lowerAngle) < F.Two * Settings.AngularSlop)
+                if (F.Abs(_upperAngle - _lowerAngle) < F.Two * Settings.AngularSlop)
                 {
                     _limitState = LimitState.EqualLimits;
                 }
@@ -528,7 +528,7 @@ namespace Box2DSharp.Dynamics.Joints
                         -Settings.MaxAngularCorrection,
                         Settings.MaxAngularCorrection);
                     limitImpulse = -_motorMass * C;
-                    angularError = Math.Abs(C);
+                    angularError = F.Abs(C);
                 }
                 else if (_limitState == LimitState.AtLowerLimit)
                 {

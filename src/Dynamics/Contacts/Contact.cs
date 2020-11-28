@@ -100,7 +100,7 @@ namespace Box2DSharp.Dynamics.Contacts
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static F MixFriction(F friction1, F friction2)
         {
-            return (F)Math.Sqrt(friction1 * friction2);
+            return F.Sqrt(friction1 * friction2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

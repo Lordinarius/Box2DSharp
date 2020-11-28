@@ -22,8 +22,8 @@ namespace Box2DSharp.Common
         public Rotation(F angle)
         {
             // TODO_ERIN optimize
-            Sin = (F) Math.Sin(angle);
-            Cos = (F) Math.Cos(angle);
+            Sin = F.Sin(angle);
+            Cos = F.Cos(angle);
         }
 
         /// Set using an angle in radians.
@@ -31,8 +31,8 @@ namespace Box2DSharp.Common
         public void Set(F angle)
         {
             // TODO_ERIN optimize
-            Sin = (F) Math.Sin(angle);
-            Cos = (F) Math.Cos(angle);
+            Sin = F.Sin(angle);
+            Cos = F.Cos(angle);
         }
 
         /// Set to the identity rotation
@@ -44,7 +44,7 @@ namespace Box2DSharp.Common
         }
 
         /// Get the angle in radians
-        public F Angle => (F) Math.Atan2(Sin, Cos);
+        public F Angle => F.Atan2(Sin, Cos);
 
         /// Get the x-axis
         public V2 GetXAxis()

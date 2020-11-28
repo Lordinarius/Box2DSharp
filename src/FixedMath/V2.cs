@@ -419,7 +419,7 @@ public struct V2
     public static V2 Normalize(V2 value)
     {
         F ls = value.X * value.X + value.Y * value.Y;
-        F invNorm = F.One / (F)Math.Sqrt((double)ls);
+        F invNorm = F.One / F.Sqrt(ls);
 
         return new V2(
             value.X * invNorm,

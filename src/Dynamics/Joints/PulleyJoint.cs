@@ -326,7 +326,7 @@ namespace Box2DSharp.Dynamics.Joints
             }
 
             var C = _constant - lengthA - _ratio * lengthB;
-            var linearError = Math.Abs(C);
+            var linearError = F.Abs(C);
 
             var impulse = -mass * C;
 

@@ -287,7 +287,7 @@ namespace Box2DSharp.Dynamics.Joints
         /// Set the maximum motor force, usually in N.
         public void SetMaxMotorForce(F force)
         {
-            if (Math.Abs(force - _maxMotorForce) > 0.000001f)
+            if (F.Abs(force - _maxMotorForce) > 0.000001f)
             {
                 BodyA.IsAwake = true;
                 BodyB.IsAwake = true;
@@ -591,18 +591,18 @@ namespace Box2DSharp.Dynamics.Joints
             C1.X = V2.Dot(perp, d);
             C1.Y = aB - aA - ReferenceAngle;
 
-            var linearError = Math.Abs(C1.X);
-            var angularError = Math.Abs(C1.Y);
+            var linearError = F.Abs(C1.X);
+            var angularError = F.Abs(C1.Y);
 
             var active = false;
             var C2 = F.Zero;
             if (_enableLimit)
             {
                 var translation = V2.Dot(axis, d);
-                if (Math.Abs(_upperTranslation - _lowerTranslation) < F.Two * Settings.LinearSlop)
+                if (F.Abs(_upperTranslation - _lowerTranslation) < F.Two * Settings.LinearSlop)
                 {
                     C2 = translation;
-                    linearError = F.Max(linearError, Math.Abs(translation));
+                    linearError = F.Max(linearError, F.Abs(translation));
                     active = true;
                 }
                 else if (translation <= _lowerTranslation)

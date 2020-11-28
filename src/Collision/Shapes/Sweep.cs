@@ -43,7 +43,7 @@ namespace Box2DSharp.Collision.Shapes
         public void Normalize()
         {
             const F twoPi = F.Two * Settings.Pi;
-            var d = twoPi * (F)Math.Floor(A0 / twoPi);
+            var d = twoPi * F.Floor(A0 / twoPi);
             A0 -= d;
             A -= d;
         }

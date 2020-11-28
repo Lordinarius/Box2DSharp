@@ -122,7 +122,7 @@ namespace Box2DSharp.Collision
                     }
 
                     // Pull the max down
-                    tmax = Math.Min(tmax, t2);
+                    tmax = F.Min(tmax, t2);
 
                     if (tmin > tmax)
                     {
@@ -163,7 +163,7 @@ namespace Box2DSharp.Collision
                     }
 
                     // Pull the max down
-                    tmax = Math.Min(tmax, t2);
+                    tmax = F.Min(tmax, t2);
 
                     if (tmin > tmax)
                     {

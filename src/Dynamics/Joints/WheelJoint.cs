@@ -607,7 +607,7 @@ namespace Box2DSharp.Dynamics.Joints
 
                 var C = F.Zero;
                 var translation = V2.Dot(ax, d);
-                if (Math.Abs(_upperTranslation - _lowerTranslation) < F.Two * Settings.LinearSlop)
+                if (F.Abs(_upperTranslation - _lowerTranslation) < F.Two * Settings.LinearSlop)
                 {
                     C = translation;
                 }
@@ -638,7 +638,7 @@ namespace Box2DSharp.Dynamics.Joints
                     cB += _invMassB * P;
                     aB += _invIB * LB;
 
-                    linearError = Math.Abs(C);
+                    linearError = F.Abs(C);
                 }
             }
 
@@ -675,7 +675,7 @@ namespace Box2DSharp.Dynamics.Joints
                 cB += _invMassB * P;
                 aB += _invIB * LB;
 
-                linearError = F.Max(linearError, Math.Abs(C));
+                linearError = F.Max(linearError, F.Abs(C));
             }
 
             data.Positions[_indexA].Center = cA;

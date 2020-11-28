@@ -123,7 +123,7 @@ namespace Box2DSharp.Collision.Shapes
 
             var denominator = V2.Dot(normal, d);
 
-            if (Math.Abs(denominator) < Settings.Epsilon)
+            if (F.Abs(denominator) < Settings.Epsilon)
             {
                 return false;
             }
@@ -140,7 +140,7 @@ namespace Box2DSharp.Collision.Shapes
             // s = dot(q - v1, r) / dot(r, r)
             var r = v2 - v1;
             var rr = V2.Dot(r, r);
-            if (Math.Abs(rr) < Settings.Epsilon)
+            if (F.Abs(rr) < Settings.Epsilon)
             {
                 return false;
             }

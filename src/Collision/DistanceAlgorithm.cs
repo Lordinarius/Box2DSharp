@@ -223,7 +223,7 @@ namespace Box2DSharp.Collision
             // 迭代次数上限
             const int maxIters = 20;
             var iter = 0;
-            while (iter < maxIters && Math.Abs(v.Length() - sigma) > tolerance)
+            while (iter < maxIters && F.Abs(v.Length() - sigma) > tolerance)
             {
                 Debug.Assert(simplex.Count < 3);
 

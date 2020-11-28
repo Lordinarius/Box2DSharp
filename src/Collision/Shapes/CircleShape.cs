@@ -81,7 +81,7 @@ namespace Box2DSharp.Collision.Shapes
             }
 
             // Find the point of intersection of the line with the circle.
-            var a = -(c + (F) Math.Sqrt(sigma));
+            var a = -(c + F.Sqrt(sigma));
 
             // Is the intersection point on the segment?
             if (F.Zero <= a && a <= input.MaxFraction * rr)

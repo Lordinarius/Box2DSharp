@@ -225,7 +225,7 @@ namespace Box2DSharp.Collision
 
                         var s = fcn.Evaluate(indexA, indexB, t);
 
-                        if (Math.Abs(s - target) < tolerance)
+                        if (F.Abs(s - target) < tolerance)
                         {
                             // t2 holds a tentative value for t1
                             t2 = t;

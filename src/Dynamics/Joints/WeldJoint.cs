@@ -365,7 +365,7 @@ namespace Box2DSharp.Dynamics.Joints
                 var C2 = aB - aA - _referenceAngle;
 
                 positionError = C1.Length();
-                angularError = Math.Abs(C2);
+                angularError = F.Abs(C2);
 
                 var C = new Vector3(C1.X, C1.Y, C2);
 

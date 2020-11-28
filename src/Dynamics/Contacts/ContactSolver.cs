@@ -535,8 +535,8 @@ namespace Box2DSharp.Dynamics.Contacts
                             vn1 = V2.Dot(dv1, normal);
                             vn2 = V2.Dot(dv2, normal);
 
-                            Debug.Assert(Math.Abs(vn1 - cp1.velocityBias) < k_errorTol);
-                            Debug.Assert(Math.Abs(vn2 - cp2.velocityBias) < k_errorTol);
+                            Debug.Assert(F.Abs(vn1 - cp1.velocityBias) < k_errorTol);
+                            Debug.Assert(F.Abs(vn2 - cp2.velocityBias) < k_errorTol);
 #endif
                             break;
                         }
@@ -585,7 +585,7 @@ namespace Box2DSharp.Dynamics.Contacts
                             // Compute normal velocity
                             vn1 = V2.Dot(dv1, normal);
 
-                            Debug.Assert(Math.Abs(vn1 - cp1.velocityBias) < k_errorTol);
+                            Debug.Assert(F.Abs(vn1 - cp1.velocityBias) < k_errorTol);
 #endif
                             break;
                         }
@@ -635,7 +635,7 @@ namespace Box2DSharp.Dynamics.Contacts
                             // Compute normal velocity
                             vn2 = V2.Dot(dv2, normal);
 
-                            Debug.Assert(Math.Abs(vn2 - cp2.velocityBias) < k_errorTol);
+                            Debug.Assert(F.Abs(vn2 - cp2.velocityBias) < k_errorTol);
 #endif
                             break;
                         }

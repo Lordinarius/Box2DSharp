@@ -212,7 +212,7 @@ namespace Box2DSharp.Dynamics
                 var rotation = h * w;
                 if (rotation * rotation > Settings.MaxRotationSquared)
                 {
-                    var ratio = Settings.MaxRotation / Math.Abs(rotation);
+                    var ratio = Settings.MaxRotation / F.Abs(rotation);
                     w *= ratio;
                 }
 
@@ -412,7 +412,7 @@ namespace Box2DSharp.Dynamics
                 var rotation = h * w;
                 if (rotation * rotation > Settings.MaxRotationSquared)
                 {
-                    var ratio = Settings.MaxRotation / Math.Abs(rotation);
+                    var ratio = Settings.MaxRotation / F.Abs(rotation);
                     w *= ratio;
                 }
 
