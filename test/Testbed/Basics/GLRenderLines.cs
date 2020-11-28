@@ -125,7 +125,7 @@ namespace Testbed.Basics
 
         private const int MaxVertices = 512;
 
-        private readonly V2[] _vertices = new V2[MaxVertices];
+        private readonly Vector2[] _vertices = new Vector2[MaxVertices];
 
         private readonly Color4[] _colors = new Color4[MaxVertices];
 

@@ -133,9 +133,17 @@ namespace Testbed.Tests
                 ImGui.EndCombo();
             }
 
-            ImGui.SliderFloat("Damping##B1", ref _tuning1.BendDamping, 0.0f, 4.0f, "%.1f");
-            ImGui.SliderFloat("Hertz##B1", ref _tuning1.BendHertz, 0.0f, 60.0f, "%.0f");
-            ImGui.SliderFloat("Stiffness##B1", ref _tuning1.BendStiffness, 0.0f, 1.0f, "%.1f");
+            float t1 = _tuning1.BendDamping;
+            float t2 = _tuning1.BendHertz;
+            float t3 = _tuning1.BendStiffness;
+
+            ImGui.SliderFloat("Damping##B1", ref t1, 0.0f, 4.0f, "%.1f");
+            ImGui.SliderFloat("Hertz##B1", ref t2, 0.0f, 60.0f, "%.0f");
+            ImGui.SliderFloat("Stiffness##B1", ref t3, 0.0f, 1.0f, "%.1f");
+
+            _tuning1.BendDamping = t1;
+            _tuning1.BendHertz = t2;
+            _tuning1.BendStiffness = t3;
 
             ImGui.Checkbox("Isometric##1", ref _tuning1.Isometric);
             ImGui.Checkbox("Fixed Mass##1", ref _tuning1.FixedEffectiveMass);
@@ -162,9 +170,17 @@ namespace Testbed.Tests
                 ImGui.EndCombo();
             }
 
-            ImGui.SliderFloat("Damping##S1", ref _tuning1.StretchDamping, 0.0f, 4.0f, "%.1f");
-            ImGui.SliderFloat("Hertz##S1", ref _tuning1.StretchHertz, 0.0f, 60.0f, "%.0f");
-            ImGui.SliderFloat("Stiffness##S1", ref _tuning1.StretchStiffness, 0.0f, 1.0f, "%.1f");
+            t1 = _tuning1.StretchDamping;
+            t2 = _tuning1.StretchHertz;
+            t3 = _tuning1.StretchStiffness;
+
+            ImGui.SliderFloat("Damping##S1", ref t1, 0.0f, 4.0f, "%.1f");
+            ImGui.SliderFloat("Hertz##S1", ref t2, 0.0f, 60.0f, "%.0f");
+            ImGui.SliderFloat("Stiffness##S1", ref t3, 0.0f, 1.0f, "%.1f");
+
+            _tuning1.StretchDamping = t1;
+            _tuning1.StretchHertz = t2;
+            _tuning1.StretchStiffness = t3;
 
             ImGui.SliderInt("Iterations##1", ref _iterations1, 1, 100, "%d");
 
@@ -193,9 +209,17 @@ namespace Testbed.Tests
                 ImGui.EndCombo();
             }
 
-            ImGui.SliderFloat("Damping##", ref _tuning2.BendDamping, 0.0f, 4.0f, "%.1f");
-            ImGui.SliderFloat("Hertz##", ref _tuning2.BendHertz, 0.0f, 60.0f, "%.0f");
-            ImGui.SliderFloat("Stiffness##", ref _tuning2.BendStiffness, 0.0f, 1.0f, "%.1f");
+            t1 = _tuning2.BendDamping;
+            t2 = _tuning2.BendHertz;
+            t3 = _tuning2.BendStiffness;
+
+            ImGui.SliderFloat("Damping##", ref t1, 0.0f, 4.0f, "%.1f");
+            ImGui.SliderFloat("Hertz##", ref t2, 0.0f, 60.0f, "%.0f");
+            ImGui.SliderFloat("Stiffness##", ref t3, 0.0f, 1.0f, "%.1f");
+
+            _tuning2.BendDamping = t1;
+            _tuning2.BendHertz = t2;
+            _tuning2.BendStiffness = t3;
 
             ImGui.Checkbox("Isometric##2", ref _tuning2.Isometric);
             ImGui.Checkbox("Fixed Mass##2", ref _tuning2.FixedEffectiveMass);
@@ -222,9 +246,17 @@ namespace Testbed.Tests
                 ImGui.EndCombo();
             }
 
-            ImGui.SliderFloat("Damping##S2", ref _tuning2.StretchDamping, 0.0f, 4.0f, "%.1f");
-            ImGui.SliderFloat("Hertz##S2", ref _tuning2.StretchHertz, 0.0f, 60.0f, "%.0f");
-            ImGui.SliderFloat("Stiffness##S2", ref _tuning2.StretchStiffness, 0.0f, 1.0f, "%.1f");
+            t1 = _tuning2.StretchDamping;
+            t2 = _tuning2.StretchHertz;
+            t3 = _tuning2.StretchStiffness;
+
+            ImGui.SliderFloat("Damping##S2", ref t1, 0.0f, 4.0f, "%.1f");
+            ImGui.SliderFloat("Hertz##S2", ref t2, 0.0f, 60.0f, "%.0f");
+            ImGui.SliderFloat("Stiffness##S2", ref t3, 0.0f, 1.0f, "%.1f");
+
+            t1 = _tuning2.StretchDamping;
+            t2 = _tuning2.StretchHertz;
+            t3 = _tuning2.StretchStiffness;
 
             ImGui.SliderInt("Iterations##2", ref _iterations2, 1, 100, "%d");
 
