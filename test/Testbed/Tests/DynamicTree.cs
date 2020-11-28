@@ -182,7 +182,7 @@ namespace Testbed.Tests
             return true;
         }
 
-        public float RayCastCallback(in RayCastInput input, int proxyId)
+        public F RayCastCallback(in RayCastInput input, int proxyId)
         {
             var actor = (Actor)_tree.GetUserData(proxyId);
             var hit = actor.AABB.RayCast(out var output, input);
@@ -200,7 +200,7 @@ namespace Testbed.Tests
 
         private void GetRandomAABB(ref AABB aabb)
         {
-            var w = new Vector2(2.0f * _proxyExtent, 2.0f * _proxyExtent);
+            var w = new V2(2.0f * _proxyExtent, 2.0f * _proxyExtent);
 
             //aabb.LowerBound.X = -proxyExtent;
             //aabb.LowerBound.Y = -proxyExtent + worldExtent;
@@ -211,7 +211,7 @@ namespace Testbed.Tests
 
         private void MoveAABB(ref AABB aabb)
         {
-            Vector2 d;
+            V2 d;
             d.X = RandomFloat(-0.5f, 0.5f);
             d.Y = RandomFloat(-0.5f, 0.5f);
 
@@ -221,11 +221,11 @@ namespace Testbed.Tests
             aabb.UpperBound += d;
 
             var c0 = 0.5f * (aabb.LowerBound + aabb.UpperBound);
-            var min = new Vector2();
+            var min = new V2();
             min.Set(-_worldExtent, 0.0f);
-            var max = new Vector2();
+            var max = new V2();
             max.Set(_worldExtent, 2.0f * _worldExtent);
-            var c = Vector2.Clamp(c0, min, max);
+            var c = V2.Clamp(c0, min, max);
 
             aabb.LowerBound += c - c0;
             aabb.UpperBound += c - c0;

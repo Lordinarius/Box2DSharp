@@ -24,7 +24,7 @@ namespace Testbed.Tests
             Hit = false;
         }
 
-        public float RayCastCallback(Fixture fixture, in Vector2 point, in Vector2 normal, float fraction)
+        public F RayCastCallback(Fixture fixture, in V2 point, in V2 normal, F fraction)
         {
             var body = fixture.Body;
             var userData = body.UserData;
@@ -63,7 +63,7 @@ namespace Testbed.Tests
             Hit = false;
         }
 
-        public float RayCastCallback(Fixture fixture, in Vector2 point, in Vector2 normal, float _)
+        public F RayCastCallback(Fixture fixture, in V2 point, in V2 normal, F _)
         {
             var body = fixture.Body;
             var userData = body.UserData;
@@ -106,7 +106,7 @@ namespace Testbed.Tests
             Count = 0;
         }
 
-        public float RayCastCallback(Fixture fixture, in Vector2 point, in Vector2 normal, float _)
+        public F RayCastCallback(Fixture fixture, in V2 point, in V2 normal, F _)
         {
             var body = fixture.Body;
             var userData = body.UserData;
@@ -174,12 +174,12 @@ namespace Testbed.Tests
                 var ground = World.CreateBody(bd);
 
                 var shape = new EdgeShape();
-                shape.SetTwoSided(new Vector2(-40.0f, 0.0f), new Vector2(40.0f, 0.0f));
+                shape.SetTwoSided(new V2(-40.0f, 0.0f), new V2(40.0f, 0.0f));
                 ground.CreateFixture(shape, 0.0f);
             }
 
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.5f, 0.0f);
                 vertices[1].Set(0.5f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);
@@ -187,7 +187,7 @@ namespace Testbed.Tests
             }
 
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.1f, 0.0f);
                 vertices[1].Set(0.1f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);
@@ -199,7 +199,7 @@ namespace Testbed.Tests
                 var b = w / (2.0f + (float)Math.Sqrt(2.0f));
                 var s = (float)Math.Sqrt(2.0f) * b;
 
-                var vertices = new Vector2[8];
+                var vertices = new V2[8];
                 vertices[0].Set(0.5f * s, 0.0f);
                 vertices[1].Set(0.5f * w, b);
                 vertices[2].Set(0.5f * w, b + s);
@@ -221,7 +221,7 @@ namespace Testbed.Tests
             }
 
             {
-                _edge.SetTwoSided(new Vector2(-1.0f, 0.0f), new Vector2(1.0f, 0.0f));
+                _edge.SetTwoSided(new V2(-1.0f, 0.0f), new V2(1.0f, 0.0f));
             }
 
             _bodyIndex = 0;
@@ -254,9 +254,9 @@ namespace Testbed.Tests
             }
 
             var L = 11.0f;
-            var point1 = new Vector2(0.0f, 10.0f);
+            var point1 = new V2(0.0f, 10.0f);
 
-            var d = new Vector2(L * (float)Math.Cos(_angle), L * (float)Math.Sin(_angle));
+            var d = new V2(L * (float)Math.Cos(_angle), L * (float)Math.Sin(_angle));
             var point2 = point1 + d;
 
             switch (_mode)
@@ -268,10 +268,10 @@ namespace Testbed.Tests
 
                 if (callback.Hit)
                 {
-                    Drawer.DrawPoint(callback.Point, 5.0f, Color.FromArgb(102, 230, 102));
-                    Drawer.DrawSegment(point1, callback.Point, Color.FromArgb(204, 204, 204));
+                    Drawer.DrawPoint((V2)callback.Point, 5.0f, Color.FromArgb(102, 230, 102));
+                    Drawer.DrawSegment(point1, (V2)callback.Point, Color.FromArgb(204, 204, 204));
                     var head = callback.Point + 0.5f * callback.Normal;
-                    Drawer.DrawSegment(callback.Point, head, Color.FromArgb(230, 230, 102));
+                    Drawer.DrawSegment((V2)callback.Point, (V2)head, Color.FromArgb(230, 230, 102));
                 }
                 else
                 {
@@ -288,10 +288,10 @@ namespace Testbed.Tests
 
                 if (callback.Hit)
                 {
-                    Drawer.DrawPoint(callback.Point, 5.0f, Color.FromArgb(102, 230, 102));
-                    Drawer.DrawSegment(point1, callback.Point, Color.FromArgb(204, 204, 204));
+                    Drawer.DrawPoint((V2)callback.Point, 5.0f, Color.FromArgb(102, 230, 102));
+                    Drawer.DrawSegment(point1, (V2)callback.Point, Color.FromArgb(204, 204, 204));
                     var head = callback.Point + 0.5f * callback.Normal;
-                    Drawer.DrawSegment(callback.Point, head, Color.FromArgb(230, 230, 102));
+                    Drawer.DrawSegment((V2)callback.Point, (V2)head, Color.FromArgb(230, 230, 102));
                 }
                 else
                 {
@@ -311,10 +311,10 @@ namespace Testbed.Tests
                 {
                     var p = callback.Points[i];
                     var n = callback.Normals[i];
-                    Drawer.DrawPoint(p, 5.0f, Color.FromArgb(102, 230, 102));
-                    Drawer.DrawSegment(point1, p, Color.FromArgb(204, 204, 204));
+                    Drawer.DrawPoint((V2)p, 5.0f, Color.FromArgb(102, 230, 102));
+                    Drawer.DrawSegment(point1, (V2)p, Color.FromArgb(204, 204, 204));
                     var head = p + 0.5f * n;
-                    Drawer.DrawSegment(p, head, Color.FromArgb(230, 230, 102));
+                    Drawer.DrawSegment((V2)p, (V2)head, Color.FromArgb(230, 230, 102));
                 }
 
                 break;

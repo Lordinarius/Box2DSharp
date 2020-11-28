@@ -19,7 +19,7 @@ namespace Testbed.Tests
         public Vector2 Point;
 
         /// <inheritdoc />
-        public float RayCastCallback(Fixture fixture, in Vector2 point, in Vector2 normal, float fraction)
+        public F RayCastCallback(Fixture fixture, in V2 point, in V2 normal, F fraction)
         {
             Fixture = fixture;
             Point = point;
@@ -59,7 +59,7 @@ namespace Testbed.Tests
                     var y2 = 2.0f * (float)Math.Cos(x2 / 10.0f * Settings.Pi);
 
                     var shape = new EdgeShape();
-                    shape.SetTwoSided(new Vector2(x1, y1), new Vector2(x2, y2));
+                    shape.SetTwoSided(new V2(x1, y1), new V2(x2, y2));
                     ground.CreateFixture(shape, 0.0f);
 
                     x1 = x2;
@@ -68,7 +68,7 @@ namespace Testbed.Tests
             }
 
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.5f, 0.0f);
                 vertices[1].Set(0.5f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);
@@ -76,7 +76,7 @@ namespace Testbed.Tests
             }
 
             {
-                var vertices = new Vector2[3];
+                var vertices = new V2[3];
                 vertices[0].Set(-0.1f, 0.0f);
                 vertices[1].Set(0.1f, 0.0f);
                 vertices[2].Set(0.0f, 1.5f);
@@ -88,7 +88,7 @@ namespace Testbed.Tests
                 var b = w / (2.0f + (float)Math.Sqrt(2.0f));
                 var s = (float)Math.Sqrt(2.0f) * b;
 
-                var vertices = new Vector2[8];
+                var vertices = new V2[8];
                 vertices[0].Set(0.5f * s, 0.0f);
                 vertices[1].Set(0.5f * w, b);
                 vertices[2].Set(0.5f * w, b + s);
@@ -176,9 +176,9 @@ namespace Testbed.Tests
             var advanceRay = TestSettings.Pause == false || TestSettings.SingleStep;
 
             var L = 25.0f;
-            var point1 = new Vector2(0.0f, 10.0f);
+            var point1 = new V2(0.0f, 10.0f);
 
-            var d = new Vector2(L * (float)Math.Cos(_angle), -L * (float)Math.Abs(Math.Sin(_angle)));
+            var d = new V2(L * (float)Math.Cos(_angle), -L * (float)Math.Abs(Math.Sin(_angle)));
             var point2 = point1 + d;
 
             var callback = new EdgeShapesCallback();
@@ -187,10 +187,10 @@ namespace Testbed.Tests
 
             if (callback.Fixture != null)
             {
-                Drawer.DrawPoint(callback.Point, 5.0f, Color.FromArgb(102, 230, 102));
-                Drawer.DrawSegment(point1, callback.Point, Color.FromArgb(204, 204, 204));
+                Drawer.DrawPoint((V2)callback.Point, 5.0f, Color.FromArgb(102, 230, 102));
+                Drawer.DrawSegment(point1, (V2)callback.Point, Color.FromArgb(204, 204, 204));
                 var head = callback.Point + 0.5f * callback.Normal;
-                Drawer.DrawSegment(callback.Point, head, Color.FromArgb(230, 230, 102));
+                Drawer.DrawSegment((V2)callback.Point, (V2)head, Color.FromArgb(230, 230, 102));
             }
             else
             {

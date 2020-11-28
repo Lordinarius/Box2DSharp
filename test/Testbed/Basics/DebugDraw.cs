@@ -84,7 +84,7 @@ namespace Testbed.Basics
             ImGuiNET.ImGui.End();
         }
 
-        public void DrawString(Vector2 worldPosition, params string[] strings)
+        public void DrawString(V2 worldPosition, params string[] strings)
         {
             var ps = Global.Camera.ConvertWorldToScreen(worldPosition);
             ImGuiNET.ImGui.Begin("Overlay", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar);
@@ -98,7 +98,7 @@ namespace Testbed.Basics
         }
 
         /// <inheritdoc />
-        public void DrawPolygon(Vector2[] vertices, int vertexCount, in Color color)
+        public void DrawPolygon(V2[] vertices, int vertexCount, in Color color)
         {
             var p1 = vertices[vertexCount - 1];
             for (var i = 0; i < vertexCount; ++i)
@@ -111,7 +111,7 @@ namespace Testbed.Basics
         }
 
         /// <inheritdoc />
-        public void DrawSolidPolygon(Vector2[] vertices, int vertexCount, in Color color)
+        public void DrawSolidPolygon(V2[] vertices, int vertexCount, in Color color)
         {
             var color4 = color.ToColor4();
             var fillColor = new Color4(color4.R * 0.5f, color4.G * 0.5f, color4.B * 0.5f, color4.A * 0.5f);
@@ -134,11 +134,11 @@ namespace Testbed.Basics
         }
 
         /// <inheritdoc />
-        public void DrawCircle(in Vector2 center, float radius, in Color color)
+        public void DrawCircle(in V2 center, F radius, in Color color)
         {
             var color4 = color.ToColor4();
             const float Segments = 16.0f;
-            const float Increment = 2.0f * Settings.Pi / Segments;
+            float Increment = 2.0f * Settings.Pi / Segments;
             var sinInc = (float)Math.Sin(Increment);
             var cosInc = (float)Math.Cos(Increment);
             var r1 = new Vector2(1.0f, 0.0f);
@@ -160,11 +160,11 @@ namespace Testbed.Basics
         }
 
         /// <inheritdoc />
-        public void DrawSolidCircle(in Vector2 center, float radius, in Vector2 axis, in Color color)
+        public void DrawSolidCircle(in V2 center, F radius, in V2 axis, in Color color)
         {
             var color4 = color.ToColor4();
             const float Segments = 16.0f;
-            const float Increment = 2.0f * Settings.Pi / Segments;
+            float Increment = 2.0f * Settings.Pi / Segments;
             var sinInc = (float)Math.Sin(Increment);
             var cosInc = (float)Math.Cos(Increment);
             var v0 = center;
@@ -210,7 +210,7 @@ namespace Testbed.Basics
         }
 
         /// <inheritdoc />
-        public void DrawSegment(in Vector2 p1, in Vector2 p2, in Color color)
+        public void DrawSegment(in V2 p1, in V2 p2, in Color color)
         {
             var color4 = color.ToColor4();
             _lines.Vertex(p1, color4);
@@ -233,7 +233,7 @@ namespace Testbed.Basics
         }
 
         /// <inheritdoc />
-        public void DrawPoint(in Vector2 p, float size, in Color color)
+        public void DrawPoint(in V2 p, F size, in Color color)
         {
             _points.Vertex(p, color.ToColor4(), size);
         }
