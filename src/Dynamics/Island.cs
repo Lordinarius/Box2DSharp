@@ -109,7 +109,7 @@ namespace Box2DSharp.Dynamics
 
         private readonly Stopwatch _solveTimer = new Stopwatch();
 
-        internal void Solve(out Profile profile, in TimeStep step, in Vector2 gravity, bool allowSleep)
+        internal void Solve(out Profile profile, in TimeStep step, in V2 gravity, bool allowSleep)
         {
             profile = default;
 
@@ -142,8 +142,8 @@ namespace Box2DSharp.Dynamics
                     // v2 = exp(-c * dt) * v1
                     // Pade approximation:
                     // v2 = v1 * 1 / (1 + c * dt)
-                    v *= 1.0f / (1.0f + h * b.LinearDamping);
-                    w *= 1.0f / (1.0f + h * b.AngularDamping);
+                    v *= F.One / (F.One + h * b.LinearDamping);
+                    w *= F.One / (F.One + h * b.AngularDamping);
                 }
 
                 Positions[i].Center = c;
@@ -203,7 +203,7 @@ namespace Box2DSharp.Dynamics
 
                 // Check for large velocities
                 var translation = h * v;
-                if (Vector2.Dot(translation, translation) > Settings.MaxTranslationSquared)
+                if (V2.Dot(translation, translation) > Settings.MaxTranslationSquared)
                 {
                     var ratio = Settings.MaxTranslation / translation.Length();
                     v *= ratio;
@@ -269,10 +269,10 @@ namespace Box2DSharp.Dynamics
                 var minSleepTime = Settings.MaxFloat;
 
                 // 线速度最小值平方
-                const float linTolSqr = Settings.LinearSleepTolerance * Settings.LinearSleepTolerance;
+                const F linTolSqr = Settings.LinearSleepTolerance * Settings.LinearSleepTolerance;
 
                 // 角速度最小值平方
-                const float angTolSqr = Settings.AngularSleepTolerance * Settings.AngularSleepTolerance;
+                const F angTolSqr = Settings.AngularSleepTolerance * Settings.AngularSleepTolerance;
 
                 for (var i = 0; i < BodyCount; ++i)
                 {
@@ -284,15 +284,15 @@ namespace Box2DSharp.Dynamics
 
                     if (!b.Flags.HasFlag(BodyFlags.AutoSleep)                              // 不允许休眠
                      || b.AngularVelocity * b.AngularVelocity > angTolSqr            // 或 角速度大于最小值
-                     || Vector2.Dot(b.LinearVelocity, b.LinearVelocity) > linTolSqr) // 或 线速度大于最小值
+                     || V2.Dot(b.LinearVelocity, b.LinearVelocity) > linTolSqr) // 或 线速度大于最小值
                     {
-                        b.SleepTime = 0.0f;
-                        minSleepTime = 0.0f;
+                        b.SleepTime = F.Zero;
+                        minSleepTime = F.Zero;
                     }
                     else
                     {
                         b.SleepTime += h;
-                        minSleepTime = Math.Min(minSleepTime, b.SleepTime);
+                        minSleepTime = F.Min(minSleepTime, b.SleepTime);
                     }
                 }
 
@@ -403,7 +403,7 @@ namespace Box2DSharp.Dynamics
 
                 // Check for large velocities
                 var translation = h * v;
-                if (Vector2.Dot(translation, translation) > Settings.MaxTranslationSquared)
+                if (V2.Dot(translation, translation) > Settings.MaxTranslationSquared)
                 {
                     var ratio = Settings.MaxTranslation / translation.Length();
                     v *= ratio;

@@ -10,40 +10,40 @@ namespace Box2DSharp.Dynamics.Joints
     public class DistanceJoint : Joint
     {
         // Solver shared
-        private readonly Vector2 _localAnchorA;
+        private readonly V2 _localAnchorA;
 
-        private readonly Vector2 _localAnchorB;
+        private readonly V2 _localAnchorB;
 
-        private float _bias;
+        private F _bias;
 
-        private float _gamma;
+        private F _gamma;
 
-        private float _impulse;
+        private F _impulse;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
 
-        private float _invIa;
+        private F _invIa;
 
-        private float _invIb;
+        private F _invIb;
 
-        private float _invMassA;
+        private F _invMassA;
 
-        private float _invMassB;
+        private F _invMassB;
 
-        private Vector2 _localCenterA;
+        private V2 _localCenterA;
 
-        private Vector2 _localCenterB;
+        private V2 _localCenterB;
 
-        private float _mass;
+        private F _mass;
 
-        private Vector2 _rA;
+        private V2 _rA;
 
-        private Vector2 _rB;
+        private V2 _rB;
 
-        private Vector2 _u;
+        private V2 _u;
 
         internal DistanceJoint(DistanceJointDef def) : base(def)
         {
@@ -52,35 +52,35 @@ namespace Box2DSharp.Dynamics.Joints
             Length = def.Length;
             FrequencyHz = def.FrequencyHz;
             DampingRatio = def.DampingRatio;
-            _impulse = 0.0f;
-            _gamma = 0.0f;
-            _bias = 0.0f;
+            _impulse = F.Zero;
+            _gamma = F.Zero;
+            _bias = F.Zero;
         }
 
         /// Set/get the natural length.
         /// Manipulating the length can lead to non-physical behavior when the frequency is zero.
-        public float Length { get; set; }
+        public F Length { get; set; }
 
         /// Set/get frequency in Hz.
-        public float FrequencyHz { get; set; }
+        public F FrequencyHz { get; set; }
 
         /// Set/get damping ratio.
 
-        public float DampingRatio { get; set; }
+        public F DampingRatio { get; set; }
 
-        public override Vector2 GetAnchorA()
+        public override V2 GetAnchorA()
         {
             return BodyA.GetWorldPoint(_localAnchorA);
         }
 
-        public override Vector2 GetAnchorB()
+        public override V2 GetAnchorB()
         {
             return BodyB.GetWorldPoint(_localAnchorB);
         }
 
         /// Get the reaction force given the inverse time step.
         /// Unit is N.
-        public override Vector2 GetReactionForce(float inv_dt)
+        public override V2 GetReactionForce(F inv_dt)
         {
             var F = inv_dt * _impulse * _u;
             return F;
@@ -88,19 +88,19 @@ namespace Box2DSharp.Dynamics.Joints
 
         /// Get the reaction torque given the inverse time step.
         /// Unit is N*m. This is always zero for a distance joint.
-        public override float GetReactionTorque(float inv_dt)
+        public override F GetReactionTorque(F inv_dt)
         {
-            return 0.0f;
+            return F.Zero;
         }
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 GetLocalAnchorA()
+        public V2 GetLocalAnchorA()
         {
             return _localAnchorA;
         }
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 GetLocalAnchorB()
+        public V2 GetLocalAnchorB()
         {
             return _localAnchorB;
         }
@@ -155,11 +155,11 @@ namespace Box2DSharp.Dynamics.Joints
             var length = _u.Length();
             if (length > Settings.LinearSlop)
             {
-                _u *= 1.0f / length;
+                _u *= F.One / length;
             }
             else
             {
-                _u.Set(0.0f, 0.0f);
+                _u.Set(F.Zero, F.Zero);
             }
 
             var crAu = MathUtils.Cross(_rA, _u);
@@ -167,17 +167,17 @@ namespace Box2DSharp.Dynamics.Joints
             var invMass = _invMassA + _invIa * crAu * crAu + _invMassB + _invIb * crBu * crBu;
 
             // Compute the effective mass matrix.
-            _mass = Math.Abs(invMass) > Settings.Epsilon ? 1.0f / invMass : 0.0f;
+            _mass = Math.Abs(invMass) > Settings.Epsilon ? F.One / invMass : F.Zero;
 
-            if (FrequencyHz > 0.0f)
+            if (FrequencyHz > F.Zero)
             {
                 var C = length - Length;
 
                 // Frequency
-                var omega = 2.0f * Settings.Pi * FrequencyHz;
+                var omega = F.Two * Settings.Pi * FrequencyHz;
 
                 // Damping coefficient
-                var d = 2.0f * _mass * DampingRatio * omega;
+                var d = F.Two * _mass * DampingRatio * omega;
 
                 // Spring stiffness
                 var k = _mass * omega * omega;
@@ -185,16 +185,16 @@ namespace Box2DSharp.Dynamics.Joints
                 // magic formulas
                 var h = data.Step.Dt;
                 _gamma = h * (d + h * k);
-                _gamma = !_gamma.Equals(0.0f) ? 1.0f / _gamma : 0.0f;
+                _gamma = !_gamma.Equals(F.Zero) ? F.One / _gamma : F.Zero;
                 _bias = C * h * k * _gamma;
 
                 invMass += _gamma;
-                _mass = Math.Abs(invMass) > Settings.Epsilon ? 1.0f / invMass : 0.0f;
+                _mass = Math.Abs(invMass) > Settings.Epsilon ? F.One / invMass : F.Zero;
             }
             else
             {
-                _gamma = 0.0f;
-                _bias = 0.0f;
+                _gamma = F.Zero;
+                _bias = F.Zero;
             }
 
             if (data.Step.WarmStarting)
@@ -210,7 +210,7 @@ namespace Box2DSharp.Dynamics.Joints
             }
             else
             {
-                _impulse = 0.0f;
+                _impulse = F.Zero;
             }
 
             data.Velocities[_indexA].V = vA;
@@ -229,7 +229,7 @@ namespace Box2DSharp.Dynamics.Joints
             // Cdot = dot(u, v + cross(w, r))
             var vpA = vA + MathUtils.Cross(wA, _rA);
             var vpB = vB + MathUtils.Cross(wB, _rB);
-            var Cdot = Vector2.Dot(_u, vpB - vpA);
+            var Cdot = V2.Dot(_u, vpB - vpA);
 
             var impulse = -_mass * (Cdot + _bias + _gamma * _impulse);
             _impulse += impulse;
@@ -248,7 +248,7 @@ namespace Box2DSharp.Dynamics.Joints
 
         internal override bool SolvePositionConstraints(in SolverData data)
         {
-            if (FrequencyHz > 0.0f)
+            if (FrequencyHz > F.Zero)
             {
                 // There is no position correction for soft distance constraints.
                 return true;

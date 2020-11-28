@@ -7,25 +7,25 @@ namespace Box2DSharp.Common
         DrawFlag Flags { get; set; }
 
         /// Draw a closed polygon provided in CCW order.
-        void DrawPolygon(Vector2[] vertices, int vertexCount, in Color color);
+        void DrawPolygon(V2[] vertices, int vertexCount, in Color color);
 
         /// Draw a solid closed polygon provided in CCW order.
-        void DrawSolidPolygon(Vector2[] vertices, int vertexCount, in Color color);
+        void DrawSolidPolygon(V2[] vertices, int vertexCount, in Color color);
 
         /// Draw a circle.
-        void DrawCircle(in Vector2 center, float radius, in Color color);
+        void DrawCircle(in V2 center, F radius, in Color color);
 
         /// Draw a solid circle.
-        void DrawSolidCircle(in Vector2 center, float radius, in Vector2 axis, in Color color);
+        void DrawSolidCircle(in V2 center, F radius, in V2 axis, in Color color);
 
         /// Draw a line segment.
-        void DrawSegment(in Vector2 p1, in Vector2 p2, in Color color);
+        void DrawSegment(in V2 p1, in V2 p2, in Color color);
 
         /// Draw a transform. Choose your own length scale.
         /// @param xf a transform.
         void DrawTransform(in Transform xf);
 
         /// Draw a point.
-        void DrawPoint(in Vector2 p, float size, in Color color);
+        void DrawPoint(in V2 p, F size, in Color color);
     }
 }

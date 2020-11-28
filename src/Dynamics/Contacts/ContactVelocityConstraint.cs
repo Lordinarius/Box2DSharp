@@ -12,26 +12,26 @@ namespace Box2DSharp.Dynamics.Contacts
 
         public int ContactIndex;
 
-        public float Friction;
+        public F Friction;
 
         public int IndexA;
 
         public int IndexB;
 
-        public float InvIa, InvIb;
+        public F InvIa, InvIb;
 
-        public float InvMassA, InvMassB;
+        public F InvMassA, InvMassB;
 
         public Matrix2x2 K;
 
-        public Vector2 Normal;
+        public V2 Normal;
 
         public Matrix2x2 NormalMass;
 
         public int PointCount;
 
-        public float Restitution;
+        public F Restitution;
 
-        public float TangentSpeed;
+        public F TangentSpeed;
     }
 }

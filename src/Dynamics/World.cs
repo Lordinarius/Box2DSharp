@@ -21,7 +21,7 @@ namespace Box2DSharp.Dynamics
         /// support a variable time step.
         /// 时间步倍率
         /// </summary>
-        private float _invDt0;
+        private F _invDt0;
 
         /// <summary>
         /// 时间步完成
@@ -54,7 +54,7 @@ namespace Box2DSharp.Dynamics
         /// <summary>
         /// 重力常数
         /// </summary>
-        public Vector2 Gravity { get; set; }
+        public V2 Gravity { get; set; }
 
         /// <summary>
         /// 清除受力
@@ -151,13 +151,13 @@ namespace Box2DSharp.Dynamics
 
         /// Get the quality metric of the dynamic tree. The smaller the better.
         /// The minimum is 1.
-        public float TreeQuality => ContactManager.BroadPhase.GetTreeQuality();
+        public F TreeQuality => ContactManager.BroadPhase.GetTreeQuality();
 
         public World()
-            : this(new Vector2(0, -10))
+            : this(new V2(0, -10))
         { }
 
-        public World(in Vector2 gravity)
+        public World(in V2 gravity)
         {
             Gravity = gravity;
 
@@ -168,7 +168,7 @@ namespace Box2DSharp.Dynamics
 
             AllowSleep = true;
             IsAutoClearForces = true;
-            _invDt0 = 0.0f;
+            _invDt0 = F.Zero;
             Profile = default;
         }
 
@@ -421,7 +421,7 @@ namespace Box2DSharp.Dynamics
         /// <param name="timeStep">the amount of time to simulate, this should not vary.</param>
         /// <param name="velocityIterations">for the velocity constraint solver.</param>
         /// <param name="positionIterations">for the position constraint solver.</param>
-        public void Step(float timeStep, int velocityIterations, int positionIterations)
+        public void Step(F timeStep, int velocityIterations, int positionIterations)
         {
             // profile 计时
             _stepTimer.Restart();
@@ -448,13 +448,13 @@ namespace Box2DSharp.Dynamics
             };
 
             // 计算时间间隔倒数
-            if (timeStep > 0.0f)
+            if (timeStep > F.Zero)
             {
-                step.InvDt = 1.0f / timeStep;
+                step.InvDt = F.One / timeStep;
             }
             else
             {
-                step.InvDt = 0.0f;
+                step.InvDt = F.Zero;
             }
 
             step.DtRatio = _invDt0 * timeStep;
@@ -472,7 +472,7 @@ namespace Box2DSharp.Dynamics
 
             // Integrate velocities, solve velocity constraints, and integrate positions.
             // 对速度进行积分，求解速度约束，整合位置
-            if (_stepComplete && step.Dt > 0.0f)
+            if (_stepComplete && step.Dt > F.Zero)
             {
                 _timer.Restart();
                 Solve(step);
@@ -482,7 +482,7 @@ namespace Box2DSharp.Dynamics
 
             // Handle TOI events.
             // 处理碰撞时间
-            if (ContinuousPhysics && step.Dt > 0.0f)
+            if (ContinuousPhysics && step.Dt > F.Zero)
             {
                 _timer.Restart();
                 SolveTOI(step);
@@ -490,7 +490,7 @@ namespace Box2DSharp.Dynamics
                 Profile.SolveTOI = _timer.ElapsedMilliseconds;
             }
 
-            if (step.Dt > 0.0f)
+            if (step.Dt > F.Zero)
             {
                 _invDt0 = step.InvDt;
             }
@@ -522,7 +522,7 @@ namespace Box2DSharp.Dynamics
                 var body = node.Value;
                 node = node.Next;
                 body.Force.SetZero();
-                body.Torque = 0.0f;
+                body.Torque = F.Zero;
             }
         }
 
@@ -583,7 +583,7 @@ namespace Box2DSharp.Dynamics
                 Callback = default;
             }
 
-            public float RayCastCallback(in RayCastInput input, int proxyId)
+            public F RayCastCallback(in RayCastInput input, int proxyId)
             {
                 var userData = ContactManager.BroadPhase.GetUserData(proxyId);
                 var proxy = (FixtureProxy)userData;
@@ -598,7 +598,7 @@ namespace Box2DSharp.Dynamics
                 }
 
                 var fraction = output.Fraction;
-                var point = (1.0f - fraction) * input.P1 + fraction * input.P2;
+                var point = (F.One - fraction) * input.P1 + fraction * input.P2;
                 return Callback.RayCastCallback(fixture, point, output.Normal, fraction);
             }
         }
@@ -611,11 +611,11 @@ namespace Box2DSharp.Dynamics
         /// @param callback a user implemented callback class.
         /// @param point1 the ray starting point
         /// @param point2 the ray ending point
-        public void RayCast(in IRayCastCallback callback, in Vector2 point1, in Vector2 point2)
+        public void RayCast(in IRayCastCallback callback, in V2 point1, in V2 point2)
         {
             var input = new RayCastInput
             {
-                MaxFraction = 1.0f, P1 = point1,
+                MaxFraction = F.One, P1 = point1,
                 P2 = point2
             };
             _rayCastCallback.Set(ContactManager, in callback);
@@ -626,7 +626,7 @@ namespace Box2DSharp.Dynamics
         /// Shift the world origin. Useful for large worlds.
         /// The body shift formula is: position -= newOrigin
         /// @param newOrigin the new origin with respect to the old origin
-        public void ShiftOrigin(in Vector2 newOrigin)
+        public void ShiftOrigin(in V2 newOrigin)
         {
             Debug.Assert(!IsLocked);
             if (IsLocked)
@@ -667,9 +667,9 @@ namespace Box2DSharp.Dynamics
         /// <param name="step"></param>
         private void Solve(in TimeStep step)
         {
-            Profile.SolveInit = 0.0f;
-            Profile.SolveVelocity = 0.0f;
-            Profile.SolvePosition = 0.0f;
+            Profile.SolveInit = F.Zero;
+            Profile.SolveVelocity = F.Zero;
+            Profile.SolvePosition = F.Zero;
 
             // Size the island for the worst case.
             // 最坏情况岛屿容量,即全世界在同一个岛屿
@@ -916,7 +916,7 @@ namespace Box2DSharp.Dynamics
                     var b = bodyNode.Value;
                     bodyNode = bodyNode.Next;
                     b.UnsetFlag(BodyFlags.Island);
-                    b.Sweep.Alpha0 = 0.0f;
+                    b.Sweep.Alpha0 = F.Zero;
                 }
 
                 for (var node = ContactManager.ContactList.First; node != null; node = node.Next)
@@ -926,7 +926,7 @@ namespace Box2DSharp.Dynamics
                     // Invalidate TOI
                     c.Flags &= ~(Contact.ContactFlag.ToiFlag | Contact.ContactFlag.IslandFlag);
                     c.ToiCount = 0;
-                    c.Toi = 1.0f;
+                    c.Toi = F.One;
                 }
             }
 
@@ -935,7 +935,7 @@ namespace Box2DSharp.Dynamics
             {
                 // Find the first TOI.
                 Contact minContact = null;
-                var minAlpha = 1.0f;
+                var minAlpha = F.One;
 
                 var contactNode = ContactManager.ContactList.First;
                 while (contactNode != null)
@@ -955,7 +955,7 @@ namespace Box2DSharp.Dynamics
                         continue;
                     }
 
-                    var alpha = 1.0f;
+                    var alpha = F.One;
                     if (c.Flags.HasFlag(Contact.ContactFlag.ToiFlag))
                     {
                         // This contact has a valid cached TOI.
@@ -1013,7 +1013,7 @@ namespace Box2DSharp.Dynamics
                             bB.Sweep.Advance(alpha0);
                         }
 
-                        Debug.Assert(alpha0 < 1.0f);
+                        Debug.Assert(alpha0 < F.One);
 
                         var indexA = c.ChildIndexA;
                         var indexB = c.ChildIndexB;
@@ -1024,13 +1024,13 @@ namespace Box2DSharp.Dynamics
                         input.ProxyB.Set(fB.Shape, indexB);
                         input.SweepA = bA.Sweep;
                         input.SweepB = bB.Sweep;
-                        input.Tmax = 1.0f;
+                        input.Tmax = F.One;
 
                         TimeOfImpact.ComputeTimeOfImpact(out var output, input, ToiProfile, GJkProfile);
 
                         // Beta is the fraction of the remaining portion of the .
                         var beta = output.Time;
-                        alpha = output.State == ToiOutput.ToiState.Touching ? Math.Min(alpha0 + (1.0f - alpha0) * beta, 1.0f) : 1.0f;
+                        alpha = output.State == ToiOutput.ToiState.Touching ? F.Min(alpha0 + (F.One - alpha0) * beta, F.One) : F.One;
 
                         c.Toi = alpha;
                         c.Flags |= Contact.ContactFlag.ToiFlag;
@@ -1044,7 +1044,7 @@ namespace Box2DSharp.Dynamics
                     }
                 }
 
-                if (minContact == default || 1.0f - 10.0f * Settings.Epsilon < minAlpha)
+                if (minContact == default || F.One - 10.0f * Settings.Epsilon < minAlpha)
                 {
                     // No more TOI events. Done!
                     _stepComplete = true;
@@ -1281,11 +1281,11 @@ namespace Box2DSharp.Dynamics
                     }
                 }
 
-                var dt = (1.0f - minAlpha) * step.Dt;
+                var dt = (F.One - minAlpha) * step.Dt;
                 var subStep = new TimeStep
                 {
-                    Dt = dt, InvDt = 1.0f / dt,
-                    DtRatio = 1.0f, PositionIterations = 20,
+                    Dt = dt, InvDt = F.One / dt,
+                    DtRatio = F.One, PositionIterations = 20,
                     VelocityIterations = step.VelocityIterations, WarmStarting = false
                 };
 
@@ -1424,7 +1424,7 @@ namespace Box2DSharp.Dynamics
                         if (b.BodyType == BodyType.DynamicBody && b.Mass.Equals(0))
                         {
                             // Bad body
-                            DrawShape(f, xf, Color.FromArgb(1.0f, 0.0f, 0.0f));
+                            DrawShape(f, xf, Color.FromArgb(F.One, F.Zero, F.Zero));
                         }
                         else if (isEnabled == false)
                         {
@@ -1496,14 +1496,14 @@ namespace Box2DSharp.Dynamics
                         foreach (var proxy in f.Proxies)
                         {
                             var aabb = bp.GetFatAABB(proxy.ProxyId);
-                            var vs = ArrayPool<Vector2>.Shared.Rent(4);
+                            var vs = ArrayPool<V2>.Shared.Rent(4);
                             vs[0].Set(aabb.LowerBound.X, aabb.LowerBound.Y);
                             vs[1].Set(aabb.UpperBound.X, aabb.LowerBound.Y);
                             vs[2].Set(aabb.UpperBound.X, aabb.UpperBound.Y);
                             vs[3].Set(aabb.LowerBound.X, aabb.UpperBound.Y);
 
                             Drawer.DrawPolygon(vs, 4, color);
-                            ArrayPool<Vector2>.Shared.Return(vs, true);
+                            ArrayPool<V2>.Shared.Return(vs, true);
                         }
                     }
                 }
@@ -1537,7 +1537,7 @@ namespace Box2DSharp.Dynamics
             {
                 var center = MathUtils.Mul(xf, circle.Position);
                 var radius = circle.Radius;
-                var axis = MathUtils.Mul(xf.Rotation, new Vector2(1.0f, 0.0f));
+                var axis = MathUtils.Mul(xf.Rotation, new V2(F.One, F.Zero));
 
                 Drawer.DrawSolidCircle(center, radius, axis, color);
             }
@@ -1576,7 +1576,7 @@ namespace Box2DSharp.Dynamics
             {
                 var vertexCount = poly.Count;
                 Debug.Assert(vertexCount <= Settings.MaxPolygonVertices);
-                var vertices = ArrayPool<Vector2>.Shared.Rent(vertexCount);
+                var vertices = ArrayPool<V2>.Shared.Rent(vertexCount);
 
                 for (var i = 0; i < vertexCount; ++i)
                 {
@@ -1584,7 +1584,7 @@ namespace Box2DSharp.Dynamics
                 }
 
                 Drawer.DrawSolidPolygon(vertices, vertexCount, color);
-                ArrayPool<Vector2>.Shared.Return(vertices);
+                ArrayPool<V2>.Shared.Return(vertices);
             }
                 break;
             }

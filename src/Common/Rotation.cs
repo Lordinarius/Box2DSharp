@@ -8,54 +8,54 @@ namespace Box2DSharp.Common
     public struct Rotation
     {
         /// Sine and cosine
-        public float Sin;
+        public F Sin;
 
-        public float Cos;
+        public F Cos;
 
-        public Rotation(float sin, float cos)
+        public Rotation(F sin, F cos)
         {
             Sin = sin;
             Cos = cos;
         }
 
         /// Initialize from an angle in radians
-        public Rotation(float angle)
+        public Rotation(F angle)
         {
             // TODO_ERIN optimize
-            Sin = (float) Math.Sin(angle);
-            Cos = (float) Math.Cos(angle);
+            Sin = (F) Math.Sin(angle);
+            Cos = (F) Math.Cos(angle);
         }
 
         /// Set using an angle in radians.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Set(float angle)
+        public void Set(F angle)
         {
             // TODO_ERIN optimize
-            Sin = (float) Math.Sin(angle);
-            Cos = (float) Math.Cos(angle);
+            Sin = (F) Math.Sin(angle);
+            Cos = (F) Math.Cos(angle);
         }
 
         /// Set to the identity rotation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetIdentity()
         {
-            Sin = 0.0f;
-            Cos = 1.0f;
+            Sin = F.Zero;
+            Cos = F.One;
         }
 
         /// Get the angle in radians
-        public float Angle => (float) Math.Atan2(Sin, Cos);
+        public F Angle => (F) Math.Atan2(Sin, Cos);
 
         /// Get the x-axis
-        public Vector2 GetXAxis()
+        public V2 GetXAxis()
         {
-            return new Vector2(Cos, Sin);
+            return new V2(Cos, Sin);
         }
 
         /// Get the u-axis
-        public Vector2 GetYAxis()
+        public V2 GetYAxis()
         {
-            return new Vector2(-Sin, Cos);
+            return new V2(-Sin, Cos);
         }
     }
 }

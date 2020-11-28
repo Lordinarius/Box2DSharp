@@ -15,40 +15,40 @@ namespace Box2DSharp.Dynamics.Joints
     public class RopeJoint : Joint
     {
         // Solver shared
-        private readonly Vector2 _localAnchorA;
+        private readonly V2 _localAnchorA;
 
-        private readonly Vector2 _localAnchorB;
+        private readonly V2 _localAnchorB;
 
-        private float _impulse;
+        private F _impulse;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
 
-        private float _invIa;
+        private F _invIa;
 
-        private float _invIb;
+        private F _invIb;
 
-        private float _invMassA;
+        private F _invMassA;
 
-        private float _invMassB;
+        private F _invMassB;
 
-        private float _length;
+        private F _length;
 
-        private Vector2 _localCenterA;
+        private V2 _localCenterA;
 
-        private Vector2 _localCenterB;
+        private V2 _localCenterB;
 
-        private float _mass;
+        private F _mass;
 
-        private float _maxLength;
+        private F _maxLength;
 
-        private Vector2 _rA;
+        private V2 _rA;
 
-        private Vector2 _rB;
+        private V2 _rB;
 
-        private Vector2 _u;
+        private V2 _u;
 
         internal RopeJoint(RopeJointDef def)
             : base(def)
@@ -58,62 +58,62 @@ namespace Box2DSharp.Dynamics.Joints
 
             _maxLength = def.MaxLength;
 
-            _mass = 0.0f;
-            _impulse = 0.0f;
-            _length = 0.0f;
+            _mass = F.Zero;
+            _impulse = F.Zero;
+            _length = F.Zero;
         }
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 GetLocalAnchorA()
+        public V2 GetLocalAnchorA()
         {
             return _localAnchorA;
         }
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 GetLocalAnchorB()
+        public V2 GetLocalAnchorB()
         {
             return _localAnchorB;
         }
 
         /// Set/Get the maximum length of the rope.
-        public void SetMaxLength(float length)
+        public void SetMaxLength(F length)
         {
             _maxLength = length;
         }
 
-        public float GetMaxLength()
+        public F GetMaxLength()
         {
             return _maxLength;
         }
 
-        public float GetLength()
+        public F GetLength()
         {
             return _length;
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorA()
+        public override V2 GetAnchorA()
         {
             return BodyA.GetWorldPoint(_localAnchorA);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorB()
+        public override V2 GetAnchorB()
         {
             return BodyB.GetWorldPoint(_localAnchorB);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetReactionForce(float inv_dt)
+        public override V2 GetReactionForce(F inv_dt)
         {
             var F = inv_dt * _impulse * _u;
             return F;
         }
 
         /// <inheritdoc />
-        public override float GetReactionTorque(float inv_dt)
+        public override F GetReactionTorque(F inv_dt)
         {
-            return 0.0f;
+            return F.Zero;
         }
 
         /// Dump joint to dmLog
@@ -155,13 +155,13 @@ namespace Box2DSharp.Dynamics.Joints
 
             if (_length > Settings.LinearSlop)
             {
-                _u *= 1.0f / _length;
+                _u *= F.One / _length;
             }
             else
             {
                 _u.SetZero();
-                _mass = 0.0f;
-                _impulse = 0.0f;
+                _mass = F.Zero;
+                _impulse = F.Zero;
                 return;
             }
 
@@ -170,7 +170,7 @@ namespace Box2DSharp.Dynamics.Joints
             var crB = MathUtils.Cross(_rB, _u);
             var invMass = _invMassA + _invIa * crA * crA + _invMassB + _invIb * crB * crB;
 
-            _mass = !invMass.Equals(0.0f) ? 1.0f / invMass : 0.0f;
+            _mass = !invMass.Equals(F.Zero) ? F.One / invMass : F.Zero;
 
             if (data.Step.WarmStarting)
             {
@@ -185,7 +185,7 @@ namespace Box2DSharp.Dynamics.Joints
             }
             else
             {
-                _impulse = 0.0f;
+                _impulse = F.Zero;
             }
 
             data.Velocities[_indexA].V = vA;
@@ -206,17 +206,17 @@ namespace Box2DSharp.Dynamics.Joints
             var vpA = vA + MathUtils.Cross(wA, _rA);
             var vpB = vB + MathUtils.Cross(wB, _rB);
             var C = _length - _maxLength;
-            var cdot = Vector2.Dot(_u, vpB - vpA);
+            var cdot = V2.Dot(_u, vpB - vpA);
 
             // Predictive constraint.
-            if (C < 0.0f)
+            if (C < F.Zero)
             {
                 cdot += data.Step.InvDt * C;
             }
 
             var impulse = -_mass * cdot;
             var oldImpulse = _impulse;
-            _impulse = Math.Min(0.0f, _impulse + impulse);
+            _impulse = F.Min(F.Zero, _impulse + impulse);
             impulse = _impulse - oldImpulse;
 
             var P = impulse * _u;
@@ -249,7 +249,7 @@ namespace Box2DSharp.Dynamics.Joints
             _length = u.Normalize();
             var C = _length - _maxLength;
 
-            C = MathUtils.Clamp(C, 0.0f, Settings.MaxLinearCorrection);
+            C = MathUtils.Clamp(C, F.Zero, Settings.MaxLinearCorrection);
 
             var impulse = -_mass * C;
             var P = impulse * u;

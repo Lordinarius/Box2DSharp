@@ -13,7 +13,7 @@ namespace Box2DSharp.Dynamics
         /// Callback for ray casts.
         /// See b2World::RayCast
         /// Called for each fixture found in the query. You control how the ray cast
-        /// proceeds by returning a float:
+        /// proceeds by returning a F:
         /// return -1: ignore this fixture and continue
         /// return 0: terminate the ray cast
         /// return fraction: clip the ray to this point
@@ -23,7 +23,7 @@ namespace Box2DSharp.Dynamics
         /// @param normal the normal vector at the point of intersection
         /// @return -1 to filter, 0 to terminate, fraction to clip the ray for
         /// closest hit, 1 to continue
-        float RayCastCallback(Fixture fixture, in Vector2 point, in Vector2 normal, float fraction);
+        F RayCastCallback(Fixture fixture, in V2 point, in V2 normal, F fraction);
     }
 }
 
@@ -36,7 +36,7 @@ namespace Box2DSharp.Dynamics.Internal
 
     public interface ITreeRayCastCallback
     {
-        float RayCastCallback(in RayCastInput input, int proxyId);
+        F RayCastCallback(in RayCastInput input, int proxyId);
     }
 
     public interface IAddPairCallback

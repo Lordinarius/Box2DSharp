@@ -5,15 +5,15 @@ namespace Box2DSharp.Ropes
     /// 
     public struct RopeDef
     {
-        public Vector2 Position;
+        public V2 Position;
 
-        public Vector2[] Vertices;
+        public V2[] Vertices;
 
         public int Count;
 
-        public float[] Masses;
+        public F[] Masses;
 
-        public Vector2 Gravity;
+        public V2 Gravity;
 
         public RopeTuning Tuning;
     };

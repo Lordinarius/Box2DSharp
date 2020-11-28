@@ -15,14 +15,14 @@ namespace Box2DSharp.Collision
         /// <summary>
         ///     the lower vertex
         /// </summary>
-        public Vector2 LowerBound;
+        public V2 LowerBound;
 
         /// <summary>
         ///     the upper vertex
         /// </summary>
-        public Vector2 UpperBound;
+        public V2 UpperBound;
 
-        public AABB(in Vector2 lowerBound, in Vector2 upperBound)
+        public AABB(in V2 lowerBound, in V2 upperBound)
         {
             LowerBound = lowerBound;
             UpperBound = upperBound;
@@ -37,7 +37,7 @@ namespace Box2DSharp.Collision
         public bool IsValid()
         {
             var d = UpperBound - LowerBound;
-            var valid = d.X >= 0.0f && d.Y >= 0.0f;
+            var valid = d.X >= F.Zero && d.Y >= F.Zero;
             valid = valid && LowerBound.IsValid() && UpperBound.IsValid();
             return valid;
         }
@@ -48,9 +48,9 @@ namespace Box2DSharp.Collision
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public Vector2 GetCenter()
+        public V2 GetCenter()
         {
-            return 0.5f * (LowerBound + UpperBound);
+            return F.Half * (LowerBound + UpperBound);
         }
 
         /// <summary>
@@ -59,9 +59,9 @@ namespace Box2DSharp.Collision
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public Vector2 GetExtents()
+        public V2 GetExtents()
         {
-            return 0.5f * (UpperBound - LowerBound);
+            return F.Half * (UpperBound - LowerBound);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Box2DSharp.Collision
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public float GetPerimeter()
+        public F GetPerimeter()
         {
             var wx = UpperBound.X - LowerBound.X;
             var wy = UpperBound.Y - LowerBound.Y;
@@ -85,9 +85,9 @@ namespace Box2DSharp.Collision
 
             var p = input.P1;
             var d = input.P2 - input.P1;
-            var absD = Vector2.Abs(d);
+            var absD = V2.Abs(d);
 
-            var normal = new Vector2();
+            var normal = new V2();
 
             {
                 if (absD.X < Settings.Epsilon)
@@ -100,17 +100,17 @@ namespace Box2DSharp.Collision
                 }
                 else
                 {
-                    var invD = 1.0f / d.X;
+                    var invD = F.One / d.X;
                     var t1 = (LowerBound.X - p.X) * invD;
                     var t2 = (UpperBound.X - p.X) * invD;
 
                     // Sign of the normal vector.
-                    var s = -1.0f;
+                    var s = -F.One;
 
                     if (t1 > t2)
                     {
                         MathUtils.Swap(ref t1, ref t2);
-                        s = 1.0f;
+                        s = F.One;
                     }
 
                     // Push the min up
@@ -141,17 +141,17 @@ namespace Box2DSharp.Collision
                 }
                 else
                 {
-                    var invD = 1.0f / d.Y;
+                    var invD = F.One / d.Y;
                     var t1 = (LowerBound.Y - p.Y) * invD;
                     var t2 = (UpperBound.Y - p.Y) * invD;
 
                     // Sign of the normal vector.
-                    var s = -1.0f;
+                    var s = -F.One;
 
                     if (t1 > t2)
                     {
                         MathUtils.Swap(ref t1, ref t2);
-                        s = 1.0f;
+                        s = F.One;
                     }
 
                     // Push the min up
@@ -174,7 +174,7 @@ namespace Box2DSharp.Collision
 
             // Does the ray start inside the box?
             // Does the ray intersect beyond the max fraction?
-            if (tmin < 0.0f || input.MaxFraction < tmin)
+            if (tmin < F.Zero || input.MaxFraction < tmin)
             {
                 return false;
             }
@@ -188,8 +188,8 @@ namespace Box2DSharp.Collision
         public static void Combine(in AABB left, in AABB right, out AABB aabb)
         {
             aabb = new AABB(
-                Vector2.Min(left.LowerBound, right.LowerBound),
-                Vector2.Max(left.UpperBound, right.UpperBound));
+                V2.Min(left.LowerBound, right.LowerBound),
+                V2.Max(left.UpperBound, right.UpperBound));
         }
 
         /// <summary>
@@ -198,8 +198,8 @@ namespace Box2DSharp.Collision
         /// <param name="aabb"></param>
         public void Combine(in AABB aabb)
         {
-            LowerBound = Vector2.Min(LowerBound, aabb.LowerBound);
-            UpperBound = Vector2.Max(UpperBound, aabb.UpperBound);
+            LowerBound = V2.Min(LowerBound, aabb.LowerBound);
+            UpperBound = V2.Max(UpperBound, aabb.UpperBound);
         }
 
         /// <summary>
@@ -209,8 +209,8 @@ namespace Box2DSharp.Collision
         /// <param name="aabb2"></param>
         public void Combine(in AABB aabb1, in AABB aabb2)
         {
-            LowerBound = Vector2.Min(aabb1.LowerBound, aabb2.LowerBound);
-            UpperBound = Vector2.Max(aabb1.UpperBound, aabb2.UpperBound);
+            LowerBound = V2.Min(aabb1.LowerBound, aabb2.LowerBound);
+            UpperBound = V2.Max(aabb1.UpperBound, aabb2.UpperBound);
         }
 
         /// <summary>

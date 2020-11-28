@@ -20,7 +20,7 @@ namespace Box2DSharp.Dynamics
         /// <summary>
         /// the coefficient of restitution. This will _not_ change the restitution of existing contacts.
         /// </summary>
-        public float Restitution;
+        public F Restitution;
 
         /// Get the parent body of this fixture. This is null if the fixture is not attached.
         /// @return the parent body.
@@ -29,17 +29,17 @@ namespace Box2DSharp.Dynamics
         /// <summary>
         /// the density of this fixture. This will _not_ automatically adjust the mass of the body. You must call b2Body::ResetMassData to update the body's mass.
         /// </summary>
-        public float Density
+        public F Density
         {
             get => _density;
             set
             {
-                Debug.Assert(value.IsValid() && value >= 0.0f);
+                Debug.Assert(value.IsValid() && value >= F.Zero);
                 _density = value;
             }
         }
 
-        private float _density;
+        private F _density;
 
         /// Get the child shape. You can modify the child shape, however you should not change the
         /// number of vertices because this will crash some collision caching mechanisms.
@@ -62,7 +62,7 @@ namespace Box2DSharp.Dynamics
         /// <summary>
         /// the coefficient of friction. This will _not_ change the friction of existing contacts.
         /// </summary>
-        public float Friction { get; set; }
+        public F Friction { get; set; }
 
         public bool IsSensor
         {
@@ -196,7 +196,7 @@ namespace Box2DSharp.Dynamics
 
         /// Test a point for containment in this fixture.
         /// @param p a point in world coordinates.
-        public bool TestPoint(in Vector2 p)
+        public bool TestPoint(in V2 p)
         {
             return Shape.TestPoint(Body.GetTransform(), p);
         }
@@ -304,15 +304,15 @@ namespace Box2DSharp.Dynamics
     public struct FixtureDef
     {
         /// The density, usually in kg/m^2.
-        public float Density;
+        public F Density;
 
         /// Contact filtering data.
         public Filter Filter;
 
-        private float? _friction;
+        private F? _friction;
 
         /// The friction coefficient, usually in the range [0,1].
-        public float Friction
+        public F Friction
         {
             get => _friction.GetValueOrDefault(0.2f);
             set => _friction = value;
@@ -323,7 +323,7 @@ namespace Box2DSharp.Dynamics
         public bool IsSensor;
 
         /// The restitution (elasticity) usually in the range [0,1].
-        public float Restitution;
+        public F Restitution;
 
         /// The shape, this must be set. The shape will be cloned, so you
         /// can create the shape on the stack.

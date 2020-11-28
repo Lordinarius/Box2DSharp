@@ -5,20 +5,20 @@ namespace Box2DSharp.Common
 {
     public struct Matrix2x2
     {
-        public Vector2 Ex;
+        public V2 Ex;
 
-        public Vector2 Ey;
+        public V2 Ey;
 
         /// The default constructor does nothing (for performance).
         /// Construct this matrix using columns.
-        public Matrix2x2(in Vector2 c1, in Vector2 c2)
+        public Matrix2x2(in V2 c1, in V2 c2)
         {
             Ex = c1;
             Ey = c2;
         }
 
         /// Construct this matrix using scalars.
-        public Matrix2x2(float a11, float a12, float a21, float a22)
+        public Matrix2x2(F a11, F a12, F a21, F a22)
         {
             Ex.X = a11;
             Ex.Y = a21;
@@ -27,7 +27,7 @@ namespace Box2DSharp.Common
         }
 
         /// Initialize this matrix using columns.
-        public void Set(in Vector2 c1, in Vector2 c2)
+        public void Set(in V2 c1, in V2 c2)
         {
             Ex = c1;
             Ey = c2;
@@ -36,20 +36,20 @@ namespace Box2DSharp.Common
         /// Set this to the identity matrix.
         public void SetIdentity()
         {
-            Ex.X = 1.0f;
-            Ey.X = 0.0f;
-            Ex.Y = 0.0f;
-            Ey.Y = 1.0f;
+            Ex.X = F.One;
+            Ey.X = F.Zero;
+            Ex.Y = F.Zero;
+            Ey.Y = F.One;
         }
 
         /// Set this matrix to all zeros.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetZero()
         {
-            Ex.X = 0.0f;
-            Ey.X = 0.0f;
-            Ex.Y = 0.0f;
-            Ey.Y = 0.0f;
+            Ex.X = F.Zero;
+            Ey.X = F.Zero;
+            Ex.Y = F.Zero;
+            Ey.Y = F.Zero;
         }
 
         public Matrix2x2 GetInverse()
@@ -60,9 +60,9 @@ namespace Box2DSharp.Common
             var d = Ey.Y;
 
             var det = a * d - b * c;
-            if (!det.Equals(0.0f))
+            if (!det.Equals(F.Zero))
             {
-                det = 1.0f / det;
+                det = F.One / det;
             }
 
             var B = new Matrix2x2();
@@ -75,19 +75,19 @@ namespace Box2DSharp.Common
 
         /// Solve A * x = b, where b is a column vector. This is more efficient
         /// than computing the inverse in one-shot cases.
-        public Vector2 Solve(in Vector2 b)
+        public V2 Solve(in V2 b)
         {
             var a11 = Ex.X;
             var a12 = Ey.X;
             var a21 = Ex.Y;
             var a22 = Ey.Y;
             var det = a11 * a22 - a12 * a21;
-            if (!det.Equals(0.0f))
+            if (!det.Equals(F.Zero))
             {
-                det = 1.0f / det;
+                det = F.One / det;
             }
 
-            var x = new Vector2 {X = det * (a22 * b.X - a12 * b.Y), Y = det * (a11 * b.Y - a21 * b.X)};
+            var x = new V2 {X = det * (a22 * b.X - a12 * b.Y), Y = det * (a11 * b.Y - a21 * b.X)};
             return x;
         }
 

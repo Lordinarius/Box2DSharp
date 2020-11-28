@@ -8,25 +8,25 @@ namespace Box2DSharp.Dynamics.Joints
     public class MouseJointDef : JointDef
     {
         /// The damping ratio. 0 = no damping, 1 = critical damping.
-        public float DampingRatio;
+        public F DampingRatio;
 
         /// The response speed.
-        public float FrequencyHz;
+        public F FrequencyHz;
 
         /// The maximum constraint force that can be exerted
         /// to move the candidate body. Usually you will express
         /// as some multiple of the weight (multiplier * mass * gravity).
-        public float MaxForce;
+        public F MaxForce;
 
         /// The initial world target point. This is assumed
         /// to coincide with the body anchor initially.
-        public Vector2 Target;
+        public V2 Target;
 
         public MouseJointDef()
         {
             JointType = JointType.MouseJoint;
-            Target.Set(0.0f, 0.0f);
-            MaxForce = 0.0f;
+            Target.Set(F.Zero, F.Zero);
+            MaxForce = F.Zero;
             FrequencyHz = 5.0f;
             DampingRatio = 0.7f;
         }

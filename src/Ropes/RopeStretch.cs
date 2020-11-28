@@ -6,16 +6,16 @@
 
         public int I2;
 
-        public float InvMass1;
+        public F InvMass1;
 
-        public float InvMass2;
+        public F InvMass2;
 
-        public float L;
+        public F L;
 
-        public float Lambda;
+        public F Lambda;
 
-        public float Spring;
+        public F Spring;
 
-        public float Damper;
+        public F Damper;
     };
 }

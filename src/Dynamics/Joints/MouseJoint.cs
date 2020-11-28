@@ -13,44 +13,44 @@ namespace Box2DSharp.Dynamics.Joints
     /// use the mouse joint, look at the testbed.
     public class MouseJoint : Joint
     {
-        private readonly Vector2 _localAnchorB;
+        private readonly V2 _localAnchorB;
 
-        private float _beta;
+        private F _beta;
 
-        private Vector2 _C;
+        private V2 _C;
 
-        private float _dampingRatio;
+        private F _dampingRatio;
 
-        private float _frequencyHz;
+        private F _frequencyHz;
 
-        private float _gamma;
+        private F _gamma;
 
         // Solver shared
-        private Vector2 _impulse;
+        private V2 _impulse;
 
         // Solver temp
         private int _indexB;
 
-        private float _invIb;
+        private F _invIb;
 
-        private float _invMassB;
+        private F _invMassB;
 
-        private Vector2 _localCenterB;
+        private V2 _localCenterB;
 
         private Matrix2x2 _mass;
 
-        private float _maxForce;
+        private F _maxForce;
 
-        private Vector2 _rB;
+        private V2 _rB;
 
-        private Vector2 _targetA;
+        private V2 _targetA;
 
         internal MouseJoint(MouseJointDef def) : base(def)
         {
             Debug.Assert(def.Target.IsValid());
-            Debug.Assert(def.MaxForce.IsValid() && def.MaxForce >= 0.0f);
-            Debug.Assert(def.FrequencyHz.IsValid() && def.FrequencyHz >= 0.0f);
-            Debug.Assert(def.DampingRatio.IsValid() && def.DampingRatio >= 0.0f);
+            Debug.Assert(def.MaxForce.IsValid() && def.MaxForce >= F.Zero);
+            Debug.Assert(def.FrequencyHz.IsValid() && def.FrequencyHz >= F.Zero);
+            Debug.Assert(def.DampingRatio.IsValid() && def.DampingRatio >= F.Zero);
 
             _targetA = def.Target;
             _localAnchorB = MathUtils.MulT(BodyB.GetTransform(), _targetA);
@@ -61,13 +61,13 @@ namespace Box2DSharp.Dynamics.Joints
             _frequencyHz = def.FrequencyHz;
             _dampingRatio = def.DampingRatio;
 
-            _beta = 0.0f;
-            _gamma = 0.0f;
+            _beta = F.Zero;
+            _gamma = F.Zero;
         }
 
         /// Implements b2Joint.
         /// Use this to update the target point.
-        public void SetTarget(in Vector2 target)
+        public void SetTarget(in V2 target)
         {
             if (target != _targetA)
             {
@@ -76,72 +76,72 @@ namespace Box2DSharp.Dynamics.Joints
             }
         }
 
-        public Vector2 GetTarget()
+        public V2 GetTarget()
         {
             return _targetA;
         }
 
         /// Set/get the maximum force in Newtons.
-        public void SetMaxForce(float force)
+        public void SetMaxForce(F force)
         {
             _maxForce = force;
         }
 
-        public float GetMaxForce()
+        public F GetMaxForce()
         {
             return _maxForce;
         }
 
         /// Set/get the frequency in Hertz.
-        public void SetFrequency(float hz)
+        public void SetFrequency(F hz)
         {
             _frequencyHz = hz;
         }
 
-        public float GetFrequency()
+        public F GetFrequency()
         {
             return _frequencyHz;
         }
 
         /// Set/get the damping ratio (dimensionless).
-        public void SetDampingRatio(float ratio)
+        public void SetDampingRatio(F ratio)
         {
             _dampingRatio = ratio;
         }
 
-        public float GetDampingRatio()
+        public F GetDampingRatio()
         {
             return _dampingRatio;
         }
 
         /// <inheritdoc />
-        public override void ShiftOrigin(in Vector2 newOrigin)
+        public override void ShiftOrigin(in V2 newOrigin)
         {
             _targetA -= newOrigin;
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorA()
+        public override V2 GetAnchorA()
         {
             return _targetA;
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorB()
+        public override V2 GetAnchorB()
         {
             return BodyB.GetWorldPoint(_localAnchorB);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetReactionForce(float inv_dt)
+        public override V2 GetReactionForce(F inv_dt)
         {
             return inv_dt * _impulse;
         }
 
         /// <inheritdoc />
-        public override float GetReactionTorque(float inv_dt)
+        public override F GetReactionTorque(F inv_dt)
         {
-            return inv_dt * 0.0f;
+            return inv_dt * F.Zero;
         }
 
         /// The mouse joint does not support dumping.
@@ -168,10 +168,10 @@ namespace Box2DSharp.Dynamics.Joints
             var mass = BodyB.Mass;
 
             // Frequency
-            var omega = 2.0f * Settings.Pi * _frequencyHz;
+            var omega = F.Two * Settings.Pi * _frequencyHz;
 
             // Damping coefficient
-            var d = 2.0f * mass * _dampingRatio * omega;
+            var d = F.Two * mass * _dampingRatio * omega;
 
             // Spring stiffness
             var k = mass * (omega * omega);
@@ -182,9 +182,9 @@ namespace Box2DSharp.Dynamics.Joints
             var h = data.Step.Dt;
 
             _gamma = h * (d + h * k);
-            if (!_gamma.Equals(0.0f))
+            if (!_gamma.Equals(F.Zero))
             {
-                _gamma = 1.0f / _gamma;
+                _gamma = F.One / _gamma;
             }
 
             _beta = h * k * _gamma;

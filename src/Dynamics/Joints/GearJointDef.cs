@@ -12,14 +12,14 @@ namespace Box2DSharp.Dynamics.Joints
 
         /// The gear ratio.
         /// @see b2GearJoint for explanation.
-        public float Ratio;
+        public F Ratio;
 
         public GearJointDef()
         {
             JointType = JointType.GearJoint;
             Joint1 = null;
             Joint2 = null;
-            Ratio = 1.0f;
+            Ratio = F.One;
         }
     }
 }

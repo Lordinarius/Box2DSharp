@@ -14,6 +14,6 @@ namespace Box2DSharp.Collision
 
         public Transform TransformB;
 
-        public Vector2 TranslationB;
+        public V2 TranslationB;
     }
 }

@@ -6,12 +6,12 @@ namespace Box2DSharp.Collision
     public struct DistanceOutput
     {
         /// closest point on shapeA
-        public Vector2 PointA;
+        public V2 PointA;
 
         /// closest point on shapeB
-        public Vector2 PointB;
+        public V2 PointB;
 
-        public float Distance;
+        public F Distance;
 
         /// number of GJK iterations used
         public int Iterations;

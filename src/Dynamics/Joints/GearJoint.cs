@@ -21,51 +21,51 @@ namespace Box2DSharp.Dynamics.Joints
 
         private readonly Body _bodyD;
 
-        private readonly float _constant;
+        private readonly F _constant;
 
         private readonly Joint _joint1;
 
         private readonly Joint _joint2;
 
         // Solver shared
-        private readonly Vector2 _localAnchorA;
+        private readonly V2 _localAnchorA;
 
-        private readonly Vector2 _localAnchorB;
+        private readonly V2 _localAnchorB;
 
-        private readonly Vector2 _localAnchorC;
+        private readonly V2 _localAnchorC;
 
-        private readonly Vector2 _localAnchorD;
+        private readonly V2 _localAnchorD;
 
-        private readonly Vector2 _localAxisC;
+        private readonly V2 _localAxisC;
 
-        private readonly Vector2 _localAxisD;
+        private readonly V2 _localAxisD;
 
-        private readonly float _referenceAngleA;
+        private readonly F _referenceAngleA;
 
-        private readonly float _referenceAngleB;
+        private readonly F _referenceAngleB;
 
         private readonly JointType _typeA;
 
         private readonly JointType _typeB;
 
-        private float _iA, _iB, _iC, _iD;
+        private F _iA, _iB, _iC, _iD;
 
-        private float _impulse;
+        private F _impulse;
 
         // Solver temp
         private int _indexA, _indexB, _indexC, _indexD;
 
-        private Vector2 _jvAc, _jvBd;
+        private V2 _jvAc, _jvBd;
 
-        private float _jwA, _jwB, _jwC, _jwD;
+        private F _jwA, _jwB, _jwC, _jwD;
 
-        private Vector2 _lcA, _lcB, _lcC, _lcD;
+        private V2 _lcA, _lcB, _lcC, _lcD;
 
-        private float _mA, _mB, _mC, _mD;
+        private F _mA, _mB, _mC, _mD;
 
-        private float _mass;
+        private F _mass;
 
-        private float _ratio;
+        private F _ratio;
 
         public GearJoint(GearJointDef def) : base(def)
         {
@@ -78,7 +78,7 @@ namespace Box2DSharp.Dynamics.Joints
             Debug.Assert(_typeA == JointType.RevoluteJoint || _typeA == JointType.PrismaticJoint);
             Debug.Assert(_typeB == JointType.RevoluteJoint || _typeB == JointType.PrismaticJoint);
 
-            float coordinateA, coordinateB;
+            F coordinateA, coordinateB;
 
             // TODO_ERIN there might be some problem with the joint edges in b2Joint.
 
@@ -113,7 +113,7 @@ namespace Box2DSharp.Dynamics.Joints
                 var pA = MathUtils.MulT(
                     xfC.Rotation,
                     MathUtils.Mul(xfA.Rotation, _localAnchorA) + (xfA.Position - xfC.Position));
-                coordinateA = Vector2.Dot(pA - pC, _localAxisC);
+                coordinateA = V2.Dot(pA - pC, _localAxisC);
             }
 
             _bodyD = _joint2.BodyA;
@@ -147,14 +147,14 @@ namespace Box2DSharp.Dynamics.Joints
                 var pB = MathUtils.MulT(
                     xfD.Rotation,
                     MathUtils.Mul(xfB.Rotation, _localAnchorB) + (xfB.Position - xfD.Position));
-                coordinateB = Vector2.Dot(pB - pD, _localAxisD);
+                coordinateB = V2.Dot(pB - pD, _localAxisD);
             }
 
             _ratio = def.Ratio;
 
             _constant = coordinateA + _ratio * coordinateB;
 
-            _impulse = 0.0f;
+            _impulse = F.Zero;
         }
 
         /// Get the first joint.
@@ -170,13 +170,13 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// Set/Get the gear ratio.
-        public void SetRatio(float ratio)
+        public void SetRatio(F ratio)
         {
             Debug.Assert(ratio.IsValid());
             _ratio = ratio;
         }
 
-        public float GetRatio()
+        public F GetRatio()
         {
             return _ratio;
         }
@@ -201,26 +201,26 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorA()
+        public override V2 GetAnchorA()
         {
             return BodyA.GetWorldPoint(_localAnchorA);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorB()
+        public override V2 GetAnchorB()
         {
             return BodyB.GetWorldPoint(_localAnchorB);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetReactionForce(float inv_dt)
+        public override V2 GetReactionForce(F inv_dt)
         {
             var P = _impulse * _jvAc;
             return inv_dt * P;
         }
 
         /// <inheritdoc />
-        public override float GetReactionTorque(float inv_dt)
+        public override F GetReactionTorque(F inv_dt)
         {
             var L = _impulse * _jwA;
             return inv_dt * L;
@@ -264,13 +264,13 @@ namespace Box2DSharp.Dynamics.Joints
 
             Rotation qA = new Rotation(aA), qB = new Rotation(aB), qC = new Rotation(aC), qD = new Rotation(aD);
 
-            _mass = 0.0f;
+            _mass = F.Zero;
 
             if (_typeA == JointType.RevoluteJoint)
             {
                 _jvAc.SetZero();
-                _jwA = 1.0f;
-                _jwC = 1.0f;
+                _jwA = F.One;
+                _jwC = F.One;
                 _mass += _iA + _iC;
             }
             else
@@ -303,7 +303,7 @@ namespace Box2DSharp.Dynamics.Joints
             }
 
             // Compute effective mass.
-            _mass = _mass > 0.0f ? 1.0f / _mass : 0.0f;
+            _mass = _mass > F.Zero ? F.One / _mass : F.Zero;
 
             if (data.Step.WarmStarting)
             {
@@ -318,7 +318,7 @@ namespace Box2DSharp.Dynamics.Joints
             }
             else
             {
-                _impulse = 0.0f;
+                _impulse = F.Zero;
             }
 
             data.Velocities[_indexA].V = vA;
@@ -343,7 +343,7 @@ namespace Box2DSharp.Dynamics.Joints
             var vD = data.Velocities[_indexD].V;
             var wD = data.Velocities[_indexD].W;
 
-            var Cdot = Vector2.Dot(_jvAc, vA - vC) + Vector2.Dot(_jvBd, vB - vD);
+            var Cdot = V2.Dot(_jvAc, vA - vC) + V2.Dot(_jvBd, vB - vD);
             Cdot += _jwA * wA - _jwC * wC + (_jwB * wB - _jwD * wD);
 
             var impulse = -_mass * Cdot;
@@ -385,20 +385,20 @@ namespace Box2DSharp.Dynamics.Joints
             var qC = new Rotation(aC);
             var qD = new Rotation(aD);
 
-            var linearError = 0.0f;
+            var linearError = F.Zero;
 
-            float coordinateA, coordinateB;
+            F coordinateA, coordinateB;
 
-            var JvAC = new Vector2();
-            var JvBD = new Vector2();
-            float JwA, JwB, JwC, JwD;
-            var mass = 0.0f;
+            var JvAC = new V2();
+            var JvBD = new V2();
+            F JwA, JwB, JwC, JwD;
+            var mass = F.Zero;
 
             if (_typeA == JointType.RevoluteJoint)
             {
                 JvAC.SetZero();
-                JwA = 1.0f;
-                JwC = 1.0f;
+                JwA = F.One;
+                JwC = F.One;
                 mass += _iA + _iC;
 
                 coordinateA = aA - aC - _referenceAngleA;
@@ -415,7 +415,7 @@ namespace Box2DSharp.Dynamics.Joints
 
                 var pC = _localAnchorC - _lcC;
                 var pA = MathUtils.MulT(qC, rA + (cA - cC));
-                coordinateA = Vector2.Dot(pA - pC, _localAxisC);
+                coordinateA = V2.Dot(pA - pC, _localAxisC);
             }
 
             if (_typeB == JointType.RevoluteJoint)
@@ -439,13 +439,13 @@ namespace Box2DSharp.Dynamics.Joints
 
                 var pD = _localAnchorD - _lcD;
                 var pB = MathUtils.MulT(qD, rB + (cB - cD));
-                coordinateB = Vector2.Dot(pB - pD, _localAxisD);
+                coordinateB = V2.Dot(pB - pD, _localAxisD);
             }
 
             var C = coordinateA + _ratio * coordinateB - _constant;
 
-            var impulse = 0.0f;
-            if (mass > 0.0f)
+            var impulse = F.Zero;
+            if (mass > F.Zero)
             {
                 impulse = -C / mass;
             }

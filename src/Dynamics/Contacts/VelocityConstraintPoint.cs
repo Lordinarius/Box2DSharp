@@ -4,18 +4,18 @@ namespace Box2DSharp.Dynamics.Contacts
 {
     public struct VelocityConstraintPoint
     {
-        public float NormalImpulse;
+        public F NormalImpulse;
 
-        public float NormalMass;
+        public F NormalMass;
 
-        public Vector2 Ra;
+        public V2 Ra;
 
-        public Vector2 Rb;
+        public V2 Rb;
 
-        public float TangentImpulse;
+        public F TangentImpulse;
 
-        public float TangentMass;
+        public F TangentMass;
 
-        public float VelocityBias;
+        public F VelocityBias;
     }
 }

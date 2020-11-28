@@ -12,57 +12,57 @@ namespace Box2DSharp.Dynamics.Joints
     public class WheelJointDef : JointDef
     {
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         /// The local translation axis in bodyA.
-        public Vector2 LocalAxisA;
+        public V2 LocalAxisA;
 
         /// Enable/disable the joint limit.
         public bool EnableLimit;
 
         /// The lower translation limit, usually in meters.
-        public float LowerTranslation;
+        public F LowerTranslation;
 
         /// The upper translation limit, usually in meters.
-        public float UpperTranslation;
+        public F UpperTranslation;
 
         /// Enable/disable the joint motor.
         public bool EnableMotor;
 
         /// The maximum motor torque, usually in N-m.
-        public float MaxMotorTorque;
+        public F MaxMotorTorque;
 
         /// The desired motor speed in radians per second.
-        public float MotorSpeed;
+        public F MotorSpeed;
 
         /// Suspension stiffness. Typically in units N/m.
-        public float Stiffness;
+        public F Stiffness;
 
         /// Suspension damping. Typically in units of N*s/m.
-        public float Damping;
+        public F Damping;
 
         public WheelJointDef()
         {
             JointType = JointType.WheelJoint;
             LocalAnchorA.SetZero();
             LocalAnchorB.SetZero();
-            LocalAxisA.Set(1.0f, 0.0f);
+            LocalAxisA.Set(F.One, F.Zero);
             EnableLimit = false;
-            LowerTranslation = 0.0f;
-            UpperTranslation = 0.0f;
+            LowerTranslation = F.Zero;
+            UpperTranslation = F.Zero;
             EnableMotor = false;
-            MaxMotorTorque = 0.0f;
-            MotorSpeed = 0.0f;
-            Stiffness = 0.0f;
-            Damping = 0.0f;
+            MaxMotorTorque = F.Zero;
+            MotorSpeed = F.Zero;
+            Stiffness = F.Zero;
+            Damping = F.Zero;
         }
 
         /// Initialize the bodies, anchors, axis, and reference angle using the world
         /// anchor and world axis.
-        public void Initialize(Body bA, Body bB, in Vector2 anchor, in Vector2 axis)
+        public void Initialize(Body bA, Body bB, in V2 anchor, in V2 axis)
         {
             BodyA = bA;
             BodyB = bB;

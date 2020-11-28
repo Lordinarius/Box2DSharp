@@ -6,8 +6,8 @@ namespace Box2DSharp.Collision.Collider
     /// come from b2RayCastInput.
     public struct RayCastOutput
     {
-        public Vector2 Normal;
+        public V2 Normal;
 
-        public float Fraction;
+        public F Fraction;
     }
 }

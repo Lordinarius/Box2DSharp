@@ -27,10 +27,10 @@ namespace Box2DSharp.Collision.Collider
         public FixedArray2<ManifoldPoint> Points;
 
         /// not use for Type::e_points
-        public Vector2 LocalNormal;
+        public V2 LocalNormal;
 
         /// usage depends on manifold type
-        public Vector2 LocalPoint;
+        public V2 LocalPoint;
 
         public ManifoldType Type;
 

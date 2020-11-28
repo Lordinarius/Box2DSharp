@@ -31,9 +31,9 @@ namespace Box2DSharp.Common
         public Vector3 Solve33(in Vector3 b)
         {
             var det = Vector3.Dot(Ex, Vector3.Cross(Ey, Ez));
-            if (!det.Equals(0.0f))
+            if (!det.Equals(F.Zero))
             {
-                det = 1.0f / det;
+                det = F.One / det;
             }
 
             Vector3 x;
@@ -46,7 +46,7 @@ namespace Box2DSharp.Common
         /// Solve A * x = b, where b is a column vector. This is more efficient
         /// than computing the inverse in one-shot cases. Solve only the upper
         /// 2-by-2 matrix equation.
-        public Vector2 Solve22(in Vector2 b)
+        public V2 Solve22(in V2 b)
         {
             var a11 = Ex.X;
             var a12 = Ey.X;
@@ -54,12 +54,12 @@ namespace Box2DSharp.Common
             var a22 = Ey.Y;
 
             var det = a11 * a22 - a12 * a21;
-            if (!det.Equals(0.0f))
+            if (!det.Equals(F.Zero))
             {
-                det = 1.0f / det;
+                det = F.One / det;
             }
 
-            Vector2 x;
+            V2 x;
             x.X = det * (a22 * b.X - a12 * b.Y);
             x.Y = det * (a11 * b.Y - a21 * b.X);
             return x;
@@ -69,22 +69,22 @@ namespace Box2DSharp.Common
         /// Returns the zero matrix if singular.
         public void GetInverse22(ref Matrix3x3 matrix3x3)
         {
-            float a = Ex.X, b = Ey.X, c = Ex.Y, d = Ey.Y;
+            F a = Ex.X, b = Ey.X, c = Ex.Y, d = Ey.Y;
             var det = a * d - b * c;
-            if (!det.Equals(0.0f))
+            if (!det.Equals(F.Zero))
             {
-                det = 1.0f / det;
+                det = F.One / det;
             }
 
             matrix3x3.Ex.X = det * d;
             matrix3x3.Ey.X = -det * b;
-            matrix3x3.Ex.Z = 0.0f;
+            matrix3x3.Ex.Z = F.Zero;
             matrix3x3.Ex.Y = -det * c;
             matrix3x3.Ey.Y = det * a;
-            matrix3x3.Ey.Z = 0.0f;
-            matrix3x3.Ez.X = 0.0f;
-            matrix3x3.Ez.Y = 0.0f;
-            matrix3x3.Ez.Z = 0.0f;
+            matrix3x3.Ey.Z = F.Zero;
+            matrix3x3.Ez.X = F.Zero;
+            matrix3x3.Ez.Y = F.Zero;
+            matrix3x3.Ez.Z = F.Zero;
         }
 
         /// Get the symmetric inverse of this matrix as a 3-by-3.
@@ -92,13 +92,13 @@ namespace Box2DSharp.Common
         public void GetSymInverse33(ref Matrix3x3 matrix3x3)
         {
             var det = Vector3.Dot(Ex, Vector3.Cross(Ey, Ez));
-            if (!det.Equals(0.0f))
+            if (!det.Equals(F.Zero))
             {
-                det = 1.0f / det;
+                det = F.One / det;
             }
 
-            float a11 = Ex.X, a12 = Ey.X, a13 = Ez.X;
-            float a22 = Ey.Y, a23 = Ez.Y;
+            F a11 = Ex.X, a12 = Ey.X, a13 = Ez.X;
+            F a22 = Ey.Y, a23 = Ez.Y;
             var a33 = Ez.Z;
 
             matrix3x3.Ex.X = det * (a22 * a33 - a23 * a23);

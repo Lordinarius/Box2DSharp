@@ -34,7 +34,7 @@ namespace Box2DSharp.Collision
                 v.Wa = MathUtils.Mul(transformA, wALocal);
                 v.Wb = MathUtils.Mul(transformB, wBLocal);
                 v.W = v.Wb - v.Wa;
-                v.A = 0.0f;
+                v.A = F.Zero;
             }
 
             // Compute the new simplex metric, if it is substantially different than
@@ -43,7 +43,7 @@ namespace Box2DSharp.Collision
             {
                 var metric1 = cache.Metric;
                 var metric2 = GetMetric();
-                if (metric2 < 0.5f * metric1 || 2.0f * metric1 < metric2 || metric2 < Settings.Epsilon)
+                if (metric2 < F.Half * metric1 || F.Two * metric1 < metric2 || metric2 < Settings.Epsilon)
                 {
                     // Reset the simplex.
                     Count = 0;
@@ -61,7 +61,7 @@ namespace Box2DSharp.Collision
                 v.Wa = MathUtils.Mul(transformA, wALocal);
                 v.Wb = MathUtils.Mul(transformB, wBLocal);
                 v.W = v.Wb - v.Wa;
-                v.A = 1.0f;
+                v.A = F.One;
                 Count = 1;
             }
         }
@@ -77,7 +77,7 @@ namespace Box2DSharp.Collision
             }
         }
 
-        public Vector2 GetSearchDirection()
+        public V2 GetSearchDirection()
         {
             switch (Count)
             {
@@ -88,14 +88,14 @@ namespace Box2DSharp.Collision
             {
                 var e12 = Vertices.Value1.W - Vertices.Value0.W;
                 var sgn = MathUtils.Cross(e12, -Vertices.Value0.W);
-                if (sgn > 0.0f)
+                if (sgn > F.Zero)
                 {
                     // Origin is left of e12.
-                    return MathUtils.Cross(1.0f, e12);
+                    return MathUtils.Cross(F.One, e12);
                 }
 
                 // Origin is right of e12.
-                return MathUtils.Cross(e12, 1.0f);
+                return MathUtils.Cross(e12, F.One);
             }
 
             default:
@@ -103,7 +103,7 @@ namespace Box2DSharp.Collision
             }
         }
 
-        public Vector2 GetClosestPoint()
+        public V2 GetClosestPoint()
         {
             switch (Count)
             {
@@ -114,14 +114,14 @@ namespace Box2DSharp.Collision
                 return Vertices.Value0.A * Vertices.Value0.W + Vertices.Value1.A * Vertices.Value1.W;
 
             case 3:
-                return Vector2.Zero;
+                return V2.Zero;
 
             default:
                 throw new ArgumentOutOfRangeException(nameof(Count));
             }
         }
 
-        public void GetWitnessPoints(out Vector2 pA, out Vector2 pB)
+        public void GetWitnessPoints(out V2 pA, out V2 pB)
         {
             switch (Count)
             {
@@ -147,19 +147,19 @@ namespace Box2DSharp.Collision
             }
         }
 
-        public float GetMetric()
+        public F GetMetric()
         {
             switch (Count)
             {
             case 0:
                 Debug.Assert(false);
-                return 0.0f;
+                return F.Zero;
 
             case 1:
-                return 0.0f;
+                return F.Zero;
 
             case 2:
-                return Vector2.Distance(Vertices.Value0.W, Vertices.Value1.W);
+                return V2.Distance(Vertices.Value0.W, Vertices.Value1.W);
 
             case 3:
                 return MathUtils.Cross(Vertices.Value1.W - Vertices.Value0.W, Vertices.Value2.W - Vertices.Value0.W);
@@ -201,28 +201,28 @@ namespace Box2DSharp.Collision
             var e12 = w2 - w1;
 
             // w1 region
-            var d12_2 = -Vector2.Dot(w1, e12);
-            if (d12_2 <= 0.0f)
+            var d12_2 = -V2.Dot(w1, e12);
+            if (d12_2 <= F.Zero)
             {
                 // a2 <= 0, so we clamp it to 0
-                v0.A = 1.0f;
+                v0.A = F.One;
                 Count = 1;
                 return;
             }
 
             // w2 region
-            var d12_1 = Vector2.Dot(w2, e12);
-            if (d12_1 <= 0.0f)
+            var d12_1 = V2.Dot(w2, e12);
+            if (d12_1 <= F.Zero)
             {
                 // a1 <= 0, so we clamp it to 0
-                v1.A = 1.0f;
+                v1.A = F.One;
                 Count = 1;
                 Vertices.Value0 = Vertices.Value1;
                 return;
             }
 
             // Must be in e12 region.
-            var inv_d12 = 1.0f / (d12_1 + d12_2);
+            var inv_d12 = F.One / (d12_1 + d12_2);
             v0.A = d12_1 * inv_d12;
             v1.A = d12_2 * inv_d12;
             Count = 2;
@@ -247,8 +247,8 @@ namespace Box2DSharp.Collision
             // [w1.e12 w2.e12][a2] = [0]
             // a3 = 0
             var e12 = w2 - w1;
-            var w1e12 = Vector2.Dot(w1, e12);
-            var w2e12 = Vector2.Dot(w2, e12);
+            var w1e12 = V2.Dot(w1, e12);
+            var w2e12 = V2.Dot(w2, e12);
             var d12_1 = w2e12;
             var d12_2 = -w1e12;
 
@@ -257,8 +257,8 @@ namespace Box2DSharp.Collision
             // [w1.e13 w3.e13][a3] = [0]
             // a2 = 0
             var e13 = w3 - w1;
-            var w1e13 = Vector2.Dot(w1, e13);
-            var w3e13 = Vector2.Dot(w3, e13);
+            var w1e13 = V2.Dot(w1, e13);
+            var w3e13 = V2.Dot(w3, e13);
             var d13_1 = w3e13;
             var d13_2 = -w1e13;
 
@@ -267,8 +267,8 @@ namespace Box2DSharp.Collision
             // [w2.e23 w3.e23][a3] = [0]
             // a1 = 0
             var e23 = w3 - w2;
-            var w2e23 = Vector2.Dot(w2, e23);
-            var w3e23 = Vector2.Dot(w3, e23);
+            var w2e23 = V2.Dot(w2, e23);
+            var w3e23 = V2.Dot(w3, e23);
             var d23_1 = w3e23;
             var d23_2 = -w2e23;
 
@@ -280,17 +280,17 @@ namespace Box2DSharp.Collision
             var d123_3 = n123 * MathUtils.Cross(w1, w2);
 
             // w1 region
-            if (d12_2 <= 0.0f && d13_2 <= 0.0f)
+            if (d12_2 <= F.Zero && d13_2 <= F.Zero)
             {
-                v0.A = 1.0f;
+                v0.A = F.One;
                 Count = 1;
                 return;
             }
 
             // e12
-            if (d12_1 > 0.0f && d12_2 > 0.0f && d123_3 <= 0.0f)
+            if (d12_1 > F.Zero && d12_2 > F.Zero && d123_3 <= F.Zero)
             {
-                var inv_d12 = 1.0f / (d12_1 + d12_2);
+                var inv_d12 = F.One / (d12_1 + d12_2);
                 v0.A = d12_1 * inv_d12;
                 v1.A = d12_2 * inv_d12;
                 Count = 2;
@@ -298,9 +298,9 @@ namespace Box2DSharp.Collision
             }
 
             // e13
-            if (d13_1 > 0.0f && d13_2 > 0.0f && d123_2 <= 0.0f)
+            if (d13_1 > F.Zero && d13_2 > F.Zero && d123_2 <= F.Zero)
             {
-                var inv_d13 = 1.0f / (d13_1 + d13_2);
+                var inv_d13 = F.One / (d13_1 + d13_2);
                 v0.A = d13_1 * inv_d13;
                 v2.A = d13_2 * inv_d13;
                 Count = 2;
@@ -309,27 +309,27 @@ namespace Box2DSharp.Collision
             }
 
             // w2 region
-            if (d12_1 <= 0.0f && d23_2 <= 0.0f)
+            if (d12_1 <= F.Zero && d23_2 <= F.Zero)
             {
-                v1.A = 1.0f;
+                v1.A = F.One;
                 Count = 1;
                 v0 = v1;
                 return;
             }
 
             // w3 region
-            if (d13_1 <= 0.0f && d23_1 <= 0.0f)
+            if (d13_1 <= F.Zero && d23_1 <= F.Zero)
             {
-                v2.A = 1.0f;
+                v2.A = F.One;
                 Count = 1;
                 v0 = v2;
                 return;
             }
 
             // e23
-            if (d23_1 > 0.0f && d23_2 > 0.0f && d123_1 <= 0.0f)
+            if (d23_1 > F.Zero && d23_2 > F.Zero && d123_1 <= F.Zero)
             {
-                var inv_d23 = 1.0f / (d23_1 + d23_2);
+                var inv_d23 = F.One / (d23_1 + d23_2);
                 v1.A = d23_1 * inv_d23;
                 v2.A = d23_2 * inv_d23;
                 Count = 2;
@@ -338,7 +338,7 @@ namespace Box2DSharp.Collision
             }
 
             // Must be in triangle123
-            var inv_d123 = 1.0f / (d123_1 + d123_2 + d123_3);
+            var inv_d123 = F.One / (d123_1 + d123_2 + d123_3);
             v0.A = d123_1 * inv_d123;
             v1.A = d123_2 * inv_d123;
             v2.A = d123_3 * inv_d123;

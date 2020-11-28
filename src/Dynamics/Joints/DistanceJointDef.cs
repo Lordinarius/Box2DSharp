@@ -12,29 +12,29 @@ namespace Box2DSharp.Dynamics.Joints
     public class DistanceJointDef : JointDef
     {
         /// The damping ratio. 0 = no damping, 1 = critical damping.
-        public float DampingRatio;
+        public F DampingRatio;
 
         /// The mass-spring-damper frequency in Hertz. A value of 0
         /// disables softness.
-        public float FrequencyHz;
+        public F FrequencyHz;
 
         /// The natural length between the anchor points.
-        public float Length;
+        public F Length;
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         public DistanceJointDef()
         {
             JointType = JointType.DistanceJoint;
-            LocalAnchorA.Set(0.0f, 0.0f);
-            LocalAnchorB.Set(0.0f, 0.0f);
-            Length = 1.0f;
-            FrequencyHz = 0.0f;
-            DampingRatio = 0.0f;
+            LocalAnchorA.Set(F.Zero, F.Zero);
+            LocalAnchorB.Set(F.Zero, F.Zero);
+            Length = F.One;
+            FrequencyHz = F.Zero;
+            DampingRatio = F.Zero;
         }
 
         /// Initialize the bodies, anchors, and length using the world
@@ -42,8 +42,8 @@ namespace Box2DSharp.Dynamics.Joints
         public void Initialize(
             Body b1,
             Body b2,
-            in Vector2 anchor1,
-            in Vector2 anchor2)
+            in V2 anchor1,
+            in V2 anchor2)
         {
             BodyA = b1;
             BodyB = b2;

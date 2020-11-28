@@ -9,34 +9,34 @@ namespace Box2DSharp.Dynamics.Joints
     public class WeldJointDef : JointDef
     {
         /// The damping ratio. 0 = no damping, 1 = critical damping.
-        public float DampingRatio;
+        public F DampingRatio;
 
         /// The mass-spring-damper frequency in Hertz. Rotation only.
         /// Disable softness with a value of 0.
-        public float FrequencyHz;
+        public F FrequencyHz;
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         /// The bodyB angle minus bodyA angle in the reference state (radians).
-        public float ReferenceAngle;
+        public F ReferenceAngle;
 
         public WeldJointDef()
         {
             JointType = JointType.WeldJoint;
-            LocalAnchorA.Set(0.0f, 0.0f);
-            LocalAnchorB.Set(0.0f, 0.0f);
-            ReferenceAngle = 0.0f;
-            FrequencyHz = 0.0f;
-            DampingRatio = 0.0f;
+            LocalAnchorA.Set(F.Zero, F.Zero);
+            LocalAnchorB.Set(F.Zero, F.Zero);
+            ReferenceAngle = F.Zero;
+            FrequencyHz = F.Zero;
+            DampingRatio = F.Zero;
         }
 
         /// Initialize the bodies, anchors, and reference angle using a world
         /// anchor point.
-        public void Initialize(Body bA, Body bB, in Vector2 anchor)
+        public void Initialize(Body bA, Body bB, in V2 anchor)
         {
             BodyA = bA;
             BodyB = bB;

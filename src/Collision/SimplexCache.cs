@@ -7,7 +7,7 @@ namespace Box2DSharp.Collision
     public struct SimplexCache
     {
         /// length or area
-        public float Metric;
+        public F Metric;
 
         public ushort Count;
 

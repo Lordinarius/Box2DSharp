@@ -18,7 +18,7 @@ namespace Box2DSharp.Collision
 
         public Sweep SweepB;
 
-        public float Tmax; // defines sweep interval [0, tMax]
+        public F Tmax; // defines sweep interval [0, tMax]
     }
 
     /// Output parameters for b2TimeOfImpact.
@@ -39,14 +39,14 @@ namespace Box2DSharp.Collision
 
         public ToiState State;
 
-        public float Time;
+        public F Time;
     }
 
     public class ToiProfile
     {
-        public float ToiTime;
+        public F ToiTime;
 
-        public float ToiMaxTime;
+        public F ToiMaxTime;
 
         public int ToiCalls;
 
@@ -95,11 +95,11 @@ namespace Box2DSharp.Collision
             var tMax = input.Tmax;
 
             var totalRadius = proxyA.Radius + proxyB.Radius;
-            var target = Math.Max(Settings.LinearSlop, totalRadius - 3.0f * Settings.LinearSlop);
+            var target = F.Max(Settings.LinearSlop, totalRadius - 3.0f * Settings.LinearSlop);
             var tolerance = 0.25f * Settings.LinearSlop;
             Debug.Assert(target > tolerance);
 
-            var t1 = 0.0f;
+            var t1 = F.Zero;
             const int maxIterations = 20; // TODO_ERIN b2Settings
             var iter = 0;
 
@@ -127,11 +127,11 @@ namespace Box2DSharp.Collision
                 DistanceAlgorithm.Distance(out var distanceOutput, ref cache, distanceInput, gjkProfile);
 
                 // If the shapes are overlapped, we give up on continuous collision.
-                if (distanceOutput.Distance <= 0.0f)
+                if (distanceOutput.Distance <= F.Zero)
                 {
                     // Failure!
                     output.State = ToiOutput.ToiState.Overlapped;
-                    output.Time = 0.0f;
+                    output.Time = F.Zero;
                     break;
                 }
 
@@ -201,11 +201,11 @@ namespace Box2DSharp.Collision
 
                     // Compute 1D root of: f(x) - target = 0
                     var rootIterCount = 0;
-                    float a1 = t1, a2 = t2;
+                    F a1 = t1, a2 = t2;
                     for (;;)
                     {
                         // Use a mix of the secant rule and bisection.
-                        float t;
+                        F t;
                         if ((rootIterCount & 1) != 0)
                         {
                             // Secant rule to improve convergence.
@@ -214,7 +214,7 @@ namespace Box2DSharp.Collision
                         else
                         {
                             // Bisection to guarantee progress.
-                            t = 0.5f * (a1 + a2);
+                            t = F.Half * (a1 + a2);
                         }
 
                         ++rootIterCount;
@@ -252,7 +252,7 @@ namespace Box2DSharp.Collision
 
                     if (toiProfile != null)
                     {
-                        toiProfile.ToiMaxRootIters = Math.Max(toiProfile.ToiMaxRootIters, rootIterCount);
+                        toiProfile.ToiMaxRootIters = F.Max(toiProfile.ToiMaxRootIters, rootIterCount);
                     }
 
                     ++pushBackIter;
@@ -290,8 +290,8 @@ namespace Box2DSharp.Collision
 
             var endTime = Stopwatch.GetTimestamp();
             var time = (endTime - beginTime) / 10000f;
-            toiProfile.ToiMaxIters = Math.Max(toiProfile.ToiMaxIters, iter);
-            toiProfile.ToiMaxTime = Math.Max(toiProfile.ToiMaxTime, time);
+            toiProfile.ToiMaxIters = F.Max(toiProfile.ToiMaxIters, iter);
+            toiProfile.ToiMaxTime = F.Max(toiProfile.ToiMaxTime, time);
             toiProfile.ToiTime += time;
         }
     }
@@ -308,9 +308,9 @@ namespace Box2DSharp.Collision
             FaceB
         }
 
-        public Vector2 Axis;
+        public V2 Axis;
 
-        public Vector2 LocalPoint;
+        public V2 LocalPoint;
 
         public DistanceProxy ProxyA;
 
@@ -324,13 +324,13 @@ namespace Box2DSharp.Collision
 
         // TODO_ERIN might not need to return the separation
 
-        public float Initialize(
+        public F Initialize(
             ref SimplexCache cache,
             DistanceProxy proxyA,
             in Sweep sweepA,
             DistanceProxy proxyB,
             in Sweep sweepB,
-            float t1)
+            F t1)
         {
             ProxyA = proxyA;
             ProxyB = proxyB;
@@ -365,18 +365,18 @@ namespace Box2DSharp.Collision
                 var localPointB1 = proxyB.GetVertex(bv0);
                 var localPointB2 = proxyB.GetVertex(bv1);
 
-                Axis = MathUtils.Cross(localPointB2 - localPointB1, 1.0f);
+                Axis = MathUtils.Cross(localPointB2 - localPointB1, F.One);
                 Axis.Normalize();
                 var normal = MathUtils.Mul(xfB.Rotation, Axis);
 
-                LocalPoint = 0.5f * (localPointB1 + localPointB2);
+                LocalPoint = F.Half * (localPointB1 + localPointB2);
                 var pointB = MathUtils.Mul(xfB, LocalPoint);
 
                 var localPointA = proxyA.GetVertex(av0);
                 var pointA = MathUtils.Mul(xfA, localPointA);
 
-                var s = Vector2.Dot(pointA - pointB, normal);
-                if (s < 0.0f)
+                var s = V2.Dot(pointA - pointB, normal);
+                if (s < F.Zero)
                 {
                     Axis = -Axis;
                     s = -s;
@@ -391,18 +391,18 @@ namespace Box2DSharp.Collision
                 var localPointA1 = ProxyA.GetVertex(av0);
                 var localPointA2 = ProxyA.GetVertex(av1);
 
-                Axis = MathUtils.Cross(localPointA2 - localPointA1, 1.0f);
+                Axis = MathUtils.Cross(localPointA2 - localPointA1, F.One);
                 Axis.Normalize();
                 var normal = MathUtils.Mul(xfA.Rotation, Axis);
 
-                LocalPoint = 0.5f * (localPointA1 + localPointA2);
+                LocalPoint = F.Half * (localPointA1 + localPointA2);
                 var pointA = MathUtils.Mul(xfA, LocalPoint);
 
                 var localPointB = ProxyB.GetVertex(bv0);
                 var pointB = MathUtils.Mul(xfB, localPointB);
 
-                var s = Vector2.Dot(pointB - pointA, normal);
-                if (s < 0.0f)
+                var s = V2.Dot(pointB - pointA, normal);
+                if (s < F.Zero)
                 {
                     Axis = -Axis;
                     s = -s;
@@ -413,7 +413,7 @@ namespace Box2DSharp.Collision
         }
 
         //
-        public float FindMinSeparation(out int indexA, out int indexB, float t)
+        public F FindMinSeparation(out int indexA, out int indexB, F t)
         {
             SweepA.GetTransform(out var xfA, t);
             SweepB.GetTransform(out var xfB, t);
@@ -434,7 +434,7 @@ namespace Box2DSharp.Collision
                 var pointA = MathUtils.Mul(xfA, localPointA);
                 var pointB = MathUtils.Mul(xfB, localPointB);
 
-                var separation = Vector2.Dot(pointB - pointA, Axis);
+                var separation = V2.Dot(pointB - pointA, Axis);
                 return separation;
             }
 
@@ -451,7 +451,7 @@ namespace Box2DSharp.Collision
                 var localPointB = ProxyB.GetVertex(indexB);
                 var pointB = MathUtils.Mul(xfB, localPointB);
 
-                var separation = Vector2.Dot(pointB - pointA, normal);
+                var separation = V2.Dot(pointB - pointA, normal);
                 return separation;
             }
 
@@ -468,7 +468,7 @@ namespace Box2DSharp.Collision
                 var localPointA = ProxyA.GetVertex(indexA);
                 var pointA = MathUtils.Mul(xfA, localPointA);
 
-                var separation = Vector2.Dot(pointA - pointB, normal);
+                var separation = V2.Dot(pointA - pointB, normal);
                 return separation;
             }
 
@@ -476,12 +476,12 @@ namespace Box2DSharp.Collision
                 Debug.Assert(false);
                 indexA = -1;
                 indexB = -1;
-                return 0.0f;
+                return F.Zero;
             }
         }
 
         //
-        public float Evaluate(int indexA, int indexB, float t)
+        public F Evaluate(int indexA, int indexB, F t)
         {
             SweepA.GetTransform(out var xfA, t);
             SweepB.GetTransform(out var xfB, t);
@@ -495,7 +495,7 @@ namespace Box2DSharp.Collision
 
                 var pointA = MathUtils.Mul(xfA, localPointA);
                 var pointB = MathUtils.Mul(xfB, localPointB);
-                var separation = Vector2.Dot(pointB - pointA, Axis);
+                var separation = V2.Dot(pointB - pointA, Axis);
 
                 return separation;
             }
@@ -508,7 +508,7 @@ namespace Box2DSharp.Collision
                 var localPointB = ProxyB.GetVertex(indexB);
                 var pointB = MathUtils.Mul(xfB, localPointB);
 
-                var separation = Vector2.Dot(pointB - pointA, normal);
+                var separation = V2.Dot(pointB - pointA, normal);
                 return separation;
             }
 
@@ -520,13 +520,13 @@ namespace Box2DSharp.Collision
                 var localPointA = ProxyA.GetVertex(indexA);
                 var pointA = MathUtils.Mul(xfA, localPointA);
 
-                var separation = Vector2.Dot(pointA - pointB, normal);
+                var separation = V2.Dot(pointA - pointB, normal);
                 return separation;
             }
 
             default:
                 Debug.Assert(false);
-                return 0.0f;
+                return F.Zero;
             }
         }
     }

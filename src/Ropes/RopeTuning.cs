@@ -7,11 +7,11 @@
         {
             StretchingModel = StretchingModel.PbdStretchingModel;
             BendingModel = BendingModel.PbdAngleBendingModel;
-            Damping = 0.0f;
-            StretchStiffness = 1.0f;
-            BendStiffness = 0.5f;
-            BendHertz = 1.0f;
-            BendDamping = 0.0f;
+            Damping = F.Zero;
+            StretchStiffness = F.One;
+            BendStiffness = F.Half;
+            BendHertz = F.One;
+            BendDamping = F.Zero;
             Isometric = false;
             FixedEffectiveMass = false;
             WarmStart = false;
@@ -21,19 +21,19 @@
 
         public BendingModel BendingModel;
 
-        public float Damping;
+        public F Damping;
 
-        public float StretchStiffness;
+        public F StretchStiffness;
 
-        public float StretchHertz;
+        public F StretchHertz;
 
-        public float StretchDamping;
+        public F StretchDamping;
 
-        public float BendStiffness;
+        public F BendStiffness;
 
-        public float BendHertz;
+        public F BendHertz;
 
-        public float BendDamping;
+        public F BendDamping;
 
         public bool Isometric;
 

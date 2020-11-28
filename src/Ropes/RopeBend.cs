@@ -8,24 +8,24 @@
 
         public int i3;
 
-        public float invMass1;
+        public F invMass1;
 
-        public float invMass2;
+        public F invMass2;
 
-        public float invMass3;
+        public F invMass3;
 
-        public float invEffectiveMass;
+        public F invEffectiveMass;
 
-        public float lambda;
+        public F lambda;
 
-        public float L1, L2;
+        public F L1, L2;
 
-        public float alpha1;
+        public F alpha1;
 
-        public float alpha2;
+        public F alpha2;
 
-        public float spring;
+        public F spring;
 
-        public float damper;
+        public F damper;
     };
 }

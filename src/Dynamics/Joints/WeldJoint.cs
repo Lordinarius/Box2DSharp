@@ -9,19 +9,19 @@ namespace Box2DSharp.Dynamics.Joints
     public class WeldJoint : Joint
     {
         // Solver shared
-        private readonly Vector2 _localAnchorA;
+        private readonly V2 _localAnchorA;
 
-        private readonly Vector2 _localAnchorB;
+        private readonly V2 _localAnchorB;
 
-        private readonly float _referenceAngle;
+        private readonly F _referenceAngle;
 
-        private float _bias;
+        private F _bias;
 
-        private float _dampingRatio;
+        private F _dampingRatio;
 
-        private float _frequencyHz;
+        private F _frequencyHz;
 
-        private float _gamma;
+        private F _gamma;
 
         private Vector3 _impulse;
 
@@ -30,23 +30,23 @@ namespace Box2DSharp.Dynamics.Joints
 
         private int _indexB;
 
-        private float _invIa;
+        private F _invIa;
 
-        private float _invIb;
+        private F _invIb;
 
-        private float _invMassA;
+        private F _invMassA;
 
-        private float _invMassB;
+        private F _invMassB;
 
-        private Vector2 _localCenterA;
+        private V2 _localCenterA;
 
-        private Vector2 _localCenterB;
+        private V2 _localCenterB;
 
         private Matrix3x3 _mass;
 
-        private Vector2 _rA;
+        private V2 _rA;
 
-        private Vector2 _rB;
+        private V2 _rB;
 
         internal WeldJoint(WeldJointDef def) : base(def)
         {
@@ -60,66 +60,66 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 GetLocalAnchorA()
+        public V2 GetLocalAnchorA()
         {
             return _localAnchorA;
         }
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 GetLocalAnchorB()
+        public V2 GetLocalAnchorB()
         {
             return _localAnchorB;
         }
 
         /// Get the reference angle.
-        public float GetReferenceAngle()
+        public F GetReferenceAngle()
         {
             return _referenceAngle;
         }
 
         /// Set/get frequency in Hz.
-        public void SetFrequency(float hz)
+        public void SetFrequency(F hz)
         {
             _frequencyHz = hz;
         }
 
-        public float GetFrequency()
+        public F GetFrequency()
         {
             return _frequencyHz;
         }
 
         /// Set/get damping ratio.
-        public void SetDampingRatio(float ratio)
+        public void SetDampingRatio(F ratio)
         {
             _dampingRatio = ratio;
         }
 
-        public float GetDampingRatio()
+        public F GetDampingRatio()
         {
             return _dampingRatio;
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorA()
+        public override V2 GetAnchorA()
         {
             return BodyA.GetWorldPoint(_localAnchorA);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorB()
+        public override V2 GetAnchorB()
         {
             return BodyB.GetWorldPoint(_localAnchorB);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetReactionForce(float inv_dt)
+        public override V2 GetReactionForce(F inv_dt)
         {
-            var P = new Vector2(_impulse.X, _impulse.Y);
+            var P = new V2(_impulse.X, _impulse.Y);
             return inv_dt * P;
         }
 
         /// <inheritdoc />
-        public override float GetReactionTorque(float inv_dt)
+        public override F GetReactionTorque(F inv_dt)
         {
             return inv_dt * _impulse.Z;
         }
@@ -177,8 +177,8 @@ namespace Box2DSharp.Dynamics.Joints
             //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
             //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIa, iB = _invIb;
+            F mA = _invMassA, mB = _invMassB;
+            F iA = _invIa, iB = _invIb;
 
             var K = new Matrix3x3();
             K.Ex.X = mA + mB + _rA.Y * _rA.Y * iA + _rB.Y * _rB.Y * iB;
@@ -191,20 +191,20 @@ namespace Box2DSharp.Dynamics.Joints
             K.Ey.Z = K.Ez.Y;
             K.Ez.Z = iA + iB;
 
-            if (_frequencyHz > 0.0f)
+            if (_frequencyHz > F.Zero)
             {
                 K.GetInverse22(ref _mass);
 
                 var invM = iA + iB;
-                var m = invM > 0.0f ? 1.0f / invM : 0.0f;
+                var m = invM > F.Zero ? F.One / invM : F.Zero;
 
                 var C = aB - aA - _referenceAngle;
 
                 // Frequency
-                var omega = 2.0f * Settings.Pi * _frequencyHz;
+                var omega = F.Two * Settings.Pi * _frequencyHz;
 
                 // Damping coefficient
-                var d = 2.0f * m * _dampingRatio * omega;
+                var d = F.Two * m * _dampingRatio * omega;
 
                 // Spring stiffness
                 var k = m * omega * omega;
@@ -212,23 +212,23 @@ namespace Box2DSharp.Dynamics.Joints
                 // magic formulas
                 var h = data.Step.Dt;
                 _gamma = h * (d + h * k);
-                _gamma = !_gamma.Equals(0.0f) ? 1.0f / _gamma : 0.0f;
+                _gamma = !_gamma.Equals(F.Zero) ? F.One / _gamma : F.Zero;
                 _bias = C * h * k * _gamma;
 
                 invM += _gamma;
-                _mass.Ez.Z = !invM.Equals(0.0f) ? 1.0f / invM : 0.0f;
+                _mass.Ez.Z = !invM.Equals(F.Zero) ? F.One / invM : F.Zero;
             }
-            else if (K.Ez.Z.Equals(0.0f))
+            else if (K.Ez.Z.Equals(F.Zero))
             {
                 K.GetInverse22(ref _mass);
-                _gamma = 0.0f;
-                _bias = 0.0f;
+                _gamma = F.Zero;
+                _bias = F.Zero;
             }
             else
             {
                 K.GetSymInverse33(ref _mass);
-                _gamma = 0.0f;
-                _bias = 0.0f;
+                _gamma = F.Zero;
+                _bias = F.Zero;
             }
 
             if (data.Step.WarmStarting)
@@ -236,7 +236,7 @@ namespace Box2DSharp.Dynamics.Joints
                 // Scale impulses to support a variable time step.
                 _impulse *= data.Step.DtRatio;
 
-                var P = new Vector2(_impulse.X, _impulse.Y);
+                var P = new V2(_impulse.X, _impulse.Y);
 
                 vA -= mA * P;
                 wA -= iA * (MathUtils.Cross(_rA, P) + _impulse.Z);
@@ -263,10 +263,10 @@ namespace Box2DSharp.Dynamics.Joints
             var vB = data.Velocities[_indexB].V;
             var wB = data.Velocities[_indexB].W;
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIa, iB = _invIb;
+            F mA = _invMassA, mB = _invMassB;
+            F iA = _invIa, iB = _invIb;
 
-            if (_frequencyHz > 0.0f)
+            if (_frequencyHz > F.Zero)
             {
                 var Cdot2 = wB - wA;
 
@@ -299,7 +299,7 @@ namespace Box2DSharp.Dynamics.Joints
                 var impulse = -MathUtils.Mul(_mass, cdot);
                 _impulse += impulse;
 
-                var P = new Vector2(impulse.X, impulse.Y);
+                var P = new V2(impulse.X, impulse.Y);
 
                 vA -= mA * P;
                 wA -= iA * (MathUtils.Cross(_rA, P) + impulse.Z);
@@ -325,13 +325,13 @@ namespace Box2DSharp.Dynamics.Joints
             var qA = new Rotation(aA);
             var qB = new Rotation(aB);
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIa, iB = _invIb;
+            F mA = _invMassA, mB = _invMassB;
+            F iA = _invIa, iB = _invIb;
 
             var rA = MathUtils.Mul(qA, _localAnchorA - _localCenterA);
             var rB = MathUtils.Mul(qB, _localAnchorB - _localCenterB);
 
-            float positionError, angularError;
+            F positionError, angularError;
 
             var K = new Matrix3x3();
             K.Ex.X = mA + mB + rA.Y * rA.Y * iA + rB.Y * rB.Y * iB;
@@ -344,12 +344,12 @@ namespace Box2DSharp.Dynamics.Joints
             K.Ey.Z = K.Ez.Y;
             K.Ez.Z = iA + iB;
 
-            if (_frequencyHz > 0.0f)
+            if (_frequencyHz > F.Zero)
             {
                 var C1 = cB + rB - cA - rA;
 
                 positionError = C1.Length();
-                angularError = 0.0f;
+                angularError = F.Zero;
 
                 var P = -K.Solve22(C1);
 
@@ -370,17 +370,17 @@ namespace Box2DSharp.Dynamics.Joints
                 var C = new Vector3(C1.X, C1.Y, C2);
 
                 var impulse = new Vector3();
-                if (K.Ez.Z > 0.0f)
+                if (K.Ez.Z > F.Zero)
                 {
                     impulse = -K.Solve33(C);
                 }
                 else
                 {
                     var impulse2 = -K.Solve22(C1);
-                    impulse.Set(impulse2.X, impulse2.Y, 0.0f);
+                    impulse.Set(impulse2.X, impulse2.Y, F.Zero);
                 }
 
-                var P = new Vector2(impulse.X, impulse.Y);
+                var P = new V2(impulse.X, impulse.Y);
 
                 cA -= mA * P;
                 aA -= iA * (MathUtils.Cross(rA, P) + impulse.Z);

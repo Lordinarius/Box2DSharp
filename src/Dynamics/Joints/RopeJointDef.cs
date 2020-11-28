@@ -10,22 +10,22 @@ namespace Box2DSharp.Dynamics.Joints
     public class RopeJointDef : JointDef
     {
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         /// The maximum length of the rope.
         /// Warning: this must be larger than b2_linearSlop or
         /// the joint will have no effect.
-        public float MaxLength;
+        public F MaxLength;
 
         public RopeJointDef()
         {
             JointType = JointType.RopeJoint;
-            LocalAnchorA.Set(-1.0f, 0.0f);
-            LocalAnchorB.Set(1.0f, 0.0f);
-            MaxLength = 0.0f;
+            LocalAnchorA.Set(-F.One, F.Zero);
+            LocalAnchorB.Set(F.One, F.Zero);
+            MaxLength = F.Zero;
         }
     }
 }

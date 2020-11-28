@@ -9,43 +9,43 @@ namespace Box2DSharp.Dynamics.Joints
     public class PulleyJointDef : JointDef
     {
         /// The first ground anchor in world coordinates. This point never moves.
-        public Vector2 GroundAnchorA;
+        public V2 GroundAnchorA;
 
         /// The second ground anchor in world coordinates. This point never moves.
-        public Vector2 GroundAnchorB;
+        public V2 GroundAnchorB;
 
         /// The a reference length for the segment attached to bodyA.
-        public float LengthA;
+        public F LengthA;
 
         /// The a reference length for the segment attached to bodyB.
-        public float LengthB;
+        public F LengthB;
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         /// The pulley ratio, used to simulate a block-and-tackle.
-        public float Ratio;
+        public F Ratio;
 
         public PulleyJointDef()
         {
             JointType = JointType.PulleyJoint;
 
-            GroundAnchorA.Set(-1.0f, 1.0f);
+            GroundAnchorA.Set(-F.One, F.One);
 
-            GroundAnchorB.Set(1.0f, 1.0f);
+            GroundAnchorB.Set(F.One, F.One);
 
-            LocalAnchorA.Set(-1.0f, 0.0f);
+            LocalAnchorA.Set(-F.One, F.Zero);
 
-            LocalAnchorB.Set(1.0f, 0.0f);
+            LocalAnchorB.Set(F.One, F.Zero);
 
-            LengthA = 0.0f;
+            LengthA = F.Zero;
 
-            LengthB = 0.0f;
+            LengthB = F.Zero;
 
-            Ratio = 1.0f;
+            Ratio = F.One;
 
             CollideConnected = true;
         }
@@ -54,11 +54,11 @@ namespace Box2DSharp.Dynamics.Joints
         public void Initialize(
             Body bA,
             Body bB,
-            in Vector2 groundA,
-            in Vector2 groundB,
-            in Vector2 anchorA,
-            in Vector2 anchorB,
-            float r)
+            in V2 groundA,
+            in V2 groundB,
+            in V2 anchorA,
+            in V2 anchorB,
+            F r)
         {
             BodyA = bA;
             BodyB = bB;

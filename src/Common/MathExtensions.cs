@@ -6,26 +6,26 @@ namespace Box2DSharp.Common
     public static class MathExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsValid(in this Vector2 vector2)
+        public static bool IsValid(in this V2 vector2)
         {
-            return !float.IsInfinity(vector2.X) && !float.IsInfinity(vector2.Y);
+            return !F.IsInfinity(vector2.X) && !F.IsInfinity(vector2.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsValid(this float x)
+        public static bool IsValid(this F x)
         {
-            return !float.IsInfinity(x);
+            return !F.IsInfinity(x);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetZero(ref this Vector2 vector2)
+        public static void SetZero(ref this V2 vector2)
         {
-            vector2.X = 0.0f;
-            vector2.Y = 0.0f;
+            vector2.X = F.Zero;
+            vector2.Y = F.Zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Set(ref this Vector2 vector2, float x, float y)
+        public static void Set(ref this V2 vector2, F x, F y)
         {
             vector2.X = x;
             vector2.Y = y;
@@ -34,13 +34,13 @@ namespace Box2DSharp.Common
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetZero(ref this Vector3 vector3)
         {
-            vector3.X = 0.0f;
-            vector3.Y = 0.0f;
-            vector3.Z = 0.0f;
+            vector3.X = F.Zero;
+            vector3.Y = F.Zero;
+            vector3.Z = F.Zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Set(ref this Vector3 vector3, float x, float y, float z)
+        public static void Set(ref this Vector3 vector3, F x, F y, F z)
         {
             vector3.X = x;
             vector3.Y = y;
@@ -49,15 +49,15 @@ namespace Box2DSharp.Common
 
         /// Convert this vector into a unit vector. Returns the length.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float Normalize(ref this Vector2 vector2)
+        public static F Normalize(ref this V2 vector2)
         {
             var length = vector2.Length();
             if (length < Settings.Epsilon)
             {
-                return 0.0f;
+                return F.Zero;
             }
 
-            var invLength = 1.0f / length;
+            var invLength = F.One / length;
             vector2.X *= invLength;
             vector2.Y *= invLength;
 
@@ -70,9 +70,9 @@ namespace Box2DSharp.Common
         /// <param name="vector2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 Skew(ref this Vector2 vector2)
+        public static V2 Skew(ref this V2 vector2)
         {
-            return new Vector2(-vector2.Y, vector2.X);
+            return new V2(-vector2.Y, vector2.X);
         }
     }
 }

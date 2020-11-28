@@ -170,16 +170,16 @@ namespace Box2DSharp.Dynamics.Joints
         public JointType JointType { get; }
 
         /// Get the anchor point on bodyA in world coordinates.
-        public abstract Vector2 GetAnchorA();
+        public abstract V2 GetAnchorA();
 
         /// Get the anchor point on bodyB in world coordinates.
-        public abstract Vector2 GetAnchorB();
+        public abstract V2 GetAnchorB();
 
         /// Get the reaction force on bodyB at the joint anchor in Newtons.
-        public abstract Vector2 GetReactionForce(float inv_dt);
+        public abstract V2 GetReactionForce(F inv_dt);
 
         /// Get the reaction torque on bodyB in N*m.
-        public abstract float GetReactionTorque(float inv_dt);
+        public abstract F GetReactionTorque(F inv_dt);
 
         /// Dump this joint to the log file.
         public virtual void Dump()
@@ -188,7 +188,7 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// Shift the origin for any points stored in world coordinates.
-        public virtual void ShiftOrigin(in Vector2 newOrigin)
+        public virtual void ShiftOrigin(in V2 newOrigin)
         { }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace Box2DSharp.Dynamics.Joints
             var p1 = GetAnchorA();
             var p2 = GetAnchorB();
 
-            var color = Color.FromArgb(0.5f, 0.8f, 0.8f);
+            var color = Color.FromArgb(F.Half, 0.8f, 0.8f);
 
             switch (JointType)
             {
@@ -225,7 +225,7 @@ namespace Box2DSharp.Dynamics.Joints
 
             case JointType.MouseJoint:
             {
-                var c = Color.FromArgb(0.0f, 1.0f, 0.0f);
+                var c = Color.FromArgb(F.Zero, F.One, F.Zero);
                 drawer.DrawPoint(p1, 4.0f, c);
                 drawer.DrawPoint(p2, 4.0f, c);
 

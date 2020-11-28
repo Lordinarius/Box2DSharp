@@ -3,20 +3,20 @@ namespace Box2DSharp.Dynamics
     /// Profiling data. Times are in milliseconds.
     public struct Profile
     {
-        public float Step;
+        public F Step;
 
-        public float Collide;
+        public F Collide;
 
-        public float Solve;
+        public F Solve;
 
-        public float SolveInit;
+        public F SolveInit;
 
-        public float SolveVelocity;
+        public F SolveVelocity;
 
-        public float SolvePosition;
+        public F SolvePosition;
 
-        public float Broadphase;
+        public F Broadphase;
 
-        public float SolveTOI;
+        public F SolveTOI;
     }
 }

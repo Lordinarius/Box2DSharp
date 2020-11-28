@@ -74,7 +74,7 @@ namespace Box2DSharp.Collision
 
         /// Call MoveProxy as many times as you like, then when you are done
         /// call UpdatePairs to finalized the proxy pairs (for your time step).
-        public void MoveProxy(int proxyId, in AABB aabb, in Vector2 displacement)
+        public void MoveProxy(int proxyId, in AABB aabb, in V2 displacement)
         {
             var buffer = _tree.MoveProxy(proxyId, aabb, displacement);
             if (buffer)
@@ -195,7 +195,7 @@ namespace Box2DSharp.Collision
         }
 
         /// Get the quality metric of the embedded tree.
-        public float GetTreeQuality()
+        public F GetTreeQuality()
         {
             return _tree.GetAreaRatio();
         }
@@ -203,7 +203,7 @@ namespace Box2DSharp.Collision
         /// Shift the world origin. Useful for large worlds.
         /// The shift formula is: position -= newOrigin
         /// @param newOrigin the new origin with respect to the old origin
-        public void ShiftOrigin(in Vector2 newOrigin)
+        public void ShiftOrigin(in V2 newOrigin)
         {
             _tree.ShiftOrigin(newOrigin);
         }
@@ -261,8 +261,8 @@ namespace Box2DSharp.Collision
                 ArrayPool<Pair>.Shared.Return(oldBuffer);
             }
 
-            _pairBuffer[_pairCount].ProxyIdA = Math.Min(proxyId, _queryProxyId);
-            _pairBuffer[_pairCount].ProxyIdB = Math.Max(proxyId, _queryProxyId);
+            _pairBuffer[_pairCount].ProxyIdA = F.Min(proxyId, _queryProxyId);
+            _pairBuffer[_pairCount].ProxyIdB = F.Max(proxyId, _queryProxyId);
             ++_pairCount;
 
             return true;

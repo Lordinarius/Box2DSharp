@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-
 /// <summary>
 /// Represents a Q31.32 fixed-point number.
 /// </summary>
@@ -14,9 +13,9 @@ public partial struct F : IEquatable<F>, IComparable<F>
     public static readonly decimal Precision = (decimal)(new F(1L));//0.00000000023283064365386962890625m;
     public static readonly F MaxValue = new F(MAX_VALUE);
     public static readonly F MinValue = new F(MIN_VALUE);
+    public static readonly F Two = new F(TWO);
     public static readonly F One = new F(ONE);
-    public static readonly F Two = new F(ONE * 2);
-    public static readonly F Half = new F(ONE / 2);
+    public static readonly F Half = new F(HALF);
     public static readonly F Epsilon = new F(EPSILON);
     public static readonly F Zero = new F();
     /// <summary>
@@ -25,26 +24,25 @@ public partial struct F : IEquatable<F>, IComparable<F>
     public static readonly F Pi = new F(PI);
     public static readonly F PiOver2 = new F(PI_OVER_2);
     public static readonly F PiTimes2 = new F(PI_TIMES_2);
-    public static readonly F PiInv = (F)0.3183098861837906715377675267M;
-    public static readonly F PiOver2Inv = (F)0.6366197723675813430755350535M;
-    static readonly F Log2Max = new F(LOG2MAX);
-    static readonly F Log2Min = new F(LOG2MIN);
-    static readonly F Ln2 = new F(LN2);
+    public static readonly F PiInv = new F(1367130496L); //0.3183099f
+    public static readonly F PiOver2Inv = new F(2734260992L); //0.6366197f
+    public static readonly F Rad2Deg = new F(246083502080L); //57.29578f
+    public static readonly F Deg2Rad = new F(74961320L); //0.01745329f
 
     static readonly F LutInterval = (F)(LUT_SIZE - 1) / PiOver2;
     const long MAX_VALUE = long.MaxValue;
     const long MIN_VALUE = long.MinValue;
     const int NUM_BITS = 64;
     const int FRACTIONAL_PLACES = 32;
-    const long ONE = 1L << FRACTIONAL_PLACES;
+    public const long ONE = 1L << FRACTIONAL_PLACES;
+    const long HALF = 1L << (FRACTIONAL_PLACES - 1);
+    const long TWO = 1L << (FRACTIONAL_PLACES + 1);
     const long PI_TIMES_2 = 0x6487ED511;
     const long PI = 0x3243F6A88;
     const long PI_OVER_2 = 0x1921FB544;
-    const long LN2 = 0xB17217F7;
-    const long LOG2MAX = 0x1F00000000;
-    const long LOG2MIN = -0x2000000000;
-    const int LUT_SIZE = (int)(PI_OVER_2 >> 15);
     const long EPSILON = 429496L;
+    const int LUT_SIZE = (int)(PI_OVER_2 >> 15);
+    const int LUT_SIZE_ASIN = (int)(ONE >> 16);
 
     /// <summary>
     /// Returns a number indicating the sign of a Fix64 number.
@@ -94,6 +92,16 @@ public partial struct F : IEquatable<F>, IComparable<F>
     {
         // Just zero out the fractional part
         return new F((long)((ulong)value.m_rawValue & 0xFFFFFFFF00000000));
+    }
+
+
+    /// <summary>
+    /// Returns the largest integer less than or equal to the specified number.
+    /// </summary>
+    public static int FloorToInt(F value)
+    {
+        // Just zero out the fractional part
+        return (int)Floor(value);
     }
 
     /// <summary>
@@ -293,7 +301,7 @@ public partial struct F : IEquatable<F>, IComparable<F>
         return new F(sum);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)] 
     static int CountLeadingZeroes(ulong x)
     {
         int result = 0;
@@ -412,161 +420,6 @@ public partial struct F : IEquatable<F>, IComparable<F>
         return x.m_rawValue <= y.m_rawValue;
     }
 
-    /// <summary>
-    /// Returns 2 raised to the specified power.
-    /// Provides at least 6 decimals of accuracy.
-    /// </summary>
-    internal static F Pow2(F x)
-    {
-        if (x.m_rawValue == 0)
-        {
-            return One;
-        }
-
-        // Avoid negative arguments by exploiting that exp(-x) = 1/exp(x).
-        bool neg = x.m_rawValue < 0;
-        if (neg)
-        {
-            x = -x;
-        }
-
-        if (x == One)
-        {
-            return neg ? One / (F)2 : (F)2;
-        }
-        if (x >= Log2Max)
-        {
-            return neg ? One / MaxValue : MaxValue;
-        }
-        if (x <= Log2Min)
-        {
-            return neg ? MaxValue : Zero;
-        }
-
-        /* The algorithm is based on the power series for exp(x):
-         * http://en.wikipedia.org/wiki/Exponential_function#Formal_definition
-         * 
-         * From term n, we get term n+1 by multiplying with x/n.
-         * When the sum term drops to zero, we can stop summing.
-         */
-
-        int integerPart = (int)Floor(x);
-        // Take fractional part of exponent
-        x = new F(x.m_rawValue & 0x00000000FFFFFFFF);
-
-        var result = One;
-        var term = One;
-        int i = 1;
-        while (term.m_rawValue != 0)
-        {
-            term = FastMul(FastMul(x, term), Ln2) / (F)i;
-            result += term;
-            i++;
-        }
-
-        result = FromRaw(result.m_rawValue << integerPart);
-        if (neg)
-        {
-            result = One / result;
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// Returns the base-2 logarithm of a specified number.
-    /// Provides at least 9 decimals of accuracy.
-    /// </summary>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// The argument was non-positive
-    /// </exception>
-    internal static F Log2(F x)
-    {
-        if (x.m_rawValue <= 0)
-        {
-            throw new ArgumentOutOfRangeException("Non-positive value passed to Ln", "x");
-        }
-
-        // This implementation is based on Clay. S. Turner's fast binary logarithm
-        // algorithm (C. S. Turner,  "A Fast Binary Logarithm Algorithm", IEEE Signal
-        //     Processing Mag., pp. 124,140, Sep. 2010.)
-
-        long b = 1U << (FRACTIONAL_PLACES - 1);
-        long y = 0;
-
-        long rawX = x.m_rawValue;
-        while (rawX < ONE)
-        {
-            rawX <<= 1;
-            y -= ONE;
-        }
-
-        while (rawX >= (ONE << 1))
-        {
-            rawX >>= 1;
-            y += ONE;
-        }
-
-        var z = new F(rawX);
-
-        for (int i = 0; i < FRACTIONAL_PLACES; i++)
-        {
-            z = FastMul(z, z);
-            if (z.m_rawValue >= (ONE << 1))
-            {
-                z = new F(z.m_rawValue >> 1);
-                y += b;
-            }
-            b >>= 1;
-        }
-
-        return new F(y);
-    }
-
-    /// <summary>
-    /// Returns the natural logarithm of a specified number.
-    /// Provides at least 7 decimals of accuracy.
-    /// </summary>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// The argument was non-positive
-    /// </exception>
-    public static F Ln(F x)
-    {
-        return FastMul(Log2(x), Ln2);
-    }
-
-    /// <summary>
-    /// Returns a specified number raised to the specified power.
-    /// Provides about 5 digits of accuracy for the result.
-    /// </summary>
-    /// <exception cref="DivideByZeroException">
-    /// The base was zero, with a negative exponent
-    /// </exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// The base was negative, with a non-zero exponent
-    /// </exception>
-    public static F Pow(F b, F exp)
-    {
-        if (b == One)
-        {
-            return One;
-        }
-        if (exp.m_rawValue == 0)
-        {
-            return One;
-        }
-        if (b.m_rawValue == 0)
-        {
-            if (exp.m_rawValue < 0)
-            {
-                throw new DivideByZeroException();
-            }
-            return Zero;
-        }
-
-        F log2 = Log2(b);
-        return Pow2(exp * log2);
-    }
 
     /// <summary>
     /// Returns the square root of a specified number.
@@ -648,11 +501,14 @@ public partial struct F : IEquatable<F>, IComparable<F>
 
     /// <summary>
     /// Returns the Sine of x.
-    /// The relative error is less than 1E-10 for x in [-2PI, 2PI], and less than 1E-7 in the worst case.
+    /// This function has about 9 decimals of accuracy for small values of x.
+    /// It may lose accuracy as the value of x grows.
+    /// Performance: about 25% slower than Math.Sin() in x64, and 200% slower in x86.
     /// </summary>
     public static F Sin(F x)
     {
-        var clampedL = ClampSinValue(x.m_rawValue, out var flipHorizontal, out var flipVertical);
+        bool flipHorizontal, flipVertical;
+        var clampedL = ClampSinValue(x.m_rawValue, out flipHorizontal, out flipVertical);
         var clamped = new F(clampedL);
 
         // Find the two closest values in the LUT and perform linear interpolation
@@ -681,7 +537,8 @@ public partial struct F : IEquatable<F>, IComparable<F>
     /// </summary>
     public static F FastSin(F x)
     {
-        var clampedL = ClampSinValue(x.m_rawValue, out bool flipHorizontal, out bool flipVertical);
+        bool flipHorizontal, flipVertical;
+        var clampedL = ClampSinValue(x.m_rawValue, out flipHorizontal, out flipVertical);
 
         // Here we use the fact that the SinLut table has a number of entries
         // equal to (PI_OVER_2 >> 15) to use the angle to index directly into it
@@ -697,21 +554,12 @@ public partial struct F : IEquatable<F>, IComparable<F>
     }
 
 
+
+    // [MethodImplAttribute(MethodImplOptions.AggressiveInlining)] 
     static long ClampSinValue(long angle, out bool flipHorizontal, out bool flipVertical)
     {
-        var largePI = 7244019458077122842;
-        // Obtained from ((Fix64)1686629713.065252369824872831112M).m_rawValue
-        // This is (2^29)*PI, where 29 is the largest N such that (2^N)*PI < MaxValue.
-        // The idea is that this number contains way more precision than PI_TIMES_2,
-        // and (((x % (2^29*PI)) % (2^28*PI)) % ... (2^1*PI) = x % (2 * PI)
-        // In practice this gives us an error of about 1,25e-9 in the worst case scenario (Sin(MaxValue))
-        // Whereas simply doing x % PI_TIMES_2 is the 2e-3 range.
-
-        var clamped2Pi = angle;
-        for (int i = 0; i < 29; ++i)
-        {
-            clamped2Pi %= (largePI >> i);
-        }
+        // Clamp value to 0 - 2*PI using modulo; this is very slow but there's no better way AFAIK
+        var clamped2Pi = angle % PI_TIMES_2;
         if (angle < 0)
         {
             clamped2Pi += PI_TIMES_2;
@@ -736,9 +584,20 @@ public partial struct F : IEquatable<F>, IComparable<F>
         return clampedPiOver2;
     }
 
+    public static long ClampASinValue(long val, out bool flipVertical)
+    {
+        flipVertical = false;
+        if (val < 0)
+        {
+            val += ONE;
+            flipVertical = true;
+        }
+        return val;
+    }
+
     /// <summary>
     /// Returns the cosine of x.
-    /// The relative error is less than 1E-10 for x in [-2PI, 2PI], and less than 1E-7 in the worst case.
+    /// See Sin() for more details.
     /// </summary>
     public static F Cos(F x)
     {
@@ -786,88 +645,13 @@ public partial struct F : IEquatable<F>, IComparable<F>
         var roundedIndex = Round(rawIndex);
         var indexError = FastSub(rawIndex, roundedIndex);
 
-        var nearestValue = new Fix64(TanLut[(int)roundedIndex]);
-        var secondNearestValue = new Fix64(TanLut[(int)roundedIndex + Sign(indexError)]);
+        var nearestValue = new F(TanLut[(int)roundedIndex]);
+        var secondNearestValue = new F(TanLut[(int)roundedIndex + Sign(indexError)]);
 
         var delta = FastMul(indexError, FastAbs(FastSub(nearestValue, secondNearestValue))).m_rawValue;
         var interpolatedValue = nearestValue.m_rawValue + delta;
         var finalValue = flip ? -interpolatedValue : interpolatedValue;
-        return new F((long)finalValue);
-    }
-
-    /// <summary>
-    /// Returns the arccos of of the specified number, calculated using Atan and Sqrt
-    /// This function has at least 7 decimals of accuracy.
-    /// </summary>
-    public static F Acos(F x)
-    {
-        if (x < -One || x > One)
-        {
-            throw new ArgumentOutOfRangeException(nameof(x));
-        }
-
-        if (x.m_rawValue == 0) return PiOver2;
-
-        var result = Atan(Sqrt(One - x * x) / x);
-        return x.m_rawValue < 0 ? result + Pi : result;
-    }
-
-    /// <summary>
-    /// Returns the arctan of of the specified number, calculated using Euler series
-    /// This function has at least 7 decimals of accuracy.
-    /// </summary>
-    public static F Atan(F z)
-    {
-        if (z.m_rawValue == 0) return Zero;
-
-        // Force positive values for argument
-        // Atan(-z) = -Atan(z).
-        var neg = z.m_rawValue < 0;
-        if (neg)
-        {
-            z = -z;
-        }
-
-        F result;
-        var two = (F)2;
-        var three = (F)3;
-
-        bool invert = z > One;
-        if (invert) z = One / z;
-
-        result = One;
-        var term = One;
-
-        var zSq = z * z;
-        var zSq2 = zSq * two;
-        var zSqPlusOne = zSq + One;
-        var zSq12 = zSqPlusOne * two;
-        var dividend = zSq2;
-        var divisor = zSqPlusOne * three;
-
-        for (var i = 2; i < 30; ++i)
-        {
-            term *= dividend / divisor;
-            result += term;
-
-            dividend += zSq2;
-            divisor += zSq12;
-
-            if (term.m_rawValue == 0) break;
-        }
-
-        result = result * z / zSqPlusOne;
-
-        if (invert)
-        {
-            result = PiOver2 - result;
-        }
-
-        if (neg)
-        {
-            result = -result;
-        }
-        return result;
+        return new F(finalValue);
     }
 
     public static F Atan2(F y, F x)
@@ -918,37 +702,49 @@ public partial struct F : IEquatable<F>, IComparable<F>
         return atan;
     }
 
+    public static F Clamp(F value, F min, F max)
+    {
+        if (value < min) value = min;
+        if (value > max) value = max;
+        return value;
+    }
 
+    public static F Clamp01(F value)
+    {
+        if (value < 0) value = 0;
+        if (value > 1) value = 1;
+        return value;
+    }
 
-    public static explicit operator F(long value)
+    public static implicit operator F(long value)
     {
         return new F(value * ONE);
     }
-    public static explicit operator long(F value)
+    public static implicit operator long(F value)
     {
         return value.m_rawValue >> FRACTIONAL_PLACES;
     }
-    public static explicit operator F(float value)
+    public static implicit operator F(float value)
     {
         return new F((long)(value * ONE));
     }
-    public static explicit operator float(F value)
+    public static implicit operator float(F value)
     {
         return (float)value.m_rawValue / ONE;
     }
-    public static explicit operator F(double value)
+    public static implicit operator F(double value)
     {
         return new F((long)(value * ONE));
     }
-    public static explicit operator double(F value)
+    public static implicit operator double(F value)
     {
         return (double)value.m_rawValue / ONE;
     }
-    public static explicit operator F(decimal value)
+    public static implicit operator F(decimal value)
     {
         return new F((long)(value * ONE));
     }
-    public static explicit operator decimal(F value)
+    public static implicit operator decimal(F value)
     {
         return (decimal)value.m_rawValue / ONE;
     }
@@ -975,13 +771,45 @@ public partial struct F : IEquatable<F>, IComparable<F>
 
     public override string ToString()
     {
-        // Up to 10 decimal places
-        return ((decimal)this).ToString("0.##########");
+        return ((decimal)this).ToString();
     }
+
+    public string ToString(string provider)
+    {
+        return ((decimal)this).ToString(provider);
+    }
+
 
     public static F FromRaw(long rawValue)
     {
         return new F(rawValue);
+    }
+
+    public static void GenerateASinLut()
+    {
+        using (var writer = new StreamWriter("Fix64ASinLut.cs"))
+        {
+            writer.Write(
+@"partial struct F {
+        public static readonly long[] ASinLut = new[] {");
+            int lineCounter = 0;
+            for (int i = 0; i < LUT_SIZE_ASIN; ++i)
+            {
+                var angle = i * 1.0 / (LUT_SIZE_ASIN - 1);
+                if (lineCounter++ % 8 == 0)
+                {
+                    writer.WriteLine();
+                    writer.Write("            ");
+                }
+                var sin = Math.Asin(angle);
+                var rawValue = ((F)sin).m_rawValue;
+                writer.Write(string.Format("0x{0:X}L, ", rawValue));
+            }
+            writer.Write(
+@"
+        };
+    }");
+        }
     }
 
     internal static void GenerateSinLut()
@@ -989,12 +817,9 @@ public partial struct F : IEquatable<F>, IComparable<F>
         using (var writer = new StreamWriter("Fix64SinLut.cs"))
         {
             writer.Write(
-@"namespace FixMath.NET 
-{
-    partial struct Fix64 
-    {
-        public static readonly long[] SinLut = new[] 
-        {");
+@"namespace FixMath.NET {
+    partial struct Fix64 {
+        public static readonly long[] SinLut = new[] {");
             int lineCounter = 0;
             for (int i = 0; i < LUT_SIZE; ++i)
             {
@@ -1021,12 +846,9 @@ public partial struct F : IEquatable<F>, IComparable<F>
         using (var writer = new StreamWriter("Fix64TanLut.cs"))
         {
             writer.Write(
-@"namespace FixMath.NET 
-{
-    partial struct Fix64 
-    {
-        public static readonly long[] TanLut = new[] 
-        {");
+@"namespace FixMath.NET {
+    partial struct F {
+        public static readonly long[] TanLut = new[] {");
             int lineCounter = 0;
             for (int i = 0; i < LUT_SIZE; ++i)
             {
@@ -1052,23 +874,17 @@ public partial struct F : IEquatable<F>, IComparable<F>
         }
     }
 
-    // turn into a Console Application and use this to generate the look-up tables
-    //static void Main(string[] args)
-    //{
-    //    GenerateSinLut();
-    //    GenerateTanLut();
-    //}
-
     /// <summary>
     /// The underlying integer representation
     /// </summary>
-    public long RawValue => m_rawValue;
+
+    public long RawValue { get { return m_rawValue; } }
 
     /// <summary>
     /// This is the constructor from raw value; it can only be used interally.
     /// </summary>
     /// <param name="rawValue"></param>
-    F(long rawValue)
+    public F(long rawValue)
     {
         m_rawValue = rawValue;
     }
@@ -1076,5 +892,69 @@ public partial struct F : IEquatable<F>, IComparable<F>
     public F(int value)
     {
         m_rawValue = value * ONE;
+    }
+
+    public F(int decimalPart, int fractionPart)
+    {
+        var fraction = (fractionPart * ONE) / 10000;
+        m_rawValue = decimalPart * ONE + fraction;
+    }
+
+
+    public static F Min(F f1, F f2)
+    {
+        if (f1 <= f2) return f1;
+        return f2;
+    }
+
+    public static F Max(F f1, F f2)
+    {
+        if (f1 >= f2) return f1;
+        return f2;
+    }
+
+    public static F Pow(F f, uint pow)
+    {
+        F result = f;
+        if (pow == 0) return 1;
+        for (int i = 1; i < pow; i++)
+        {
+            result *= f;
+        }
+        return result;
+    }
+
+    public static bool IsAngleBetween(F mid, F start, F end)
+    {
+        end = (end - start) < 0 ? end - start + PiTimes2 : end - start;
+        mid = (mid - start) < 0 ? mid - start + PiTimes2 : mid - start;
+        return (mid < end);
+    }
+
+    public static F Parse(string value)
+    {
+        const char sep = '.';
+        var split = value.Split(sep);
+
+        var decimalPart = int.Parse(split[0]) * ONE;
+        var fractionPart = 0L;
+        if (split.Length == 2)
+        {
+            var fp = split[1];
+            var fractionDivider = Pow(10, fp.Length);
+            fractionPart = (int.Parse(fp) * ONE) / fractionDivider;
+        }
+
+        return new F(decimalPart + fractionPart);
+    }
+
+    private static int Pow(int b, int p)
+    {
+        var res = 1;
+        for (int i = 0; i < p; i++)
+        {
+            res *= b;
+        }
+        return res;
     }
 }

@@ -139,12 +139,12 @@ namespace Box2DSharp.Collision
 
             if (gJkProfile != null)
             {
-                gJkProfile.GjkMaxIters = Math.Max(gJkProfile.GjkMaxIters, iter);
+                gJkProfile.GjkMaxIters = F.Max(gJkProfile.GjkMaxIters, iter);
             }
 
             // Prepare output.
             simplex.GetWitnessPoints(out output.PointA, out output.PointB);
-            output.Distance = Vector2.Distance(output.PointA, output.PointB);
+            output.Distance = V2.Distance(output.PointA, output.PointB);
             output.Iterations = iter;
 
             // Cache the simplex.
@@ -170,10 +170,10 @@ namespace Box2DSharp.Collision
                 {
                     // Shapes are overlapped when radii are considered.
                     // Move the witness points to the middle.
-                    var p = 0.5f * (output.PointA + output.PointB);
+                    var p = F.Half * (output.PointA + output.PointB);
                     output.PointA = p;
                     output.PointB = p;
-                    output.Distance = 0.0f;
+                    output.Distance = F.Zero;
                 }
             }
         }
@@ -183,24 +183,24 @@ namespace Box2DSharp.Collision
             output = new ShapeCastOutput
             {
                 Iterations = 0,
-                Lambda = 1.0f,
-                Normal = Vector2.Zero,
-                Point = Vector2.Zero
+                Lambda = F.One,
+                Normal = V2.Zero,
+                Point = V2.Zero
             };
 
             ref readonly var proxyA = ref input.ProxyA;
             ref readonly var proxyB = ref input.ProxyB;
 
-            var radiusA = Math.Max(proxyA.Radius, Settings.PolygonRadius);
-            var radiusB = Math.Max(proxyB.Radius, Settings.PolygonRadius);
+            var radiusA = F.Max(proxyA.Radius, Settings.PolygonRadius);
+            var radiusB = F.Max(proxyB.Radius, Settings.PolygonRadius);
             var radius = radiusA + radiusB;
 
             var xfA = input.TransformA;
             var xfB = input.TransformB;
 
             var r = input.TranslationB;
-            var n = new Vector2(0.0f, 0.0f);
-            var lambda = 0.0f;
+            var n = new V2(F.Zero, F.Zero);
+            var lambda = F.Zero;
 
             // Initial simplex
             var simplex = new Simplex();
@@ -216,8 +216,8 @@ namespace Box2DSharp.Collision
             var v = wA - wB;
 
             // Sigma is the target distance between polygons
-            var sigma = Math.Max(Settings.PolygonRadius, radius - Settings.PolygonRadius);
-            const float tolerance = 0.5f * Settings.LinearSlop;
+            var sigma = F.Max(Settings.PolygonRadius, radius - Settings.PolygonRadius);
+            const F tolerance = F.Half * Settings.LinearSlop;
 
             // Main iteration loop.
             // 迭代次数上限
@@ -240,17 +240,17 @@ namespace Box2DSharp.Collision
                 v.Normalize();
 
                 // Intersect ray with plane
-                var vp = Vector2.Dot(v, p);
-                var vr = Vector2.Dot(v, r);
+                var vp = V2.Dot(v, p);
+                var vr = V2.Dot(v, r);
                 if (vp - sigma > lambda * vr)
                 {
-                    if (vr <= 0.0f)
+                    if (vr <= F.Zero)
                     {
                         return false;
                     }
 
                     lambda = (vp - sigma) / vr;
-                    if (lambda > 1.0f)
+                    if (lambda > F.One)
                     {
                         return false;
                     }
@@ -269,7 +269,7 @@ namespace Box2DSharp.Collision
                 vertex.IndexB = indexA;
                 vertex.Wb = wA;
                 vertex.W = vertex.Wb - vertex.Wa;
-                vertex.A = 1.0f;
+                vertex.A = F.One;
 
                 simplex.Count += 1;
 
@@ -306,10 +306,10 @@ namespace Box2DSharp.Collision
             }
 
             // Prepare output.
-            //Vector2 pointA, pointB;
+            //V2 pointA, pointB;
             simplex.GetWitnessPoints(out var pointB, out var pointA);
 
-            if (v.LengthSquared() > 0.0f)
+            if (v.LengthSquared() > F.Zero)
             {
                 n = -v;
                 n.Normalize();

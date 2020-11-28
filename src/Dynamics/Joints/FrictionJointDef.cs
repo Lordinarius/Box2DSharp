@@ -7,24 +7,24 @@ namespace Box2DSharp.Dynamics.Joints
     public class FrictionJointDef : JointDef
     {
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         /// The maximum friction force in N.
-        public float MaxForce;
+        public F MaxForce;
 
         /// The maximum friction torque in N-m.
-        public float MaxTorque;
+        public F MaxTorque;
 
         public FrictionJointDef()
         {
             JointType = JointType.FrictionJoint;
             LocalAnchorA.SetZero();
             LocalAnchorB.SetZero();
-            MaxForce = 0.0f;
-            MaxTorque = 0.0f;
+            MaxForce = F.Zero;
+            MaxTorque = F.Zero;
         }
 
         // Point-to-point constraint
@@ -40,7 +40,7 @@ namespace Box2DSharp.Dynamics.Joints
         // K = invI1 + invI2
         /// Initialize the bodies, anchors, axis, and reference angle using the world
         /// anchor and world axis.
-        public void Initialize(Body bA, Body bB, in Vector2 anchor)
+        public void Initialize(Body bA, Body bB, in V2 anchor)
         {
             BodyA = bA;
             BodyB = bB;

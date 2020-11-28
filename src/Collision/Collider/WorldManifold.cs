@@ -13,9 +13,9 @@ namespace Box2DSharp.Collision.Collider
         public void Initialize(
             in Manifold manifold,
             in Transform xfA,
-            float radiusA,
+            F radiusA,
             in Transform xfB,
-            float radiusB)
+            F radiusB)
         {
             if (manifold.PointCount == 0)
             {
@@ -26,10 +26,10 @@ namespace Box2DSharp.Collision.Collider
             {
             case ManifoldType.Circles:
             {
-                Normal.Set(1.0f, 0.0f);
+                Normal.Set(F.One, F.Zero);
                 var pointA = MathUtils.Mul(xfA, manifold.LocalPoint);
                 var pointB = MathUtils.Mul(xfB, manifold.Points.Value0.LocalPoint);
-                if (Vector2.DistanceSquared(pointA, pointB) > Settings.Epsilon * Settings.Epsilon)
+                if (V2.DistanceSquared(pointA, pointB) > Settings.Epsilon * Settings.Epsilon)
                 {
                     Normal = pointB - pointA;
                     Normal.Normalize();
@@ -37,8 +37,8 @@ namespace Box2DSharp.Collision.Collider
 
                 var cA = pointA + radiusA * Normal;
                 var cB = pointB - radiusB * Normal;
-                Points.Value0 = 0.5f * (cA + cB);
-                Separations.Value0 = Vector2.Dot(cB - cA, Normal);
+                Points.Value0 = F.Half * (cA + cB);
+                Separations.Value0 = V2.Dot(cB - cA, Normal);
             }
                 break;
 
@@ -50,10 +50,10 @@ namespace Box2DSharp.Collision.Collider
                 for (var i = 0; i < manifold.PointCount; ++i)
                 {
                     var clipPoint = MathUtils.Mul(xfB, manifold.Points[i].LocalPoint);
-                    var cA = clipPoint + (radiusA - Vector2.Dot(clipPoint - planePoint, Normal)) * Normal;
+                    var cA = clipPoint + (radiusA - V2.Dot(clipPoint - planePoint, Normal)) * Normal;
                     var cB = clipPoint - radiusB * Normal;
-                    Points[i] = 0.5f * (cA + cB);
-                    Separations[i] = Vector2.Dot(cB - cA, Normal);
+                    Points[i] = F.Half * (cA + cB);
+                    Separations[i] = V2.Dot(cB - cA, Normal);
                 }
             }
                 break;
@@ -66,10 +66,10 @@ namespace Box2DSharp.Collision.Collider
                 for (var i = 0; i < manifold.PointCount; ++i)
                 {
                     var clipPoint = MathUtils.Mul(xfA, manifold.Points[i].LocalPoint);
-                    var cB = clipPoint + (radiusB - Vector2.Dot(clipPoint - planePoint, Normal)) * Normal;
+                    var cB = clipPoint + (radiusB - V2.Dot(clipPoint - planePoint, Normal)) * Normal;
                     var cA = clipPoint - radiusA * Normal;
-                    Points[i] = 0.5f * (cA + cB);
-                    Separations[i] = Vector2.Dot(cA - cB, Normal);
+                    Points[i] = F.Half * (cA + cB);
+                    Separations[i] = V2.Dot(cA - cB, Normal);
                 }
 
                 // Ensure normal points from A to B.
@@ -80,16 +80,16 @@ namespace Box2DSharp.Collision.Collider
         }
 
         /// world vector pointing from A to B
-        public Vector2 Normal;
+        public V2 Normal;
 
         /// <summary>
         /// world contact point (point of intersection), size Settings.MaxManifoldPoints
         /// </summary>
-        public FixedArray2<Vector2> Points;
+        public FixedArray2<V2> Points;
 
         /// <summary>
         /// a negative value indicates overlap, in meters, size Settings.MaxManifoldPoints
         /// </summary>
-        public FixedArray2<float> Separations;
+        public FixedArray2<F> Separations;
     }
 }

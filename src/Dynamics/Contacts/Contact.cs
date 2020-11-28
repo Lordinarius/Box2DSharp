@@ -23,7 +23,7 @@ namespace Box2DSharp.Dynamics.Contacts
 
         internal ContactFlag Flags;
 
-        internal float Friction;
+        internal F Friction;
 
         /// <summary>
         /// Get the child primitive index for fixture A.
@@ -49,11 +49,11 @@ namespace Box2DSharp.Dynamics.Contacts
 
         internal readonly ContactEdge NodeB = new ContactEdge();
 
-        internal float Restitution;
+        internal F Restitution;
 
-        internal float TangentSpeed;
+        internal F TangentSpeed;
 
-        internal float Toi;
+        internal F Toi;
 
         internal int ToiCount;
 
@@ -73,7 +73,7 @@ namespace Box2DSharp.Dynamics.Contacts
             Friction = MixFriction(FixtureA.Friction, FixtureB.Friction);
             Restitution = MixRestitution(FixtureA.Restitution, FixtureB.Restitution);
 
-            TangentSpeed = 0.0f;
+            TangentSpeed = F.Zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -98,13 +98,13 @@ namespace Box2DSharp.Dynamics.Contacts
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float MixFriction(float friction1, float friction2)
+        private static F MixFriction(F friction1, F friction2)
         {
-            return (float)Math.Sqrt(friction1 * friction2);
+            return (F)Math.Sqrt(friction1 * friction2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float MixRestitution(float restitution1, float restitution2)
+        private static F MixRestitution(F restitution1, F restitution2)
         {
             return restitution1 > restitution2 ? restitution1 : restitution2;
         }
@@ -159,14 +159,14 @@ namespace Box2DSharp.Dynamics.Contacts
         /// Override the default friction mixture. You can call this in b2ContactListener::PreSolve.
         /// This value persists until set or reset.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetFriction(float friction)
+        public void SetFriction(F friction)
         {
             Friction = friction;
         }
 
         /// Get the friction.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float GetFriction()
+        public F GetFriction()
         {
             return Friction;
         }
@@ -181,14 +181,14 @@ namespace Box2DSharp.Dynamics.Contacts
         /// Override the default restitution mixture. You can call this in b2ContactListener::PreSolve.
         /// The value persists until you set or reset.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetRestitution(float restitution)
+        public void SetRestitution(F restitution)
         {
             Restitution = restitution;
         }
 
         /// Get the restitution.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float GetRestitution()
+        public F GetRestitution()
         {
             return Restitution;
         }
@@ -202,14 +202,14 @@ namespace Box2DSharp.Dynamics.Contacts
 
         /// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetTangentSpeed(float speed)
+        public void SetTangentSpeed(F speed)
         {
             TangentSpeed = speed;
         }
 
         /// Get the desired tangent speed. In meters per second.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float GetTangentSpeed()
+        public F GetTangentSpeed()
         {
             return TangentSpeed;
         }
@@ -272,8 +272,8 @@ namespace Box2DSharp.Dynamics.Contacts
                 for (var i = 0; i < Manifold.PointCount; ++i)
                 {
                     ref var mp2 = ref Manifold.Points[i];
-                    mp2.NormalImpulse = 0.0f;
-                    mp2.TangentImpulse = 0.0f;
+                    mp2.NormalImpulse = F.Zero;
+                    mp2.TangentImpulse = F.Zero;
                     var id2 = mp2.Id;
 
                     for (var j = 0; j < oldManifold.PointCount; ++j)

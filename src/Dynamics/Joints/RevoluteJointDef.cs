@@ -23,44 +23,44 @@ namespace Box2DSharp.Dynamics.Joints
         public bool EnableMotor;
 
         /// The local anchor point relative to bodyA's origin.
-        public Vector2 LocalAnchorA;
+        public V2 LocalAnchorA;
 
         /// The local anchor point relative to bodyB's origin.
-        public Vector2 LocalAnchorB;
+        public V2 LocalAnchorB;
 
         /// The lower angle for the joint limit (radians).
-        public float LowerAngle;
+        public F LowerAngle;
 
         /// The maximum motor torque used to achieve the desired motor speed.
         /// Usually in N-m.
-        public float MaxMotorTorque;
+        public F MaxMotorTorque;
 
         /// The desired motor speed. Usually in radians per second.
-        public float MotorSpeed;
+        public F MotorSpeed;
 
         /// The bodyB angle minus bodyA angle in the reference state (radians).
-        public float ReferenceAngle;
+        public F ReferenceAngle;
 
         /// The upper angle for the joint limit (radians).
-        public float UpperAngle;
+        public F UpperAngle;
 
         public RevoluteJointDef()
         {
             JointType = JointType.RevoluteJoint;
-            LocalAnchorA.Set(0.0f, 0.0f);
-            LocalAnchorB.Set(0.0f, 0.0f);
-            ReferenceAngle = 0.0f;
-            LowerAngle = 0.0f;
-            UpperAngle = 0.0f;
-            MaxMotorTorque = 0.0f;
-            MotorSpeed = 0.0f;
+            LocalAnchorA.Set(F.Zero, F.Zero);
+            LocalAnchorB.Set(F.Zero, F.Zero);
+            ReferenceAngle = F.Zero;
+            LowerAngle = F.Zero;
+            UpperAngle = F.Zero;
+            MaxMotorTorque = F.Zero;
+            MotorSpeed = F.Zero;
             EnableLimit = false;
             EnableMotor = false;
         }
 
         /// Initialize the bodies, anchors, and reference angle using a world
         /// anchor point.
-        public void Initialize(Body bA, Body bB, Vector2 anchor)
+        public void Initialize(Body bA, Body bB, V2 anchor)
         {
             BodyA = bA;
             BodyB = bB;

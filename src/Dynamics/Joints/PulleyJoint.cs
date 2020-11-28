@@ -15,51 +15,51 @@ namespace Box2DSharp.Dynamics.Joints
     /// zero length.
     public class PulleyJoint : Joint
     {
-        private readonly float _constant;
+        private readonly F _constant;
 
-        private readonly float _lengthA;
+        private readonly F _lengthA;
 
-        private readonly float _lengthB;
+        private readonly F _lengthB;
 
         // Solver shared
-        private readonly Vector2 _localAnchorA;
+        private readonly V2 _localAnchorA;
 
-        private readonly Vector2 _localAnchorB;
+        private readonly V2 _localAnchorB;
 
-        private readonly float _ratio;
+        private readonly F _ratio;
 
-        private Vector2 _groundAnchorA;
+        private V2 _groundAnchorA;
 
-        private Vector2 _groundAnchorB;
+        private V2 _groundAnchorB;
 
-        private float _impulse;
+        private F _impulse;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
 
-        private float _invIa;
+        private F _invIa;
 
-        private float _invIb;
+        private F _invIb;
 
-        private float _invMassA;
+        private F _invMassA;
 
-        private float _invMassB;
+        private F _invMassB;
 
-        private Vector2 _localCenterA;
+        private V2 _localCenterA;
 
-        private Vector2 _localCenterB;
+        private V2 _localCenterB;
 
-        private float _mass;
+        private F _mass;
 
-        private Vector2 _rA;
+        private V2 _rA;
 
-        private Vector2 _rB;
+        private V2 _rB;
 
-        private Vector2 _uA;
+        private V2 _uA;
 
-        private Vector2 _uB;
+        private V2 _uB;
 
         public PulleyJoint(PulleyJointDef def) : base(def)
         {
@@ -71,46 +71,46 @@ namespace Box2DSharp.Dynamics.Joints
             _lengthA = def.LengthA;
             _lengthB = def.LengthB;
 
-            Debug.Assert(!def.Ratio.Equals(0.0f));
+            Debug.Assert(!def.Ratio.Equals(F.Zero));
             _ratio = def.Ratio;
 
             _constant = def.LengthA + _ratio * def.LengthB;
 
-            _impulse = 0.0f;
+            _impulse = F.Zero;
         }
 
         /// Get the first ground anchor.
-        public Vector2 GetGroundAnchorA()
+        public V2 GetGroundAnchorA()
         {
             return _groundAnchorA;
         }
 
         /// Get the second ground anchor.
-        public Vector2 GetGroundAnchorB()
+        public V2 GetGroundAnchorB()
         {
             return _groundAnchorB;
         }
 
         /// Get the current length of the segment attached to bodyA.
-        public float GetLengthA()
+        public F GetLengthA()
         {
             return _lengthA;
         }
 
         /// Get the current length of the segment attached to bodyB.
-        public float GetLengthB()
+        public F GetLengthB()
         {
             return _lengthB;
         }
 
         /// Get the pulley ratio.
-        public float GetRatio()
+        public F GetRatio()
         {
             return _ratio;
         }
 
         /// Get the current length of the segment attached to bodyA.
-        public float GetCurrentLengthA()
+        public F GetCurrentLengthA()
         {
             var p = BodyA.GetWorldPoint(_localAnchorA);
             var s = _groundAnchorA;
@@ -119,7 +119,7 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// Get the current length of the segment attached to bodyB.
-        public float GetCurrentLengthB()
+        public F GetCurrentLengthB()
         {
             var p = BodyB.GetWorldPoint(_localAnchorB);
             var s = _groundAnchorB;
@@ -128,28 +128,28 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorA()
+        public override V2 GetAnchorA()
         {
             return BodyA.GetWorldPoint(_localAnchorA);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetAnchorB()
+        public override V2 GetAnchorB()
         {
             return BodyB.GetWorldPoint(_localAnchorB);
         }
 
         /// <inheritdoc />
-        public override Vector2 GetReactionForce(float inv_dt)
+        public override V2 GetReactionForce(F inv_dt)
         {
             var P = _impulse * _uB;
             return inv_dt * P;
         }
 
         /// <inheritdoc />
-        public override float GetReactionTorque(float inv_dt)
+        public override F GetReactionTorque(F inv_dt)
         {
-            return 0.0f;
+            return F.Zero;
         }
 
         /// <inheritdoc />
@@ -189,7 +189,7 @@ namespace Box2DSharp.Dynamics.Joints
 
             if (lengthA > 10.0f * Settings.LinearSlop)
             {
-                _uA *= 1.0f / lengthA;
+                _uA *= F.One / lengthA;
             }
             else
             {
@@ -198,7 +198,7 @@ namespace Box2DSharp.Dynamics.Joints
 
             if (lengthB > 10.0f * Settings.LinearSlop)
             {
-                _uB *= 1.0f / lengthB;
+                _uB *= F.One / lengthB;
             }
             else
             {
@@ -214,9 +214,9 @@ namespace Box2DSharp.Dynamics.Joints
 
             _mass = mA + _ratio * _ratio * mB;
 
-            if (_mass > 0.0f)
+            if (_mass > F.Zero)
             {
-                _mass = 1.0f / _mass;
+                _mass = F.One / _mass;
             }
 
             if (data.Step.WarmStarting)
@@ -235,7 +235,7 @@ namespace Box2DSharp.Dynamics.Joints
             }
             else
             {
-                _impulse = 0.0f;
+                _impulse = F.Zero;
             }
 
             data.Velocities[_indexA].V = vA;
@@ -255,7 +255,7 @@ namespace Box2DSharp.Dynamics.Joints
             var vpA = vA + MathUtils.Cross(wA, _rA);
             var vpB = vB + MathUtils.Cross(wB, _rB);
 
-            var Cdot = -Vector2.Dot(_uA, vpA) - _ratio * Vector2.Dot(_uB, vpB);
+            var Cdot = -V2.Dot(_uA, vpA) - _ratio * V2.Dot(_uB, vpB);
             var impulse = -_mass * Cdot;
             _impulse += impulse;
 
@@ -295,7 +295,7 @@ namespace Box2DSharp.Dynamics.Joints
 
             if (lengthA > 10.0f * Settings.LinearSlop)
             {
-                uA *= 1.0f / lengthA;
+                uA *= F.One / lengthA;
             }
             else
             {
@@ -304,7 +304,7 @@ namespace Box2DSharp.Dynamics.Joints
 
             if (lengthB > 10.0f * Settings.LinearSlop)
             {
-                uB *= 1.0f / lengthB;
+                uB *= F.One / lengthB;
             }
             else
             {
@@ -320,9 +320,9 @@ namespace Box2DSharp.Dynamics.Joints
 
             var mass = mA + _ratio * _ratio * mB;
 
-            if (mass > 0.0f)
+            if (mass > F.Zero)
             {
-                mass = 1.0f / mass;
+                mass = F.One / mass;
             }
 
             var C = _constant - lengthA - _ratio * lengthB;
@@ -367,7 +367,7 @@ namespace Box2DSharp.Dynamics.Joints
         }
 
         /// <inheritdoc />
-        public override void ShiftOrigin(in Vector2 newOrigin)
+        public override void ShiftOrigin(in V2 newOrigin)
         {
             _groundAnchorA -= newOrigin;
             _groundAnchorB -= newOrigin;

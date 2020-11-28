@@ -18,12 +18,12 @@ namespace Box2DSharp.Collision.Shapes
         /// The vertex count.
         public int Count;
 
-        public Vector2 PrevVertex;
+        public V2 PrevVertex;
 
-        public Vector2 NextVertex;
+        public V2 NextVertex;
 
         /// The vertices. Owned by this class.
-        public Vector2[] Vertices;
+        public V2[] Vertices;
 
         public ChainShape()
         {
@@ -36,7 +36,7 @@ namespace Box2DSharp.Collision.Shapes
         /// Implement b2Shape. Vertices are cloned using b2Alloc.
         public override Shape Clone()
         {
-            var clone = new ChainShape {Vertices = new Vector2[Vertices.Length]};
+            var clone = new ChainShape {Vertices = new V2[Vertices.Length]};
             Array.Copy(Vertices, clone.Vertices, Vertices.Length);
             clone.Count = Count;
             clone.PrevVertex = PrevVertex;
@@ -56,7 +56,7 @@ namespace Box2DSharp.Collision.Shapes
         /// Create a loop. This automatically adjusts connectivity.
         /// @param vertices an array of vertices, these are copied
         /// @param count the vertex count
-        public void CreateLoop(Vector2[] vertices, int count = -1)
+        public void CreateLoop(V2[] vertices, int count = -1)
         {
             if (count == -1)
             {
@@ -76,11 +76,11 @@ namespace Box2DSharp.Collision.Shapes
                 var v2 = vertices[i];
 
                 // If the code crashes here, it means your vertices are too close together.
-                Debug.Assert(Vector2.DistanceSquared(v1, v2) > Settings.LinearSlop * Settings.LinearSlop);
+                Debug.Assert(V2.DistanceSquared(v1, v2) > Settings.LinearSlop * Settings.LinearSlop);
             }
 
             Count = count + 1;
-            Vertices = new Vector2[Count];
+            Vertices = new V2[Count];
             Array.Copy(vertices, Vertices, count);
             Vertices[count] = Vertices[0];
             PrevVertex = Vertices[Count - 2];
@@ -94,7 +94,7 @@ namespace Box2DSharp.Collision.Shapes
         /// <param name="count">the vertex count</param>
         /// <param name="prevVertex">previous vertex from chain that connects to the start</param>
         /// <param name="nextVertex">next vertex from chain that connects to the end</param>
-        public void CreateChain(Vector2[] vertices, int count, Vector2 prevVertex, Vector2 nextVertex)
+        public void CreateChain(V2[] vertices, int count, V2 prevVertex, V2 nextVertex)
         {
             Debug.Assert(Vertices == null && Count == 0);
             Debug.Assert(count >= 2);
@@ -102,12 +102,12 @@ namespace Box2DSharp.Collision.Shapes
             {
                 // If the code crashes here, it means your vertices are too close together.
                 Debug.Assert(
-                    Vector2.DistanceSquared(vertices[i - 1], vertices[i])
+                    V2.DistanceSquared(vertices[i - 1], vertices[i])
                   > Settings.LinearSlop * Settings.LinearSlop);
             }
 
             Count = count;
-            Vertices = new Vector2[count];
+            Vertices = new V2[count];
             Array.Copy(vertices, Vertices, count);
 
             PrevVertex = prevVertex;
@@ -138,7 +138,7 @@ namespace Box2DSharp.Collision.Shapes
 
         /// This always return false.
         /// @see b2Shape::TestPoint
-        public override bool TestPoint(in Transform transform, in Vector2 p)
+        public override bool TestPoint(in Transform transform, in V2 p)
         {
             return false;
         }
@@ -182,21 +182,21 @@ namespace Box2DSharp.Collision.Shapes
             var v1 = MathUtils.Mul(transform, Vertices[i1]);
             var v2 = MathUtils.Mul(transform, Vertices[i2]);
 
-            var lower = Vector2.Min(v1, v2);
-            var upper = Vector2.Max(v1, v2);
+            var lower = V2.Min(v1, v2);
+            var upper = V2.Max(v1, v2);
 
-            var r = new Vector2(Radius, Radius);
+            var r = new V2(Radius, Radius);
             aabb = new AABB(lower - r, upper + r);
         }
 
         /// Chains have zero mass.
         /// @see b2Shape::ComputeMass
-        public override void ComputeMass(out MassData massData, float density)
+        public override void ComputeMass(out MassData massData, F density)
         {
             massData = new MassData();
-            massData.Mass = 0.0f;
+            massData.Mass = F.Zero;
             massData.Center.SetZero();
-            massData.RotationInertia = 0.0f;
+            massData.RotationInertia = F.Zero;
         }
     }
 }
