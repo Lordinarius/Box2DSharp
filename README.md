@@ -1,9 +1,5 @@
 # Box2DSharp-FixedMath
-This is a fix point math port of the original repository. This is a heavily in development and not tested yet. It uses FixedMath.Net library as the fixed point implementation
-
-[Original Box2DSharp](https://github.com/Zonciu/Box2DSharp)
-[FixedMath.Net](https://github.com/asik/FixedMath.Net)
-
+This is a fix point math port of [Box2DSharp](https://github.com/Zonciu/Box2DSharp). This is a heavily in development and not tested yet. It uses [FixedMath.Net](https://github.com/asik/FixedMath.Net) library as the fixed point implementation
 
 # Box2DSharp
 A C# port of [Box2D](https://github.com/erincatto/Box2D)
