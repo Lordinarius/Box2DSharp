@@ -27,8 +27,8 @@ namespace Box2DSharp.Dynamics.Joints
             JointType = JointType.MouseJoint;
             Target.Set(F.Zero, F.Zero);
             MaxForce = F.Zero;
-            FrequencyHz = 5.0f;
-            DampingRatio = 0.7f;
+            FrequencyHz = new F(21474836480L); //5.0f;
+            DampingRatio = new F(3006477056L); //0.7f;
         }
     }
 }

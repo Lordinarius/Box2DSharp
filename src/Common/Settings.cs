@@ -24,20 +24,20 @@ namespace Box2DSharp.Common
         /// This is used to fatten AABBs in the dynamic tree. This allows proxies
         /// to move by a small amount without triggering a tree adjustment.
         /// This is in meters.
-        public readonly static F AABBExtension = 0.1f;
+        public readonly static F AABBExtension = new F(429496736L);//0.1f;
 
         /// This is used to fatten AABBs in the dynamic tree. This is used to predict
         /// the future position based on the current displacement.
         /// This is a dimensionless multiplier.
-        public readonly static F AABBMultiplier = 4.0f;
+        public readonly static F AABBMultiplier = 4;
 
         /// A small length used as a collision and constraint tolerance. Usually it is
         /// chosen to be numerically significant, but visually insignificant.
-        public readonly static F LinearSlop = 0.005f;
+        public readonly static F LinearSlop = new F(21474836L); //0.005f;
 
         /// A small angle used as a collision and constraint tolerance. Usually it is
         /// chosen to be numerically significant, but visually insignificant.
-        public readonly static F AngularSlop = F.Two / 180.0f * Pi;
+        public readonly static F AngularSlop = F.Two / ((F)180) * Pi;
 
         /// The radius of the polygon/edge shape skin. This should not be modified. Making
         /// this smaller means polygons will have an insufficient buffer for continuous collision.
@@ -58,11 +58,11 @@ namespace Box2DSharp.Common
 
         /// The maximum linear position correction used when solving constraints. This helps to
         /// prevent overshoot.
-        public readonly static F MaxLinearCorrection = 0.2f;
+        public readonly static F MaxLinearCorrection = new F(858993472L); //0.2f;
 
         /// The maximum angular position correction used when solving constraints. This helps to
         /// prevent overshoot.
-        public readonly static F MaxAngularCorrection = 8.0f / 180.0f * Pi;
+        public readonly static F MaxAngularCorrection = ((F)8) / ((F)180) * Pi;
 
         /// The maximum linear velocity of a body. This limit is very large and is used
         /// to prevent numerical problems. You shouldn't need to adjust this.
@@ -79,9 +79,9 @@ namespace Box2DSharp.Common
         /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
         /// that overlap is removed in one time step. However using values close to 1 often lead
         /// to overshoot.
-        public readonly static F Baumgarte = 0.2f;
+        public readonly static F Baumgarte = new F(858993472L); //0.2f;
 
-        public readonly static F ToiBaumgarte = 0.75f;
+        public readonly static F ToiBaumgarte = new F(3221225472L); //0.75f;
 
         // Sleep
 
@@ -89,9 +89,9 @@ namespace Box2DSharp.Common
         public readonly static F TimeToSleep = F.Half;
 
         /// A body cannot sleep if its linear velocity is above this tolerance.
-        public readonly static F LinearSleepTolerance = 0.01f;
+        public readonly static F LinearSleepTolerance = new F(429496736L); //0.01f;
 
         /// A body cannot sleep if its angular velocity is above this tolerance.
-        public readonly static F AngularSleepTolerance = F.Two / 180.0f * Pi;
+        public readonly static F AngularSleepTolerance = F.Two / ((F)180) * Pi;
     }
 }

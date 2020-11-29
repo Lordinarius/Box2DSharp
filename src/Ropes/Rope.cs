@@ -207,8 +207,7 @@ namespace Box2DSharp.Ropes
             }
 
             var invDt = F.One / dt;
-
-            var d = Math.Exp(-dt * _tuning.Damping);
+            F d = FMath.Exp(-dt * _tuning.Damping);
 
             // Apply gravity and damping
             for (var i = 0; i < _count; ++i)
@@ -714,12 +713,12 @@ namespace Box2DSharp.Ropes
                 draw.DrawSegment(_ps[i], _ps[i + 1], c);
 
                 var pc = _invMasses[i] > F.Zero ? pd : pg;
-                draw.DrawPoint(_ps[i], 5.0f, pc);
+                draw.DrawPoint(_ps[i], 5, pc);
             }
 
             {
                 var pc = _invMasses[_count - 1] > F.Zero ? pd : pg;
-                draw.DrawPoint(_ps[_count - 1], 5.0f, pc);
+                draw.DrawPoint(_ps[_count - 1], 5, pc);
             }
         }
     }

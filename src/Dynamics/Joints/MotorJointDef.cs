@@ -28,7 +28,7 @@ namespace Box2DSharp.Dynamics.Joints
             AngularOffset = F.Zero;
             MaxForce = F.One;
             MaxTorque = F.One;
-            CorrectionFactor = 0.3f;
+            CorrectionFactor = new F(1288490240L);// 0.3f;
         }
 
         /// Initialize the bodies and offsets using the current transforms.

@@ -718,8 +718,9 @@ namespace Box2DSharp.Dynamics.Joints
                 drawer.DrawSegment(pA - F.One * axis, pA + F.One * axis, c1);
             }
 
-            drawer.DrawPoint(pA, 5.0f, c1);
-            drawer.DrawPoint(pB, 5.0f, c4);
+            var size = new F(21474836480L); //5.0
+            drawer.DrawPoint(pA, size, c1);
+            drawer.DrawPoint(pB, size, c4);
         }
     }
 }

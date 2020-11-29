@@ -139,7 +139,7 @@ namespace Box2DSharp.Dynamics.Contacts
         }
 
         // Ensure a reasonable condition number.
-        static readonly F maxConditionNumber = 1000.0f;
+        static readonly F maxConditionNumber = 1000;
         public void InitializeVelocityConstraints()
         {
             Span<Position> ps = _positions;
@@ -304,7 +304,7 @@ namespace Box2DSharp.Dynamics.Contacts
             }
         }
 
-        static readonly F k_errorTol = 1e-3f;
+        static readonly F k_errorTol = new F(4294967L); //1e-3f;
         public void SolveVelocityConstraints()
         {
             Span<ContactVelocityConstraint> velocityConstraints = VelocityConstraints;

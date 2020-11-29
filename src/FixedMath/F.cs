@@ -716,35 +716,43 @@ public partial struct F : IEquatable<F>, IComparable<F>
         return value;
     }
 
-    public static explicit operator F(long value)
+    public static implicit operator F(int value)
     {
         return new F(value * ONE);
     }
-    public static explicit operator long(F value)
+    public static implicit operator int(F value)
+    {
+        return (int)(value.m_rawValue >> FRACTIONAL_PLACES);
+    }
+    public static implicit operator F(long value)
+    {
+        return new F(value * ONE);
+    }
+    public static implicit operator long(F value)
     {
         return value.m_rawValue >> FRACTIONAL_PLACES;
     }
-    public static explicit operator F(float value)
+    public static implicit operator F(float value)
     {
         return new F((long)(value * ONE));
     }
-    public static explicit operator float(F value)
+    public static implicit operator float(F value)
     {
         return (float)value.m_rawValue / ONE;
     }
-    public static explicit operator F(double value)
+    public static implicit operator F(double value)
     {
         return new F((long)(value * ONE));
     }
-    public static explicit operator double(F value)
+    public static implicit operator double(F value)
     {
         return (double)value.m_rawValue / ONE;
     }
-    public static explicit operator F(decimal value)
+    public static implicit operator F(decimal value)
     {
         return new F((long)(value * ONE));
     }
-    public static explicit operator decimal(F value)
+    public static implicit operator decimal(F value)
     {
         return (decimal)value.m_rawValue / ONE;
     }

@@ -95,7 +95,7 @@ namespace Box2DSharp.Collision
             var tMax = input.Tmax;
 
             var totalRadius = proxyA.Radius + proxyB.Radius;
-            var target = F.Max(Settings.LinearSlop, totalRadius - 3.0f * Settings.LinearSlop);
+            var target = F.Max(Settings.LinearSlop, totalRadius - 3 * Settings.LinearSlop);
             var tolerance = 0.25f * Settings.LinearSlop;
             Debug.Assert(target > tolerance);
 
@@ -289,7 +289,7 @@ namespace Box2DSharp.Collision
             }
 
             var endTime = Stopwatch.GetTimestamp();
-            var time = (endTime - beginTime) / 10000f;
+            F time = (endTime - beginTime) / 10000;
             toiProfile.ToiMaxIters = F.Max(toiProfile.ToiMaxIters, iter);
             toiProfile.ToiMaxTime = F.Max(toiProfile.ToiMaxTime, time);
             toiProfile.ToiTime += time;

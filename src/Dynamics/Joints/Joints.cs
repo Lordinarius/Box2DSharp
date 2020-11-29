@@ -226,8 +226,8 @@ namespace Box2DSharp.Dynamics.Joints
             case JointType.MouseJoint:
             {
                 var c = Color.FromArgb(F.Zero, F.One, F.Zero);
-                drawer.DrawPoint(p1, 4.0f, c);
-                drawer.DrawPoint(p2, 4.0f, c);
+                drawer.DrawPoint(p1, 4, c);
+                drawer.DrawPoint(p2, 4, c);
 
                 drawer.DrawSegment(p1, p2, Color.FromArgb(0.8f, 0.8f, 0.8f));
             }

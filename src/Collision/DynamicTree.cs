@@ -178,8 +178,8 @@ namespace Box2DSharp.Collision
                 // The huge AABB is larger than the new fat AABB.
                 var hugeAABB = new AABB
                 {
-                    LowerBound = fatAABB.LowerBound - 4.0f * r,
-                    UpperBound = fatAABB.UpperBound + 4.0f * r
+                    LowerBound = fatAABB.LowerBound - 4 * r,
+                    UpperBound = fatAABB.UpperBound + 4 * r
                 };
 
                 if (hugeAABB.Contains(treeAABB))

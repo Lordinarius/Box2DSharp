@@ -134,7 +134,7 @@ namespace Box2DSharp.Collision
         // Find incident edge
         // Clip
 
-        static readonly F k_tol = 0.1f * Settings.LinearSlop;
+        static readonly F k_tol = new F(429496736L) * Settings.LinearSlop;
         // The normal points from 1 to 2
         /// Compute the collision manifold between two polygons.
         public static void CollidePolygons(

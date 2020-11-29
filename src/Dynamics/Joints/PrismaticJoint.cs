@@ -586,7 +586,7 @@ namespace Box2DSharp.Dynamics.Joints
             var s1 = MathUtils.Cross(d + rA, perp);
             var s2 = MathUtils.Cross(rB, perp);
 
-            var impulse = new Vector3();
+            var impulse = new V3();
             var C1 = new V2();
             C1.X = V2.Dot(perp, d);
             C1.Y = aB - aA - ReferenceAngle;
@@ -639,7 +639,7 @@ namespace Box2DSharp.Dynamics.Joints
                 K.Ey.Set(k12, k22, k23);
                 K.Ez.Set(k13, k23, k33);
 
-                var C = new Vector3();
+                var C = new V3();
                 C.X = C1.X;
                 C.Y = C1.Y;
                 C.Z = C2;
@@ -715,8 +715,8 @@ namespace Box2DSharp.Dynamics.Joints
                 drawer.DrawSegment(pA - F.One * axis, pA + F.One * axis, c1);
             }
 
-            drawer.DrawPoint(pA, 5.0f, c1);
-            drawer.DrawPoint(pB, 5.0f, c4);
+            drawer.DrawPoint(pA, 5, c1);
+            drawer.DrawPoint(pB, 5, c4);
         }
     }
 }

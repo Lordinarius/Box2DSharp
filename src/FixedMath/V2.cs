@@ -582,11 +582,11 @@ public struct V2
 
     public static implicit operator System.Numerics.Vector2(V2 v)
     {
-        return new System.Numerics.Vector2(v.X, v.Y);
+        return new System.Numerics.Vector2((float)v.X, (float)v.Y);
     }
 
     public static explicit operator V2(System.Numerics.Vector2 v)
     {
-        return new V2(v.X, v.Y);
+        return new V2((F)v.X, (F)v.Y);
     }
 }

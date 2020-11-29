@@ -42,7 +42,7 @@ namespace Box2DSharp.Common
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SetZero(ref this Vector3 vector3)
+        public static void SetZero(ref this V3 vector3)
         {
             vector3.X = F.Zero;
             vector3.Y = F.Zero;
@@ -50,7 +50,7 @@ namespace Box2DSharp.Common
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Set(ref this Vector3 vector3, F x, F y, F z)
+        public static void Set(ref this V3 vector3, F x, F y, F z)
         {
             vector3.X = x;
             vector3.Y = y;

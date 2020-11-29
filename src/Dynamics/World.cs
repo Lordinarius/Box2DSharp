@@ -1551,8 +1551,8 @@ namespace Box2DSharp.Dynamics
 
                 if (edge.OneSided == false)
                 {
-                    Drawer.DrawPoint(v1, 4.0f, color);
-                    Drawer.DrawPoint(v2, 4.0f, color);
+                    Drawer.DrawPoint(v1, 4, color);
+                    Drawer.DrawPoint(v2, 4, color);
                 }
             }
                 break;

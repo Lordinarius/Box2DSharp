@@ -207,7 +207,7 @@ namespace Box2DSharp.Dynamics.Joints
             _C *= _beta;
 
             // Cheat with some damping
-            wB *= 0.98f;
+            wB *= new F(4209068032L);
 
             if (data.Step.WarmStarting)
             {

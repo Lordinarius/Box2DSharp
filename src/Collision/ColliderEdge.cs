@@ -289,9 +289,9 @@ namespace Box2DSharp.Collision
         }
 
         // Use hysteresis for jitter reduction.
-        static readonly F k_relativeTol = 0.98f;
-        static readonly F k_absoluteTol = 0.001f;
-        static readonly F sinTol = 0.1f;
+        static readonly F k_relativeTol = new F(4209068032L); //0.98f;
+        static readonly F k_absoluteTol = new F(4294967L); //0.001f;
+        static readonly F sinTol = new F(429496736L); //0.1f;
 
         public static void CollideEdgeAndPolygon(
             ref Manifold manifold,

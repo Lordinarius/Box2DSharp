@@ -314,7 +314,7 @@ namespace Box2DSharp.Dynamics
         /// The friction coefficient, usually in the range [0,1].
         public F Friction
         {
-            get => _friction.GetValueOrDefault(0.2f);
+            get => _friction.GetValueOrDefault(new F(858993472L));
             set => _friction = value;
         }
 
