@@ -61,12 +61,12 @@ namespace Box2DSharp.Common
             return FromArgb(255, r, g, b);
         }
 
-        public static Color FromArgb(F a, F r, F g, F b)
+        public static Color FromArgb(float a, float r, float g, float b)
         {
             return FromArgb((int)(a * 255), (int)(r * 255), (int)(g * 255), (int)(b * 255));
         }
 
-        public static Color FromArgb(F r, F g, F b)
+        public static Color FromArgb(float r, float g, float b)
         {
             return FromArgb(255, (int)(r * 255), (int)(g * 255), (int)(b * 255));
         }

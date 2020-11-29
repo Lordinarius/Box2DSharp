@@ -19,7 +19,7 @@ namespace Box2DSharp.Dynamics.Joints
 
         private bool _enableMotor;
 
-        private Vector3 _impulse;
+        private V3 _impulse;
 
         // Solver temp
         private int _indexA;
@@ -421,7 +421,7 @@ namespace Box2DSharp.Dynamics.Joints
             {
                 var cdot1 = vB + MathUtils.Cross(wB, _rB) - vA - MathUtils.Cross(wA, _rA);
                 var cdot2 = wB - wA;
-                var cdot = new Vector3(cdot1.X, cdot1.Y, cdot2);
+                var cdot = new V3(cdot1.X, cdot1.Y, cdot2);
 
                 var impulse = -_mass.Solve33(cdot);
 

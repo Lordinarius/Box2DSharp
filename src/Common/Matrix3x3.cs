@@ -4,14 +4,14 @@ namespace Box2DSharp.Common
 {
     public struct Matrix3x3
     {
-        public Vector3 Ex;
+        public V3 Ex;
 
-        public Vector3 Ey;
+        public V3 Ey;
 
-        public Vector3 Ez;
+        public V3 Ez;
 
         /// Construct this matrix using columns.
-        public Matrix3x3(in Vector3 c1, in Vector3 c2, in Vector3 c3)
+        public Matrix3x3(in V3 c1, in V3 c2, in V3 c3)
         {
             Ex = c1;
             Ey = c2;
@@ -28,18 +28,18 @@ namespace Box2DSharp.Common
 
         /// Solve A * x = b, where b is a column vector. This is more efficient
         /// than computing the inverse in one-shot cases.
-        public Vector3 Solve33(in Vector3 b)
+        public V3 Solve33(in V3 b)
         {
-            var det = Vector3.Dot(Ex, Vector3.Cross(Ey, Ez));
+            var det = V3.Dot(Ex, V3.Cross(Ey, Ez));
             if (!det.Equals(F.Zero))
             {
                 det = F.One / det;
             }
 
-            Vector3 x;
-            x.X = det * Vector3.Dot(b, Vector3.Cross(Ey, Ez));
-            x.Y = det * Vector3.Dot(Ex, Vector3.Cross(b, Ez));
-            x.Z = det * Vector3.Dot(Ex, Vector3.Cross(Ey, b));
+            V3 x;
+            x.X = det * V3.Dot(b, V3.Cross(Ey, Ez));
+            x.Y = det * V3.Dot(Ex, V3.Cross(b, Ez));
+            x.Z = det * V3.Dot(Ex, V3.Cross(Ey, b));
             return x;
         }
 
@@ -91,7 +91,7 @@ namespace Box2DSharp.Common
         /// Returns the zero matrix if singular.
         public void GetSymInverse33(ref Matrix3x3 matrix3x3)
         {
-            var det = Vector3.Dot(Ex, Vector3.Cross(Ey, Ez));
+            var det = V3.Dot(Ex, V3.Cross(Ey, Ez));
             if (!det.Equals(F.Zero))
             {
                 det = F.One / det;

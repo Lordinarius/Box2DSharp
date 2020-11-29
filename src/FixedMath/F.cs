@@ -711,40 +711,40 @@ public partial struct F : IEquatable<F>, IComparable<F>
 
     public static F Clamp01(F value)
     {
-        if (value < 0) value = 0;
-        if (value > 1) value = 1;
+        if (value < F.Zero) value = F.Zero;
+        if (value > F.One) value = F.One;
         return value;
     }
 
-    public static implicit operator F(long value)
+    public static explicit operator F(long value)
     {
         return new F(value * ONE);
     }
-    public static implicit operator long(F value)
+    public static explicit operator long(F value)
     {
         return value.m_rawValue >> FRACTIONAL_PLACES;
     }
-    public static implicit operator F(float value)
+    public static explicit operator F(float value)
     {
         return new F((long)(value * ONE));
     }
-    public static implicit operator float(F value)
+    public static explicit operator float(F value)
     {
         return (float)value.m_rawValue / ONE;
     }
-    public static implicit operator F(double value)
+    public static explicit operator F(double value)
     {
         return new F((long)(value * ONE));
     }
-    public static implicit operator double(F value)
+    public static explicit operator double(F value)
     {
         return (double)value.m_rawValue / ONE;
     }
-    public static implicit operator F(decimal value)
+    public static explicit operator F(decimal value)
     {
         return new F((long)(value * ONE));
     }
-    public static implicit operator decimal(F value)
+    public static explicit operator decimal(F value)
     {
         return (decimal)value.m_rawValue / ONE;
     }
@@ -927,7 +927,7 @@ public partial struct F : IEquatable<F>, IComparable<F>
     public static F Pow(F f, uint pow)
     {
         F result = f;
-        if (pow == 0) return 1;
+        if (pow == 0) return F.One;
         for (int i = 1; i < pow; i++)
         {
             result *= f;
@@ -937,8 +937,8 @@ public partial struct F : IEquatable<F>, IComparable<F>
 
     public static bool IsAngleBetween(F mid, F start, F end)
     {
-        end = (end - start) < 0 ? end - start + PiTimes2 : end - start;
-        mid = (mid - start) < 0 ? mid - start + PiTimes2 : mid - start;
+        end = (end - start) < F.Zero ? end - start + PiTimes2 : end - start;
+        mid = (mid - start) < F.Zero ? mid - start + PiTimes2 : mid - start;
         return (mid < end);
     }
 

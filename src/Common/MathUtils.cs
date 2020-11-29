@@ -65,7 +65,7 @@ namespace Box2DSharp.Common
 
         /// Multiply a matrix times a vector.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Mul(in Matrix3x3 m, in Vector3 v)
+        public static V3 Mul(in Matrix3x3 m, in V3 v)
         {
             return v.X * m.Ex + v.Y * m.Ey + v.Z * m.Ez;
         }

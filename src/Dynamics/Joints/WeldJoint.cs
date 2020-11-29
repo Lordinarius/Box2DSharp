@@ -23,7 +23,7 @@ namespace Box2DSharp.Dynamics.Joints
 
         private F _gamma;
 
-        private Vector3 _impulse;
+        private V3 _impulse;
 
         // Solver temp
         private int _indexA;
@@ -294,7 +294,7 @@ namespace Box2DSharp.Dynamics.Joints
             {
                 var cdot1 = vB + MathUtils.Cross(wB, _rB) - vA - MathUtils.Cross(wA, _rA);
                 var cdot2 = wB - wA;
-                var cdot = new Vector3(cdot1.X, cdot1.Y, cdot2);
+                var cdot = new V3(cdot1.X, cdot1.Y, cdot2);
 
                 var impulse = -MathUtils.Mul(_mass, cdot);
                 _impulse += impulse;
@@ -367,9 +367,9 @@ namespace Box2DSharp.Dynamics.Joints
                 positionError = C1.Length();
                 angularError = F.Abs(C2);
 
-                var C = new Vector3(C1.X, C1.Y, C2);
+                var C = new V3(C1.X, C1.Y, C2);
 
-                var impulse = new Vector3();
+                var impulse = new V3();
                 if (K.Ez.Z > F.Zero)
                 {
                     impulse = -K.Solve33(C);
