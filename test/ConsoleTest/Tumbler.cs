@@ -30,26 +30,26 @@ namespace NETCoreTest
                 {
                     BodyType = BodyType.DynamicBody,
                     AllowSleep = false,
-                    Position = new Vector2(0.0f, 10.0f)
+                    Position = new V2(0.0f, 10.0f)
                 };
                 var body = World.CreateBody(bd);
 
                 var shape = new PolygonShape();
-                shape.SetAsBox(0.5f, 10.0f, new Vector2(10.0f, 0.0f), 0.0f);
+                shape.SetAsBox(0.5f, 10.0f, new V2(10.0f, 0.0f), 0.0f);
                 body.CreateFixture(shape, 5.0f);
-                shape.SetAsBox(0.5f, 10.0f, new Vector2(-10.0f, 0.0f), 0.0f);
+                shape.SetAsBox(0.5f, 10.0f, new V2(-10.0f, 0.0f), 0.0f);
                 body.CreateFixture(shape, 5.0f);
-                shape.SetAsBox(10.0f, 0.5f, new Vector2(0.0f, 10.0f), 0.0f);
+                shape.SetAsBox(10.0f, 0.5f, new V2(0.0f, 10.0f), 0.0f);
                 body.CreateFixture(shape, 5.0f);
-                shape.SetAsBox(10.0f, 0.5f, new Vector2(0.0f, -10.0f), 0.0f);
+                shape.SetAsBox(10.0f, 0.5f, new V2(0.0f, -10.0f), 0.0f);
                 body.CreateFixture(shape, 5.0f);
 
                 var jd = new RevoluteJointDef
                 {
                     BodyA = ground,
                     BodyB = body,
-                    LocalAnchorA = new Vector2(0.0f, 10.0f),
-                    LocalAnchorB = new Vector2(0.0f, 0.0f),
+                    LocalAnchorA = new V2(0.0f, 10.0f),
+                    LocalAnchorB = new V2(0.0f, 0.0f),
                     ReferenceAngle = 0.0f,
                     MotorSpeed = 0.05f * Settings.Pi,
                     MaxMotorTorque = 1e8f,
@@ -69,7 +69,7 @@ namespace NETCoreTest
                 var bd = new BodyDef
                 {
                     BodyType = BodyType.DynamicBody,
-                    Position = new Vector2(0.0f, 10.0f)
+                    Position = new V2(0.0f, 10.0f)
                 };
                 var body = World.CreateBody(bd);
 
